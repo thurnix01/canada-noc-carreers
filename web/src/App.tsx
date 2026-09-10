@@ -16,6 +16,24 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'newest', label: 'Newly added' },
 ]
 
+/** Place photography for directory cards (portal heroes + Commons fills). */
+const COMMUNITY_PHOTOS: Record<string, string> = {
+  'west-kootenay': 'communities/west-kootenay.jpg',
+  'north-okanagan-shuswap': 'communities/north-okanagan-shuswap.jpg',
+  'peace-liard': 'communities/peace-liard.jpg',
+  'pictou-county': 'communities/pictou-county.jpg',
+  'north-bay': 'communities/north-bay.jpg',
+  sudbury: 'communities/sudbury.jpg',
+  timmins: 'communities/timmins.jpg',
+  'sault-ste-marie': 'communities/sault-ste-marie.jpg',
+  'thunder-bay': 'communities/thunder-bay.jpg',
+  steinbach: 'communities/steinbach.jpg',
+  'altona-rhineland': 'communities/altona-rhineland.jpg',
+  brandon: 'communities/brandon.jpg',
+  'moose-jaw': 'communities/moose-jaw.jpg',
+  claresholm: 'communities/claresholm.jpg',
+}
+
 const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}`
 
 function ResultCard({ listing, index }: { listing: Listing; index: number }) {
@@ -380,8 +398,8 @@ export default function App() {
               </span>
             </div>
           </button>
-          {communityStats.map((c, i) => {
-            const photos = ['security.jpg', 'rural-team.jpg', 'farmers.jpg', 'workers.jpg', 'citizens.jpg'] as const
+          {communityStats.map((c) => {
+            const photo = COMMUNITY_PHOTOS[c.id] || 'friends-flags.jpg'
             const portal = c.portal_url ? withUtm(c.portal_url, c.id, 'directory-card') : ''
             return (
               <div
@@ -396,7 +414,7 @@ export default function App() {
                     scrollToExplore()
                   }}
                 >
-                  <img src={img(photos[i % photos.length])} alt="" />
+                  <img src={img(photo)} alt="" />
                   <div>
                     <strong>
                       {c.name}
