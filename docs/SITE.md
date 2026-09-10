@@ -10,7 +10,12 @@ npm run export:data    # pulls from your Google Sheet → web/public/data/listin
 npm run dev            # http://localhost:5173
 ```
 
-Current export (example): **75 NOCs**, **~720 employers** across the 3 BC pilot communities.
+Current export (example): **75 NOCs**, **~720 employers** across **14 RCIP communities** (BC searchable; others as directory cards until data is added).
+
+## Sheet: activate all communities
+
+Import `database/communities-seed-all-rcip.csv` into the Sheet **`database`** tab (or paste rows) with `active=TRUE`.  
+Export also merges `data/communities.json`, so the site can show all 14 even before the Sheet is updated.
 
 ## Deploy to GitHub Pages
 

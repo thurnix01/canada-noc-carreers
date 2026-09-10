@@ -6,6 +6,7 @@ export type Community = {
   province: string
   portal_url: string
   jobs_url: string
+  scrape_status?: string
 }
 
 export type Listing = {

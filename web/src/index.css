@@ -488,13 +488,13 @@ img {
 
 .community-cards {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.9rem;
 }
 
 .community-card {
   display: grid;
-  gap: 0.7rem;
+  gap: 0.55rem;
   text-align: left;
   padding: 0.55rem;
   border-radius: 16px;
@@ -502,6 +502,17 @@ img {
   background: var(--white);
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.community-card-main {
+  display: grid;
+  gap: 0.7rem;
+  text-align: left;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 100%;
 }
 
 .community-card img {
@@ -515,6 +526,7 @@ img {
   display: flex;
   align-items: baseline;
   gap: 0.35rem;
+  flex-wrap: wrap;
   font-size: 0.95rem;
 }
 
@@ -532,6 +544,25 @@ img {
   color: var(--muted);
 }
 
+.community-portal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 0.15rem 0.15rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--maple-deep);
+  background: var(--maple-soft);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.community-portal-link:hover {
+  transform: translateY(-1px);
+  background: rgba(200, 16, 46, 0.16);
+}
+
 .community-card:hover,
 .community-card.is-active {
   transform: translateY(-4px);
@@ -540,6 +571,10 @@ img {
 
 .community-card.is-active {
   box-shadow: 0 0 0 2px var(--maple), var(--shadow);
+}
+
+.community-card.is-directory {
+  background: linear-gradient(180deg, #fff 70%, #f8fafb 100%);
 }
 
 .explore {

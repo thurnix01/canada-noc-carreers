@@ -106,6 +106,7 @@ export default function App() {
         nocs: rows.filter((r) => r.type === 'priority_noc').length,
         employers: rows.filter((r) => r.type === 'employer').length,
         total: rows.length,
+        directoryOnly: c.scrape_status === 'directory' || rows.length === 0,
       }
     })
   }, [data])
@@ -210,7 +211,7 @@ export default function App() {
                 </span>
                 <div>
                   <strong>BC pilot focus</strong>
-                  <span>{data.counts.communities} communities live</span>
+                  <span>{data.counts.communities} RCIP communities</span>
                 </div>
               </div>
               <div className="stat-card">
@@ -322,9 +323,12 @@ export default function App() {
 
       <section className="communities" id="communities">
         <div className="section-head">
-          <p className="pill">Pilot communities</p>
-          <h2>Start with British Columbia RCIP regions</h2>
-          <p>Select a community to filter the explorer below.</p>
+          <p className="pill">All RCIP communities</p>
+          <h2>Browse every Rural Community Immigration Pilot region</h2>
+          <p>
+            BC listings are searchable here. Other communities are directory cards — open the official
+            portal, or filter the explorer when data is available.
+          </p>
         </div>
         <div className="community-cards">
           <button
@@ -338,32 +342,52 @@ export default function App() {
             <img src={img('friends-flags.jpg')} alt="" />
             <div>
               <strong>All communities</strong>
-              <span>{data.counts.total} listings</span>
+              <span>
+                {data.counts.communities} regions · {data.counts.total} listings
+              </span>
             </div>
           </button>
           {communityStats.map((c, i) => {
-            const photos = ['security.jpg', 'rural-team.jpg', 'farmers.jpg'] as const
+            const photos = ['security.jpg', 'rural-team.jpg', 'farmers.jpg', 'workers.jpg', 'citizens.jpg'] as const
+            const portal = c.portal_url ? withUtm(c.portal_url, c.id, 'directory-card') : ''
             return (
-              <button
+              <div
                 key={c.id}
-                type="button"
-                className={`community-card ${community === c.id ? 'is-active' : ''}`}
-                onClick={() => {
-                  startTransition(() => setCommunity(community === c.id ? '' : c.id))
-                  scrollToExplore()
-                }}
+                className={`community-card ${community === c.id ? 'is-active' : ''} ${c.directoryOnly ? 'is-directory' : ''}`}
               >
-                <img src={img(photos[i % photos.length])} alt="" />
-                <div>
-                  <strong>
-                    {c.name}
-                    <em>{c.province}</em>
-                  </strong>
-                  <span>
-                    {c.nocs} NOCs · {c.employers} employers
-                  </span>
-                </div>
-              </button>
+                <button
+                  type="button"
+                  className="community-card-main"
+                  onClick={() => {
+                    startTransition(() => setCommunity(community === c.id ? '' : c.id))
+                    scrollToExplore()
+                  }}
+                >
+                  <img src={img(photos[i % photos.length])} alt="" />
+                  <div>
+                    <strong>
+                      {c.name}
+                      <em>{c.province}</em>
+                    </strong>
+                    <span>
+                      {c.directoryOnly
+                        ? 'Directory — open official portal'
+                        : `${c.nocs} NOCs · ${c.employers} employers`}
+                    </span>
+                  </div>
+                </button>
+                {portal ? (
+                  <a
+                    className="community-portal-link"
+                    href={portal}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Official portal
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : null}
+              </div>
             )
           })}
         </div>
@@ -450,7 +474,11 @@ export default function App() {
 
           <main className="results" aria-live="polite">
             {filtered.length === 0 ? (
-              <p className="empty">No matches. Try another NOC code or clear filters.</p>
+              <p className="empty">
+                {community && communityStats.find((c) => c.id === community)?.directoryOnly
+                  ? 'No searchable listings for this community yet — use Official portal on the community card, then verify on the source site.'
+                  : 'No matches. Try another NOC code or clear filters.'}
+              </p>
             ) : (
               <div className="list">
                 {filtered.slice(0, 200).map((listing, index) => (
@@ -477,7 +505,7 @@ export default function App() {
           />
           <div className="stat-float">
             <strong>{data.counts.communities}</strong>
-            <span>pilot communities in this build</span>
+            <span>RCIP communities in this build</span>
           </div>
         </div>
         <div className="support-copy">

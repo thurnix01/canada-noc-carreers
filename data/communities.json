@@ -2,9 +2,9 @@
   "meta": {
     "program": "Rural Community Immigration Pilot (RCIP)",
     "ircc_job_offer_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration/job-offer.html",
-    "pilot_phase": "bc-3",
-    "updated_at": "2026-09-09",
-    "notes": "Canada.ca is a directory only. Job/NOC/employer data lives on community portals."
+    "pilot_phase": "all-14-directory",
+    "updated_at": "2026-09-10",
+    "notes": "Canada.ca is a directory only. Job/NOC/employer data lives on community portals. Non-BC rows may be directory-only until NOCs/employers are added."
   },
   "communities": [
     {
@@ -80,9 +80,13 @@
       "canada_ca_label": "Pictou County, NS",
       "portal_url": "https://pictoucountypartnership.com/rcip/",
       "portal_alias_urls": ["https://pcrcip.ca/"],
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://pictoucountypartnership.com/rcip/",
+      "employers_url": "https://pictoucountypartnership.com/rcip/",
+      "jobs_url": "https://pictoucountypartnership.com/rcip/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "north-bay",
@@ -90,9 +94,13 @@
       "province": "ON",
       "canada_ca_label": "North Bay, ON",
       "portal_url": "https://nbrcip.ca/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://nbrcip.ca/",
+      "employers_url": "https://nbrcip.ca/",
+      "jobs_url": "https://nbrcip.ca/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "sudbury",
@@ -100,9 +108,13 @@
       "province": "ON",
       "canada_ca_label": "Sudbury, ON",
       "portal_url": "https://investsudbury.ca/why-sudbury/newcomers/rcipfcip/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://investsudbury.ca/why-sudbury/newcomers/rcipfcip/",
+      "employers_url": "https://investsudbury.ca/why-sudbury/newcomers/rcipfcip/",
+      "jobs_url": "https://investsudbury.ca/why-sudbury/newcomers/rcipfcip/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "timmins",
@@ -110,9 +122,13 @@
       "province": "ON",
       "canada_ca_label": "Timmins, ON",
       "portal_url": "https://timminsedc.com/immigration/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://timminsedc.com/immigration/",
+      "employers_url": "https://timminsedc.com/immigration/",
+      "jobs_url": "https://timminsedc.com/immigration/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "sault-ste-marie",
@@ -120,9 +136,13 @@
       "province": "ON",
       "canada_ca_label": "Sault Ste. Marie, ON",
       "portal_url": "https://welcometossm.com/rcip/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://welcometossm.com/rcip/",
+      "employers_url": "https://welcometossm.com/rcip/",
+      "jobs_url": "https://welcometossm.com/rcip/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "thunder-bay",
@@ -130,9 +150,13 @@
       "province": "ON",
       "canada_ca_label": "Thunder Bay, ON",
       "portal_url": "https://gotothunderbay.ca/why-thunder-bay/immigration/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://gotothunderbay.ca/why-thunder-bay/immigration/",
+      "employers_url": "https://gotothunderbay.ca/why-thunder-bay/immigration/",
+      "jobs_url": "https://gotothunderbay.ca/why-thunder-bay/immigration/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "steinbach",
@@ -140,9 +164,13 @@
       "province": "MB",
       "canada_ca_label": "Steinbach, MB",
       "portal_url": "https://steinbachedc.com/rcip/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://steinbachedc.com/rcip/",
+      "employers_url": "https://steinbachedc.com/rcip/",
+      "jobs_url": "https://steinbachedc.com/rcip/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "altona-rhineland",
@@ -150,9 +178,13 @@
       "province": "MB",
       "canada_ca_label": "Altona/Rhineland, MB",
       "portal_url": "https://ared-rpga.com/immigration/rcip/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://ared-rpga.com/immigration/rcip/",
+      "employers_url": "https://ared-rpga.com/immigration/rcip/",
+      "jobs_url": "https://ared-rpga.com/immigration/rcip/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "brandon",
@@ -160,9 +192,13 @@
       "province": "MB",
       "canada_ca_label": "Brandon, MB",
       "portal_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
+      "employers_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
+      "jobs_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "moose-jaw",
@@ -170,9 +206,13 @@
       "province": "SK",
       "canada_ca_label": "Moose Jaw, SK",
       "portal_url": "https://rcip.mjchamber.com/",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://rcip.mjchamber.com/",
+      "employers_url": "https://rcip.mjchamber.com/",
+      "jobs_url": "https://rcip.mjchamber.com/",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     },
     {
       "community_id": "claresholm",
@@ -180,9 +220,13 @@
       "province": "AB",
       "canada_ca_label": "Claresholm, AB",
       "portal_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
-      "scrape_status": "todo",
-      "active": false,
-      "pilot": false
+      "priority_nocs_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
+      "employers_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
+      "jobs_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
+      "scrape_status": "directory",
+      "active": true,
+      "pilot": false,
+      "notes": "Directory card — add NOCs/employers when ready."
     }
   ]
 }
