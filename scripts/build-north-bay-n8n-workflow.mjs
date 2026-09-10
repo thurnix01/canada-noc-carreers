@@ -49,8 +49,21 @@ return rows.map((r) => ({ json: r }));
 const parseEmployersCode = `
 ${sharedHelpers}
 
-const raw = $input.first().json;
-const data = Array.isArray(raw) ? raw : (raw.data || raw.body || raw);
+// n8n splits a JSON array HTTP response into one item per employer
+const items = $input.all().map((i) => i.json);
+let data = items;
+if (items.length === 1) {
+  const only = items[0];
+  if (Array.isArray(only)) data = only;
+  else if (Array.isArray(only?.data)) data = only.data;
+  else if (Array.isArray(only?.body)) data = only.body;
+  else if (only && typeof only === 'object' && only.name) data = [only];
+  else data = [];
+} else {
+  // Prefer objects that look like employer rows from the Monday API
+  data = items.filter((row) => row && typeof row === 'object' && row.name);
+}
+
 const nowIso = new Date().toISOString();
 const scraped = parseEmployersFromApi(data, nowIso);
 

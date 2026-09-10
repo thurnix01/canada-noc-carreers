@@ -19,6 +19,8 @@ No PDF / Extract From File node required.
 3. Manual Run  
 4. Weekly Schedule Mon **10:00** `America/Vancouver` → Active  
 
+**Note:** The employers HTTP node returns a JSON **array**. n8n splits that into many items — **Parse + Merge Employers** must use `$input.all()` (current workflow file does). If you still see `Employers API returned 0 rows`, re-import this workflow.
+
 ```bash
 npm run parse:north-bay
 npm run export:data && npm run deploy
