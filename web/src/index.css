@@ -529,14 +529,30 @@ img {
   border-radius: inherit;
   background:
     linear-gradient(
-      155deg,
-      rgba(200, 16, 46, 0.38) 0%,
-      rgba(200, 16, 46, 0.16) 42%,
-      rgba(158, 11, 36, 0.08) 72%,
-      rgba(20, 24, 31, 0.12) 100%
+      160deg,
+      rgba(200, 16, 46, 0.72) 0%,
+      rgba(158, 11, 36, 0.58) 45%,
+      rgba(120, 18, 40, 0.5) 100%
     );
-  mix-blend-mode: multiply;
+  mix-blend-mode: color;
   opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.community-card-media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(200, 16, 46, 0.22) 0%,
+      rgba(158, 11, 36, 0.12) 55%,
+      rgba(20, 24, 31, 0.18) 100%
+    );
   pointer-events: none;
   transition: opacity 0.28s ease;
 }
@@ -547,17 +563,21 @@ img {
   aspect-ratio: 16 / 11;
   object-fit: cover;
   border-radius: 12px;
-  transition: transform 0.35s ease;
+  filter: grayscale(0.55) contrast(1.05) brightness(0.92);
+  transition: transform 0.35s ease, filter 0.28s ease;
 }
 
 .community-card:hover .community-card-media::after,
-.community-card.is-active .community-card-media::after {
+.community-card:hover .community-card-media::before,
+.community-card.is-active .community-card-media::after,
+.community-card.is-active .community-card-media::before {
   opacity: 0;
 }
 
 .community-card:hover .community-card-media img,
 .community-card.is-active .community-card-media img {
   transform: scale(1.04);
+  filter: none;
 }
 
 .community-card strong {
