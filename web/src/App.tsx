@@ -507,23 +507,20 @@ export default function App() {
 
           <main className="results" aria-live="polite" ref={resultsRef}>
             <div className="results-toolbar">
-              <div className="field sort-field">
-                <span className="field-label" id="sort-label">
-                  Sort results
-                </span>
-                <div className="chip-row" role="group" aria-labelledby="sort-label">
+              <label className="sort-field" htmlFor="sort-results">
+                <span className="field-label">Sort</span>
+                <select
+                  id="sort-results"
+                  value={sort}
+                  onChange={(e) => startTransition(() => setSort(e.target.value as SortMode))}
+                >
                   {SORT_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      className={`chip ${sort === opt.value ? 'is-active' : ''}`}
-                      onClick={() => startTransition(() => setSort(opt.value))}
-                    >
+                    <option key={opt.value} value={opt.value}>
                       {opt.label}
-                    </button>
+                    </option>
                   ))}
-                </div>
-              </div>
+                </select>
+              </label>
             </div>
 
             <div className="results-scroll">
