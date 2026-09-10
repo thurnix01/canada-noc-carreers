@@ -1,6 +1,6 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState, startTransition } from 'react'
 import type { Listing, ListingType, ListingsPayload } from './types'
-import { matchesQuery, typeLabel, withUtm } from './lib'
+import { matchesQuery, sortListings, typeLabel, withUtm, type SortMode } from './lib'
 import './index.css'
 
 const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
@@ -8,6 +8,12 @@ const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
   { value: 'priority_noc', label: 'Eligible NOCs' },
   { value: 'employer', label: 'Designated employers' },
   { value: 'job', label: 'Open roles' },
+]
+
+const SORT_OPTIONS: { value: SortMode; label: string }[] = [
+  { value: 'alphabetical', label: 'Alphabetically' },
+  { value: 'featured', label: 'Featured' },
+  { value: 'newest', label: 'Newly added' },
 ]
 
 const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}`
@@ -72,8 +78,11 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [community, setCommunity] = useState('')
   const [type, setType] = useState<'' | ListingType>('')
+  const [sort, setSort] = useState<SortMode>('featured')
   const deferredQuery = useDeferredValue(query)
   const exploreRef = useRef<HTMLElement | null>(null)
+  const sidebarCardRef = useRef<HTMLDivElement | null>(null)
+  const resultsRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     document.documentElement.style.setProperty('--topo-image', `url(${img('topo-light.jpg')})`)
@@ -113,14 +122,38 @@ export default function App() {
 
   const filtered = useMemo(() => {
     if (!data) return []
-    return data.listings.filter((item) => {
+    const rows = data.listings.filter((item) => {
       if (community && item.community_id !== community) return false
       if (type && item.type !== type) return false
       return matchesQuery(item, deferredQuery)
     })
-  }, [data, community, type, deferredQuery])
+    return sortListings(rows, sort)
+  }, [data, community, type, deferredQuery, sort])
 
   const hasFilters = Boolean(deferredQuery || community || type)
+
+  useEffect(() => {
+    const sidebar = sidebarCardRef.current
+    const results = resultsRef.current
+    if (!sidebar || !results) return
+
+    const syncHeight = () => {
+      if (window.matchMedia('(max-width: 860px)').matches) {
+        results.style.height = ''
+        return
+      }
+      results.style.height = `${Math.round(sidebar.getBoundingClientRect().height)}px`
+    }
+
+    syncHeight()
+    const observer = new ResizeObserver(syncHeight)
+    observer.observe(sidebar)
+    window.addEventListener('resize', syncHeight)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', syncHeight)
+    }
+  }, [data, communityStats.length])
 
   const scrollToExplore = () => {
     exploreRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -405,7 +438,7 @@ export default function App() {
 
         <div className="workspace">
           <aside className="sidebar" aria-label="Refine results">
-            <div className="sidebar-card">
+            <div className="sidebar-card" ref={sidebarCardRef}>
               <div className="field">
                 <label htmlFor="q">Search NOC, title, or employer</label>
                 <input
@@ -472,25 +505,47 @@ export default function App() {
             </div>
           </aside>
 
-          <main className="results" aria-live="polite">
-            {filtered.length === 0 ? (
-              <p className="empty">
-                {community && communityStats.find((c) => c.id === community)?.directoryOnly
-                  ? 'No searchable listings for this community yet — use Official portal on the community card, then verify on the source site.'
-                  : 'No matches. Try another NOC code or clear filters.'}
-              </p>
-            ) : (
-              <div className="list">
-                {filtered.slice(0, 200).map((listing, index) => (
-                  <ResultCard key={listing.id} listing={listing} index={index} />
-                ))}
+          <main className="results" aria-live="polite" ref={resultsRef}>
+            <div className="results-toolbar">
+              <div className="field sort-field">
+                <span className="field-label" id="sort-label">
+                  Sort results
+                </span>
+                <div className="chip-row" role="group" aria-labelledby="sort-label">
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`chip ${sort === opt.value ? 'is-active' : ''}`}
+                      onClick={() => startTransition(() => setSort(opt.value))}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            )}
-            {filtered.length > 200 ? (
-              <p className="empty truncate-note">
-                Showing first 200 of {filtered.length.toLocaleString()}. Narrow your search for more.
-              </p>
-            ) : null}
+            </div>
+
+            <div className="results-scroll">
+              {filtered.length === 0 ? (
+                <p className="empty">
+                  {community && communityStats.find((c) => c.id === community)?.directoryOnly
+                    ? 'No searchable listings for this community yet — use Official portal on the community card, then verify on the source site.'
+                    : 'No matches. Try another NOC code or clear filters.'}
+                </p>
+              ) : (
+                <div className="list">
+                  {filtered.slice(0, 200).map((listing, index) => (
+                    <ResultCard key={listing.id} listing={listing} index={index} />
+                  ))}
+                </div>
+              )}
+              {filtered.length > 200 ? (
+                <p className="empty truncate-note">
+                  Showing first 200 of {filtered.length.toLocaleString()}. Narrow your search for more.
+                </p>
+              ) : null}
+            </div>
           </main>
         </div>
       </section>

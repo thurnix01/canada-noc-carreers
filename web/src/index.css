@@ -664,33 +664,56 @@ img {
 }
 
 .results {
-  max-height: min(72vh, 860px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.05rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.results-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.sort-field {
+  width: min(100%, 28rem);
+}
+
+.results-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.25rem 0.55rem 0.55rem 0.15rem;
-  border-radius: var(--radius);
+  padding: 0.1rem 0.35rem 0.25rem 0.05rem;
   scroll-behavior: smooth;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
 }
 
-.results::-webkit-scrollbar {
+.results-scroll::-webkit-scrollbar {
   width: 10px;
 }
 
-.results::-webkit-scrollbar-track {
+.results-scroll::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 999px;
 }
 
-.results::-webkit-scrollbar-thumb {
+.results-scroll::-webkit-scrollbar-thumb {
   background: rgba(20, 24, 31, 0.18);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-.results::-webkit-scrollbar-thumb:hover {
+.results-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(20, 24, 31, 0.3);
   background-clip: padding-box;
   border: 2px solid transparent;
@@ -1082,6 +1105,7 @@ img {
   }
 
   .results {
+    height: auto !important;
     max-height: min(65vh, 640px);
   }
 
