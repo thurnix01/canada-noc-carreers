@@ -270,7 +270,7 @@ export function parseEmployersFromPdfText(text, sourceUrl, nowIso = new Date().t
     }
 
     if (isPilotLine(line)) {
-      pilotBuf.push(line);
+      pilotBuf.push(line.trim());
       continue;
     }
 
