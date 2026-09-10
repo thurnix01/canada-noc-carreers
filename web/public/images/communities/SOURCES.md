@@ -18,6 +18,6 @@ Wikimedia Commons fills gaps. Replace any Commons fill with Envato place photos 
 | Altona/Rhineland | `altona-rhineland.jpg` | Wikimedia Commons — Altona, Manitoba |
 | Brandon | `brandon.jpg` | Wikimedia Commons — Brandon skyline |
 | Moose Jaw | `moose-jaw.jpg` | rcip.mjchamber.com downtown sign |
-| Claresholm | `claresholm.jpg` | claresholm.ca welcome gallery |
+| Claresholm | `claresholm.jpg` | claresholm.ca RCIP page hero (wheatlands prairie) |
 
 All-communities card still uses `friends-flags.jpg`.
