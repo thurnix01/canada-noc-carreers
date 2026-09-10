@@ -3,13 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://thurnix01.github.io/canada-noc-carreers",
+  "homepage": "https://noc.absolondesigns.ca",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "VITE_BASE=/canada-noc-carreers/ npm run build && gh-pages -d dist"
+    "deploy": "VITE_BASE=/ npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^19.2.8",
