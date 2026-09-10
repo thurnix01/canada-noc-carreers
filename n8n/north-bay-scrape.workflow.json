@@ -1,0 +1,676 @@
+{
+  "name": "RCIP North Bay — NOCs + Employers",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 10,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        120
+      ],
+      "notesInFlow": true,
+      "notes": "Weekly Mon 10:00 America/Vancouver (after WK/NOS/Steinbach/Timmins). Keep Manual Run for ad-hoc."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\ns.nb_run_started=new Date().toISOString();\ns.nb_noc_count=0;s.nb_noc_upserts=0;s.nb_noc_stale=0;\ns.nb_employer_count=0;s.nb_employer_upserts=0;s.nb_employer_stale=0;\nreturn [{json:{ok:true}}];"
+      },
+      "id": "init-run",
+      "name": "Init Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "options": {}
+      },
+      "id": "read-priority-nocs",
+      "name": "Read Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-noc-read",
+      "name": "Collapse After NOC Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://nbrcip.ca/employers/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-portal",
+      "name": "Fetch Employers HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * North Bay & Area RCIP parsers (HTML NOC table + Monday.com employer JSON via WP ajax).\n * Usage: node scripts/parse-north-bay.mjs\n */\n\nconst COMMUNITY_ID = 'north-bay';\nconst YEAR = '2026';\nconst EMPLOYERS_URL = 'https://nbrcip.ca/employers/';\nconst DESIGNATED_URL = 'https://nbrcip.ca/designated-employers/';\nconst EMPLOYERS_API = 'https://nbrcip.ca/wp-admin/admin-ajax.php?action=load_monday_data';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nconst HEALTH_NOCS = new Set(['31301', '32101', '33100', '33102', '33103']);\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction sectorForNoc(noc) {\n  const p = noc[0];\n  const map = {\n    1: 'Business, finance and administration',\n    2: 'Natural and applied sciences and related occupations',\n    3: 'Health',\n    4: 'Education, law and social, community and government services',\n    6: 'Sales and service',\n    7: 'Trades, transport and equipment operators and related occupations',\n    9: 'Trades, transport and equipment operators and related occupations',\n  };\n  return map[p] || '';\n}\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  // Prefer the sortable occupation table\n  const tableMatch = html.match(/id=\"occupation-table\"[\\s\\S]*?<tbody>([\\s\\S]*?)<\\/tbody>/i);\n  const body = tableMatch ? tableMatch[1] : html;\n  const rowRe = /<tr[^>]*>\\s*<td[^>]*>\\s*(\\d{5})\\s*<\\/td>\\s*<td[^>]*>\\s*([\\s\\S]*?)\\s*<\\/td>\\s*<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(body))) {\n    const noc = m[1];\n    if (seen.has(noc)) continue;\n    seen.add(noc);\n    const title = decodeEntities(m[2].replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n    const notes = [\n      HEALTH_NOCS.has(noc)\n        ? 'Designated employers in healthcare may submit up to 5 candidates per year (others up to 3).'\n        : 'Designated employers may submit up to 3 candidates per year (healthcare up to 5).',\n      'Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.',\n    ].join(' | ');\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: sectorForNoc(noc),\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: notes,\n      source_url: EMPLOYERS_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction parseEmployersFromApi(data, nowIso = new Date().toISOString()) {\n  const rows = Array.isArray(data) ? data : [];\n  const seen = new Set();\n  const out = [];\n  for (const item of rows) {\n    const name = String(item.name || '').trim();\n    if (!name) continue;\n    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n    const statusRaw = String(item.status || '').trim();\n    const notHiring = /not\\s*hiring/i.test(statusRaw);\n    const hiring = /^hiring$/i.test(statusRaw);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(name)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: name,\n      locations: 'North Bay & Area, ON',\n      sector: String(item.color || '').trim(),\n      recruiting_status: notHiring ? 'not_hiring' : hiring ? 'hiring' : 'unknown',\n      source_url: DESIGNATED_URL,\n      source_type: 'api',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: statusRaw ? `Source status: ${statusRaw}` : '',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst nowIso = new Date().toISOString();\nconst scraped = parsePriorityNocs(typeof html === 'string' ? html : String(html), nowIso);\n\nlet existing = [];\ntry { existing = $('Read Priority NOCs').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.nb_noc_count = scraped.length;\nstaticData.nb_noc_upserts = upserts.length;\nstaticData.nb_noc_stale = stale.length;\nstaticData.nb_run_started = staticData.nb_run_started || nowIso;\n\nif (!rows.length) return [{ json: { _skip: true, message: 'No priority NOC rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-nocs",
+      "name": "Parse + Merge NOCs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-noc",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-nocs",
+      "name": "Has NOC Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "noc_code": "={{ $json.noc_code }}",
+            "noc_title": "={{ $json.noc_title }}",
+            "sector": "={{ $json.sector }}",
+            "year": "={{ $json.year }}",
+            "is_secondary": "={{ $json.is_secondary }}",
+            "restriction_notes": "={{ $json.restriction_notes }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-nocs",
+      "name": "Upsert Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "await new Promise((r) => setTimeout(r, 3000));\nreturn [{ json: { delayed: true } }];"
+      },
+      "id": "delay-1",
+      "name": "Crawl Delay 3s",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "options": {}
+      },
+      "id": "read-employers",
+      "name": "Read Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1760,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-employer-read",
+      "name": "Collapse After Employer Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * North Bay & Area RCIP parsers (HTML NOC table + Monday.com employer JSON via WP ajax).\n * Usage: node scripts/parse-north-bay.mjs\n */\n\nconst COMMUNITY_ID = 'north-bay';\nconst YEAR = '2026';\nconst EMPLOYERS_URL = 'https://nbrcip.ca/employers/';\nconst DESIGNATED_URL = 'https://nbrcip.ca/designated-employers/';\nconst EMPLOYERS_API = 'https://nbrcip.ca/wp-admin/admin-ajax.php?action=load_monday_data';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nconst HEALTH_NOCS = new Set(['31301', '32101', '33100', '33102', '33103']);\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction sectorForNoc(noc) {\n  const p = noc[0];\n  const map = {\n    1: 'Business, finance and administration',\n    2: 'Natural and applied sciences and related occupations',\n    3: 'Health',\n    4: 'Education, law and social, community and government services',\n    6: 'Sales and service',\n    7: 'Trades, transport and equipment operators and related occupations',\n    9: 'Trades, transport and equipment operators and related occupations',\n  };\n  return map[p] || '';\n}\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  // Prefer the sortable occupation table\n  const tableMatch = html.match(/id=\"occupation-table\"[\\s\\S]*?<tbody>([\\s\\S]*?)<\\/tbody>/i);\n  const body = tableMatch ? tableMatch[1] : html;\n  const rowRe = /<tr[^>]*>\\s*<td[^>]*>\\s*(\\d{5})\\s*<\\/td>\\s*<td[^>]*>\\s*([\\s\\S]*?)\\s*<\\/td>\\s*<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(body))) {\n    const noc = m[1];\n    if (seen.has(noc)) continue;\n    seen.add(noc);\n    const title = decodeEntities(m[2].replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n    const notes = [\n      HEALTH_NOCS.has(noc)\n        ? 'Designated employers in healthcare may submit up to 5 candidates per year (others up to 3).'\n        : 'Designated employers may submit up to 3 candidates per year (healthcare up to 5).',\n      'Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.',\n    ].join(' | ');\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: sectorForNoc(noc),\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: notes,\n      source_url: EMPLOYERS_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction parseEmployersFromApi(data, nowIso = new Date().toISOString()) {\n  const rows = Array.isArray(data) ? data : [];\n  const seen = new Set();\n  const out = [];\n  for (const item of rows) {\n    const name = String(item.name || '').trim();\n    if (!name) continue;\n    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n    const statusRaw = String(item.status || '').trim();\n    const notHiring = /not\\s*hiring/i.test(statusRaw);\n    const hiring = /^hiring$/i.test(statusRaw);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(name)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: name,\n      locations: 'North Bay & Area, ON',\n      sector: String(item.color || '').trim(),\n      recruiting_status: notHiring ? 'not_hiring' : hiring ? 'hiring' : 'unknown',\n      source_url: DESIGNATED_URL,\n      source_type: 'api',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: statusRaw ? `Source status: ${statusRaw}` : '',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst data = Array.isArray(raw) ? raw : (raw.data || raw.body || raw);\nconst nowIso = new Date().toISOString();\nconst scraped = parseEmployersFromApi(data, nowIso);\n\nlet existing = [];\ntry { existing = $('Read Employers').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.nb_employer_count = scraped.length;\nstaticData.nb_employer_upserts = upserts.length;\nstaticData.nb_employer_stale = stale.length;\n\nif (!scraped.length) throw new Error('Employers API returned 0 rows');\nif (!rows.length) return [{ json: { _skip: true, message: 'No employer rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-employers",
+      "name": "Parse + Merge Employers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-emp",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-employers",
+      "name": "Has Employer Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        2980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "employer_name": "={{ $json.employer_name }}",
+            "locations": "={{ $json.locations }}",
+            "sector": "={{ $json.sector }}",
+            "recruiting_status": "={{ $json.recruiting_status }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}",
+            "notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-employers",
+      "name": "Upsert Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3200,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst started = staticData.nb_run_started || new Date().toISOString();\nconst finished = new Date().toISOString();\nconst upserts = (staticData.nb_noc_upserts || 0) + (staticData.nb_employer_upserts || 0);\nconst stale = (staticData.nb_noc_stale || 0) + (staticData.nb_employer_stale || 0);\nreturn [{\n  json: {\n    run_id: 'north-bay-' + started,\n    started_at: started,\n    finished_at: finished,\n    community_id: 'north-bay',\n    adapter: 'north-bay-html-nocs+monday-api-employers',\n    rows_upserted: String(upserts),\n    rows_stale: String(stale),\n    errors: '',\n    ok: 'TRUE',\n  },\n}];"
+      },
+      "id": "build-run-log",
+      "name": "Build Run Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "run_log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "run_id": "={{ $json.run_id }}",
+            "started_at": "={{ $json.started_at }}",
+            "finished_at": "={{ $json.finished_at }}",
+            "community_id": "={{ $json.community_id }}",
+            "adapter": "={{ $json.adapter }}",
+            "rows_upserted": "={{ $json.rows_upserted }}",
+            "rows_stale": "={{ $json.rows_stale }}",
+            "errors": "={{ $json.errors }}",
+            "ok": "={{ $json.ok }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "append-run-log",
+      "name": "Append Run Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3640,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://nbrcip.ca/wp-admin/admin-ajax.php?action=load_monday_data",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-employers-api",
+      "name": "Fetch Employers API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Run": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly Schedule": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Run": {
+      "main": [
+        [
+          {
+            "node": "Read Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Collapse After NOC Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After NOC Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Employers HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Employers HTML": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge NOCs": {
+      "main": [
+        [
+          {
+            "node": "Has NOC Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has NOC Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Crawl Delay 3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl Delay 3s": {
+      "main": [
+        [
+          {
+            "node": "Read Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Employers": {
+      "main": [
+        [
+          {
+            "node": "Collapse After Employer Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After Employer Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Employers API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Employers API": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge Employers": {
+      "main": [
+        [
+          {
+            "node": "Has Employer Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Employer Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Employers": {
+      "main": [
+        [
+          {
+            "node": "Build Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Run Log": {
+      "main": [
+        [
+          {
+            "node": "Append Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Vancouver"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {}
+}

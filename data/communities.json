@@ -94,13 +94,13 @@
       "province": "ON",
       "canada_ca_label": "North Bay, ON",
       "portal_url": "https://nbrcip.ca/",
-      "priority_nocs_url": "https://nbrcip.ca/",
-      "employers_url": "https://nbrcip.ca/",
-      "jobs_url": "https://nbrcip.ca/",
-      "scrape_status": "directory",
+      "priority_nocs_url": "https://nbrcip.ca/employers/",
+      "employers_url": "https://nbrcip.ca/designated-employers/",
+      "jobs_url": "https://nbrcip.ca/candidates/",
+      "scrape_status": "ready",
       "active": true,
       "pilot": false,
-      "notes": "Directory card — add NOCs/employers when ready."
+      "notes": "HTML NOC table + Monday.com employer JSON API (nbrcip.ca)."
     },
     {
       "community_id": "sudbury",
