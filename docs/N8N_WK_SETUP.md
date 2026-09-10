@@ -23,6 +23,22 @@ Missing rows on a later run (that are not `manual_override=TRUE`) get `status=st
 3. Confirm document ID is `1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo`  
 4. Confirm sheet names: `priority_nocs`, `employers`, `run_log`  
 5. **Save** → **Manual Run** once  
+6. Confirm a **Weekly Schedule** node exists (Mon **06:00** `America/Vancouver`) → toggle the workflow **Active** so it runs automatically  
+
+## Schedule
+
+| Trigger | When |
+|---|---|
+| Manual Run | Anytime |
+| Weekly Schedule | Mondays 06:00 America/Vancouver |
+
+After a successful scheduled run, refresh the site data from your machine:
+
+```bash
+npm run export:data && npm run deploy
+```
+
+(Or add a later n8n step that writes `listings.json` into the repo.)
 
 ## Expected result
 
@@ -54,6 +70,6 @@ In **Fetch Priorities HTML** / **Fetch Employers HTML**:
 
 ## Next after this works
 
-1. Optional weekly **Schedule Trigger** (replace or add beside Manual Run)  
-2. North Okanagan–Shuswap adapter (HTML NOCs + PDF employers)  
-3. React + GitHub Pages search UI reading exported JSON
+1. Keep Weekly Schedule active (already in the workflow JSON)  
+2. Peace Liard employers PDF adapter (optional)  
+3. Automate `export:data` → GitHub Pages after Sheet updates  

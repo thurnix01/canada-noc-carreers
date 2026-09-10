@@ -31,6 +31,8 @@ For a **user/org** root site, keep `VITE_BASE=/`.
 
 ## Refresh data after scrapers
 
+WK + NOS n8n workflows include a **Weekly Schedule** (Mon 06:00 / 07:00 `America/Vancouver`). After they write the Sheet:
+
 ```bash
 npm run export:data
 npm run deploy   # from root (exports + builds + gh-pages)

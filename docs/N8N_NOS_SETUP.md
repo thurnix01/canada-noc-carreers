@@ -17,7 +17,21 @@ Local test (no n8n): ~**25 NOCs**, ~**454 employers**.
 1. n8n → **Import from File** → `n8n/north-okanagan-shuswap-scrape.workflow.json`  
 2. Attach **Google Sheets** credential on every Sheets node  
 3. Confirm **Extract PDF Text** node exists (`Extract From File` → operation PDF)  
-4. **Manual Run**
+4. **Manual Run**  
+5. Confirm **Weekly Schedule** (Mon **07:00** `America/Vancouver`) → set workflow **Active**
+
+## Schedule
+
+| Trigger | When |
+|---|---|
+| Manual Run | Anytime |
+| Weekly Schedule | Mondays 07:00 America/Vancouver (after WK at 06:00) |
+
+After a successful run:
+
+```bash
+npm run export:data && npm run deploy
+```
 
 ## Expected Sheet result
 

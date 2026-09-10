@@ -319,6 +319,29 @@ const workflow = {
     },
     {
       parameters: {
+        rule: {
+          interval: [
+            {
+              field: 'weeks',
+              weeksInterval: 1,
+              triggerAtDay: [1],
+              triggerAtHour: 6,
+              triggerAtMinute: 0,
+            },
+          ],
+        },
+      },
+      id: 'schedule-trigger',
+      name: 'Weekly Schedule',
+      type: 'n8n-nodes-base.scheduleTrigger',
+      typeVersion: 1.2,
+      position: [0, 120],
+      notesInFlow: true,
+      notes:
+        'Weekly Mon 06:00 (workflow timezone America/Vancouver). Keep Manual Run for ad-hoc. NOS runs at 07:00.',
+    },
+    {
+      parameters: {
         jsCode:
           "const staticData = $getWorkflowStaticData('global');\nstaticData.wk_run_started = new Date().toISOString();\nstaticData.wk_noc_count = 0;\nstaticData.wk_noc_upserts = 0;\nstaticData.wk_noc_stale = 0;\nstaticData.wk_employer_count = 0;\nstaticData.wk_employer_upserts = 0;\nstaticData.wk_employer_stale = 0;\nreturn [{ json: { ok: true } }];",
       },
@@ -639,6 +662,9 @@ const workflow = {
     'Manual Run': {
       main: [[{ node: 'Init Run', type: 'main', index: 0 }]],
     },
+    'Weekly Schedule': {
+      main: [[{ node: 'Init Run', type: 'main', index: 0 }]],
+    },
     'Init Run': {
       main: [[{ node: 'Read Priority NOCs', type: 'main', index: 0 }]],
     },
@@ -681,6 +707,7 @@ const workflow = {
   },
   settings: {
     executionOrder: 'v1',
+    timezone: 'America/Vancouver',
   },
   staticData: null,
   meta: {

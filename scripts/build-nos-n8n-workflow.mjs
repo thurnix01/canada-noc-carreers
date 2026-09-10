@@ -408,6 +408,29 @@ const workflow = {
     },
     {
       parameters: {
+        rule: {
+          interval: [
+            {
+              field: 'weeks',
+              weeksInterval: 1,
+              triggerAtDay: [1],
+              triggerAtHour: 7,
+              triggerAtMinute: 0,
+            },
+          ],
+        },
+      },
+      id: 'schedule-trigger',
+      name: 'Weekly Schedule',
+      type: 'n8n-nodes-base.scheduleTrigger',
+      typeVersion: 1.2,
+      position: [0, 120],
+      notesInFlow: true,
+      notes:
+        'Weekly Mon 07:00 (workflow timezone America/Vancouver). Keep Manual Run for ad-hoc. WK runs at 06:00.',
+    },
+    {
+      parameters: {
         jsCode:
           "const s=$getWorkflowStaticData('global');\ns.nos_run_started=new Date().toISOString();\ns.nos_noc_count=0;s.nos_noc_upserts=0;s.nos_noc_stale=0;\ns.nos_employer_count=0;s.nos_employer_upserts=0;s.nos_employer_stale=0;s.nos_pdf_url='';\nreturn [{json:{ok:true}}];",
       },
@@ -671,6 +694,7 @@ const workflow = {
   ],
   connections: {
     'Manual Run': { main: [[{ node: 'Init Run', type: 'main', index: 0 }]] },
+    'Weekly Schedule': { main: [[{ node: 'Init Run', type: 'main', index: 0 }]] },
     'Init Run': { main: [[{ node: 'Read Priority NOCs', type: 'main', index: 0 }]] },
     'Read Priority NOCs': { main: [[{ node: 'Collapse After NOC Read', type: 'main', index: 0 }]] },
     'Collapse After NOC Read': { main: [[{ node: 'Fetch Priorities HTML', type: 'main', index: 0 }]] },
@@ -690,7 +714,7 @@ const workflow = {
     'Upsert Employers': { main: [[{ node: 'Build Run Log', type: 'main', index: 0 }]] },
     'Build Run Log': { main: [[{ node: 'Append Run Log', type: 'main', index: 0 }]] },
   },
-  settings: { executionOrder: 'v1' },
+  settings: { executionOrder: 'v1', timezone: 'America/Vancouver' },
   meta: { templateCredsSetupCompleted: false },
   pinData: {},
 };
