@@ -473,7 +473,7 @@ export default function App() {
             src={img('citizens.jpg')}
             alt="Community members wearing patriotic pins at a civic event"
             width={900}
-            height={700}
+            height={400}
           />
           <div className="stat-float">
             <strong>{data.counts.communities}</strong>

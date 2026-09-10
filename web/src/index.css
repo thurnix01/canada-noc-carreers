@@ -854,7 +854,7 @@ img {
 
 .support-media > img {
   width: 100%;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 900 / 400;
   object-fit: cover;
   border-radius: 18px;
   box-shadow: var(--shadow-lg);
