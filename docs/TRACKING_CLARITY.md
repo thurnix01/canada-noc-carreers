@@ -12,11 +12,9 @@ Partner pitch promises **click metrics**. Clarity gives you:
 
 ## Setup checklist
 
-1. Create Clarity project (e.g. `noc-careers-rcip`)  
-2. Open `web/index.html` — uncomment the Clarity `<script>` block  
-3. Replace `YOUR_CLARITY_ID` with your project ID  
-4. Redeploy GitHub Pages  
-5. Click a few “View on official source” links and confirm they appear in Clarity  
+1. Clarity project ID: `yg7sd6qv8d` (live in `web/index.html`)  
+2. Redeploy GitHub Pages after any ID change  
+3. Click a few “View official source” links and confirm they appear in Clarity  
 
 Outbound links already use UTMs:
 
