@@ -8,4 +8,4 @@ web/dist/
 *.zip
 
 # Raw stock / Envato masters (optimized copies live in web/public/images)
-images/
+/images/
