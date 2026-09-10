@@ -390,7 +390,9 @@ export default function App() {
               scrollToExplore()
             }}
           >
-            <img src={img('friends-flags.jpg')} alt="" />
+            <div className="community-card-media">
+              <img src={img('friends-flags.jpg')} alt="" />
+            </div>
             <div>
               <strong>All communities</strong>
               <span>
@@ -414,7 +416,9 @@ export default function App() {
                     scrollToExplore()
                   }}
                 >
-                  <img src={img(photo)} alt="" />
+                  <div className="community-card-media">
+                    <img src={img(photo)} alt="" />
+                  </div>
                   <div>
                     <strong>
                       {c.name}
