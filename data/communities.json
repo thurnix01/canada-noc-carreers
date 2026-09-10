@@ -167,10 +167,10 @@
       "priority_nocs_url": "https://steinbachedc.com/rcip/",
       "employers_url": "https://steinbachedc.com/rcip/",
       "jobs_url": "https://steinbachedc.com/rcip/",
-      "scrape_status": "directory",
+      "scrape_status": "ready",
       "active": true,
       "pilot": false,
-      "notes": "Directory card — add NOCs/employers when ready."
+      "notes": "HTML priority NOCs + designated employers PDF (steinbachedc.com/rcip)."
     },
     {
       "community_id": "altona-rhineland",

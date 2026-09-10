@@ -1,0 +1,724 @@
+{
+  "name": "RCIP Steinbach — NOCs + Employers",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        120
+      ],
+      "notesInFlow": true,
+      "notes": "Weekly Mon 08:00 America/Vancouver (after WK 06:00 and NOS 07:00). Keep Manual Run for ad-hoc."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\ns.sb_run_started=new Date().toISOString();\ns.sb_noc_count=0;s.sb_noc_upserts=0;s.sb_noc_stale=0;\ns.sb_employer_count=0;s.sb_employer_upserts=0;s.sb_employer_stale=0;s.sb_pdf_url='';s.sb_portal_html='';\nreturn [{json:{ok:true}}];"
+      },
+      "id": "init-run",
+      "name": "Init Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "options": {}
+      },
+      "id": "read-priority-nocs",
+      "name": "Read Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-noc-read",
+      "name": "Collapse After NOC Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://steinbachedc.com/rcip/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-portal",
+      "name": "Fetch Portal HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const COMMUNITY_ID = 'steinbach';\nconst YEAR = '2026';\nconst PORTAL_URL = 'https://steinbachedc.com/rcip/';\nconst FALLBACK_PDF = 'https://steinbachedc.com/wp-content/uploads/2026/09/RCIP-Designated-Employers-1.pdf';\nconst DEFAULT_CAP = 'Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).';\nconst NOC_SECTOR_BY_PREFIX = {\n  '1': 'Business, finance and administration',\n  '2': 'Natural and applied sciences',\n  '3': 'Health',\n  '4': 'Education, law and social, community and government services',\n  '6': 'Sales and service',\n  '7': 'Trades and transport',\n  '8': 'Natural resources and agriculture',\n  '9': 'Manufacturing and utilities',\n};\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&lsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(\n    String(html || '')\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n      .replace(/<[^>]+>/g, ' '),\n  )\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://steinbachedc.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated.?employer/i.test(u) || /RCIP-Designated/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated[designated.length - 1];\n  }\n  const any = urls.filter((u) => /steinbach/i.test(u) && /employer/i.test(u));\n  if (any.length) {\n    any.sort();\n    return any[any.length - 1];\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parseRestrictionNotes(html) {\n  const byNoc = new Map();\n  const setNote = (noc, note) => {\n    const prev = byNoc.get(noc) || '';\n    if (!prev || note.length > prev.length) byNoc.set(noc, note);\n  };\n  const liRe = /<li[^>]*>([\\s\\S]*?)<\\/li>/gi;\n  let m;\n  while ((m = liRe.exec(html))) {\n    const text = stripTags(m[1]);\n    if (!/\\d{5}/.test(text)) continue;\n    const notAvail = text.match(/(\\d{5})\\s*[–—-].*?[–—-]\\s*not available/i);\n    if (notAvail) {\n      setNote(notAvail[1], 'Not available');\n      continue;\n    }\n    const noLimit = text.match(/(\\d{5}(?:,\\s*\\d{5})*)\\s+whereby,?\\s*no limitations apply/i);\n    if (noLimit) {\n      const codes = noLimit[1].match(/\\d{5}/g) || [];\n      for (const noc of codes) setNote(noc, 'No recommendation limitations apply');\n      continue;\n    }\n    const ece = text.match(/(\\d{5})\\s*[–—-]\\s*Early Childhood Educator[^–—-]*[–—-]\\s*(.+)$/i);\n    if (ece) {\n      setNote(ece[1], ece[2].replace(/\\s+/g, ' ').trim());\n      continue;\n    }\n    const food = text.match(/(\\d{5})\\s*[–—-]\\s*Food Service Supervisors\\s*[–—-]\\s*(.+)$/i);\n    if (food) setNote(food[1], food[2].replace(/\\s+/g, ' ').trim());\n  }\n  return byNoc;\n}\n\nfunction parsePriorityNocs(html, nowIso) {\n  const restrictions = parseRestrictionNotes(html);\n  const out = [];\n  const seen = new Set();\n  const re = /<p>\\s*(\\d{5})\\s*(?:&#8211;|[–—-])\\s*([^<]+)<\\/p>/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    const noc = m[1];\n    if (seen.has(noc)) continue;\n    seen.add(noc);\n    const title = decodeEntities(m[2]).replace(/\\s+/g, ' ').trim();\n    const special = restrictions.get(noc) || '';\n    out.push({\n      record_id: COMMUNITY_ID + '|' + noc + '|' + YEAR,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: NOC_SECTOR_BY_PREFIX[noc[0]] || '',\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: special || DEFAULT_CAP,\n      source_url: PORTAL_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n  return out;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/List of Designated Employers:\\s*/gi, '\\n');\n  t = t.replace(/D4-284 Reimer Ave[^\\n]*/gi, '\\n');\n  t = t.replace(/www\\.SteinbachEDC\\.com/gi, '\\n');\n  t = t.replace(/Office@SteinbachEDC\\.com/gi, '\\n');\n  const lines = t.split('\\n').map((l) => l.replace(/\\t/g, ' ').replace(/\\s+/g, ' ').trim()).filter(Boolean);\n  const seen = new Set();\n  const out = [];\n  for (const line of lines) {\n    if (/^\\d{3}[.\\s]?\\d{3}[.\\s]?\\d{4}$/.test(line)) continue;\n    if (/reimer|steinbachedc|designated employer|list of/i.test(line)) continue;\n    if (line.length < 2 || line.length > 120) continue;\n    const key = line.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n    out.push({\n      record_id: COMMUNITY_ID + '|' + normalizeIdPart(line),\n      community_id: COMMUNITY_ID,\n      employer_name: line,\n      locations: 'Steinbach, MB',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: '',\n    });\n  }\n  return out;\n}\n\nfunction mergeUpserts(scraped, existingRows) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== COMMUNITY_ID) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst nowIso = new Date().toISOString();\nconst scraped = parsePriorityNocs(typeof html === 'string' ? html : String(html), nowIso);\n\nlet existing = [];\ntry { existing = $('Read Priority NOCs').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.sb_noc_count = scraped.length;\nstaticData.sb_noc_upserts = upserts.length;\nstaticData.sb_noc_stale = stale.length;\nstaticData.sb_run_started = staticData.sb_run_started || nowIso;\nstaticData.sb_portal_html = typeof html === 'string' ? html : String(html);\n\nif (!rows.length) return [{ json: { _skip: true, message: 'No priority NOC rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-nocs",
+      "name": "Parse + Merge NOCs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-noc",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-nocs",
+      "name": "Has NOC Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "noc_code": "={{ $json.noc_code }}",
+            "noc_title": "={{ $json.noc_title }}",
+            "sector": "={{ $json.sector }}",
+            "year": "={{ $json.year }}",
+            "is_secondary": "={{ $json.is_secondary }}",
+            "restriction_notes": "={{ $json.restriction_notes }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-nocs",
+      "name": "Upsert Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "await new Promise((r) => setTimeout(r, 3000));\nreturn [{ json: { delayed: true } }];"
+      },
+      "id": "delay-1",
+      "name": "Crawl Delay 3s",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "options": {}
+      },
+      "id": "read-employers",
+      "name": "Read Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1760,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-employer-read",
+      "name": "Collapse After Employer Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const COMMUNITY_ID = 'steinbach';\nconst YEAR = '2026';\nconst PORTAL_URL = 'https://steinbachedc.com/rcip/';\nconst FALLBACK_PDF = 'https://steinbachedc.com/wp-content/uploads/2026/09/RCIP-Designated-Employers-1.pdf';\nconst DEFAULT_CAP = 'Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).';\nconst NOC_SECTOR_BY_PREFIX = {\n  '1': 'Business, finance and administration',\n  '2': 'Natural and applied sciences',\n  '3': 'Health',\n  '4': 'Education, law and social, community and government services',\n  '6': 'Sales and service',\n  '7': 'Trades and transport',\n  '8': 'Natural resources and agriculture',\n  '9': 'Manufacturing and utilities',\n};\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&lsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(\n    String(html || '')\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n      .replace(/<[^>]+>/g, ' '),\n  )\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://steinbachedc.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated.?employer/i.test(u) || /RCIP-Designated/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated[designated.length - 1];\n  }\n  const any = urls.filter((u) => /steinbach/i.test(u) && /employer/i.test(u));\n  if (any.length) {\n    any.sort();\n    return any[any.length - 1];\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parseRestrictionNotes(html) {\n  const byNoc = new Map();\n  const setNote = (noc, note) => {\n    const prev = byNoc.get(noc) || '';\n    if (!prev || note.length > prev.length) byNoc.set(noc, note);\n  };\n  const liRe = /<li[^>]*>([\\s\\S]*?)<\\/li>/gi;\n  let m;\n  while ((m = liRe.exec(html))) {\n    const text = stripTags(m[1]);\n    if (!/\\d{5}/.test(text)) continue;\n    const notAvail = text.match(/(\\d{5})\\s*[–—-].*?[–—-]\\s*not available/i);\n    if (notAvail) {\n      setNote(notAvail[1], 'Not available');\n      continue;\n    }\n    const noLimit = text.match(/(\\d{5}(?:,\\s*\\d{5})*)\\s+whereby,?\\s*no limitations apply/i);\n    if (noLimit) {\n      const codes = noLimit[1].match(/\\d{5}/g) || [];\n      for (const noc of codes) setNote(noc, 'No recommendation limitations apply');\n      continue;\n    }\n    const ece = text.match(/(\\d{5})\\s*[–—-]\\s*Early Childhood Educator[^–—-]*[–—-]\\s*(.+)$/i);\n    if (ece) {\n      setNote(ece[1], ece[2].replace(/\\s+/g, ' ').trim());\n      continue;\n    }\n    const food = text.match(/(\\d{5})\\s*[–—-]\\s*Food Service Supervisors\\s*[–—-]\\s*(.+)$/i);\n    if (food) setNote(food[1], food[2].replace(/\\s+/g, ' ').trim());\n  }\n  return byNoc;\n}\n\nfunction parsePriorityNocs(html, nowIso) {\n  const restrictions = parseRestrictionNotes(html);\n  const out = [];\n  const seen = new Set();\n  const re = /<p>\\s*(\\d{5})\\s*(?:&#8211;|[–—-])\\s*([^<]+)<\\/p>/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    const noc = m[1];\n    if (seen.has(noc)) continue;\n    seen.add(noc);\n    const title = decodeEntities(m[2]).replace(/\\s+/g, ' ').trim();\n    const special = restrictions.get(noc) || '';\n    out.push({\n      record_id: COMMUNITY_ID + '|' + noc + '|' + YEAR,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: NOC_SECTOR_BY_PREFIX[noc[0]] || '',\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: special || DEFAULT_CAP,\n      source_url: PORTAL_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n  return out;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/List of Designated Employers:\\s*/gi, '\\n');\n  t = t.replace(/D4-284 Reimer Ave[^\\n]*/gi, '\\n');\n  t = t.replace(/www\\.SteinbachEDC\\.com/gi, '\\n');\n  t = t.replace(/Office@SteinbachEDC\\.com/gi, '\\n');\n  const lines = t.split('\\n').map((l) => l.replace(/\\t/g, ' ').replace(/\\s+/g, ' ').trim()).filter(Boolean);\n  const seen = new Set();\n  const out = [];\n  for (const line of lines) {\n    if (/^\\d{3}[.\\s]?\\d{3}[.\\s]?\\d{4}$/.test(line)) continue;\n    if (/reimer|steinbachedc|designated employer|list of/i.test(line)) continue;\n    if (line.length < 2 || line.length > 120) continue;\n    const key = line.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n    out.push({\n      record_id: COMMUNITY_ID + '|' + normalizeIdPart(line),\n      community_id: COMMUNITY_ID,\n      employer_name: line,\n      locations: 'Steinbach, MB',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: '',\n    });\n  }\n  return out;\n}\n\nfunction mergeUpserts(scraped, existingRows) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== COMMUNITY_ID) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst staticData = $getWorkflowStaticData('global');\nconst html = staticData.sb_portal_html || '';\nconst pdfUrl = findEmployerListPdf(html);\nif (!pdfUrl) throw new Error('Could not find Designated Employers PDF on Steinbach RCIP page');\nstaticData.sb_pdf_url = pdfUrl;\nreturn [{ json: { pdfUrl } }];"
+      },
+      "id": "find-pdf",
+      "name": "Find Employer List PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.pdfUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-pdf",
+      "name": "Download Employer PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "extract-pdf",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const COMMUNITY_ID = 'steinbach';\nconst YEAR = '2026';\nconst PORTAL_URL = 'https://steinbachedc.com/rcip/';\nconst FALLBACK_PDF = 'https://steinbachedc.com/wp-content/uploads/2026/09/RCIP-Designated-Employers-1.pdf';\nconst DEFAULT_CAP = 'Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).';\nconst NOC_SECTOR_BY_PREFIX = {\n  '1': 'Business, finance and administration',\n  '2': 'Natural and applied sciences',\n  '3': 'Health',\n  '4': 'Education, law and social, community and government services',\n  '6': 'Sales and service',\n  '7': 'Trades and transport',\n  '8': 'Natural resources and agriculture',\n  '9': 'Manufacturing and utilities',\n};\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&lsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(\n    String(html || '')\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n      .replace(/<[^>]+>/g, ' '),\n  )\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://steinbachedc.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated.?employer/i.test(u) || /RCIP-Designated/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated[designated.length - 1];\n  }\n  const any = urls.filter((u) => /steinbach/i.test(u) && /employer/i.test(u));\n  if (any.length) {\n    any.sort();\n    return any[any.length - 1];\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parseRestrictionNotes(html) {\n  const byNoc = new Map();\n  const setNote = (noc, note) => {\n    const prev = byNoc.get(noc) || '';\n    if (!prev || note.length > prev.length) byNoc.set(noc, note);\n  };\n  const liRe = /<li[^>]*>([\\s\\S]*?)<\\/li>/gi;\n  let m;\n  while ((m = liRe.exec(html))) {\n    const text = stripTags(m[1]);\n    if (!/\\d{5}/.test(text)) continue;\n    const notAvail = text.match(/(\\d{5})\\s*[–—-].*?[–—-]\\s*not available/i);\n    if (notAvail) {\n      setNote(notAvail[1], 'Not available');\n      continue;\n    }\n    const noLimit = text.match(/(\\d{5}(?:,\\s*\\d{5})*)\\s+whereby,?\\s*no limitations apply/i);\n    if (noLimit) {\n      const codes = noLimit[1].match(/\\d{5}/g) || [];\n      for (const noc of codes) setNote(noc, 'No recommendation limitations apply');\n      continue;\n    }\n    const ece = text.match(/(\\d{5})\\s*[–—-]\\s*Early Childhood Educator[^–—-]*[–—-]\\s*(.+)$/i);\n    if (ece) {\n      setNote(ece[1], ece[2].replace(/\\s+/g, ' ').trim());\n      continue;\n    }\n    const food = text.match(/(\\d{5})\\s*[–—-]\\s*Food Service Supervisors\\s*[–—-]\\s*(.+)$/i);\n    if (food) setNote(food[1], food[2].replace(/\\s+/g, ' ').trim());\n  }\n  return byNoc;\n}\n\nfunction parsePriorityNocs(html, nowIso) {\n  const restrictions = parseRestrictionNotes(html);\n  const out = [];\n  const seen = new Set();\n  const re = /<p>\\s*(\\d{5})\\s*(?:&#8211;|[–—-])\\s*([^<]+)<\\/p>/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    const noc = m[1];\n    if (seen.has(noc)) continue;\n    seen.add(noc);\n    const title = decodeEntities(m[2]).replace(/\\s+/g, ' ').trim();\n    const special = restrictions.get(noc) || '';\n    out.push({\n      record_id: COMMUNITY_ID + '|' + noc + '|' + YEAR,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: NOC_SECTOR_BY_PREFIX[noc[0]] || '',\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: special || DEFAULT_CAP,\n      source_url: PORTAL_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n  return out;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/List of Designated Employers:\\s*/gi, '\\n');\n  t = t.replace(/D4-284 Reimer Ave[^\\n]*/gi, '\\n');\n  t = t.replace(/www\\.SteinbachEDC\\.com/gi, '\\n');\n  t = t.replace(/Office@SteinbachEDC\\.com/gi, '\\n');\n  const lines = t.split('\\n').map((l) => l.replace(/\\t/g, ' ').replace(/\\s+/g, ' ').trim()).filter(Boolean);\n  const seen = new Set();\n  const out = [];\n  for (const line of lines) {\n    if (/^\\d{3}[.\\s]?\\d{3}[.\\s]?\\d{4}$/.test(line)) continue;\n    if (/reimer|steinbachedc|designated employer|list of/i.test(line)) continue;\n    if (line.length < 2 || line.length > 120) continue;\n    const key = line.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n    out.push({\n      record_id: COMMUNITY_ID + '|' + normalizeIdPart(line),\n      community_id: COMMUNITY_ID,\n      employer_name: line,\n      locations: 'Steinbach, MB',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: '',\n    });\n  }\n  return out;\n}\n\nfunction mergeUpserts(scraped, existingRows) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== COMMUNITY_ID) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst item = $input.first().json;\nconst text = typeof item === 'string'\n  ? item\n  : (item.text || item.data || item.content || item.pdfText || '');\nconst staticData = $getWorkflowStaticData('global');\nconst sourceUrl = staticData.sb_pdf_url || FALLBACK_PDF;\nconst nowIso = new Date().toISOString();\nconst scraped = parseEmployersFromPdfText(String(text || ''), sourceUrl, nowIso);\n\nlet existing = [];\ntry { existing = $('Read Employers').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nstaticData.sb_employer_count = scraped.length;\nstaticData.sb_employer_upserts = upserts.length;\nstaticData.sb_employer_stale = stale.length;\n\nif (!scraped.length) throw new Error('PDF text parsed to 0 employers — check Extract From File output field');\nif (!rows.length) return [{ json: { _skip: true, message: 'No employer rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-employers",
+      "name": "Parse + Merge Employers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-emp",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-employers",
+      "name": "Has Employer Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        2980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "employer_name": "={{ $json.employer_name }}",
+            "locations": "={{ $json.locations }}",
+            "sector": "={{ $json.sector }}",
+            "recruiting_status": "={{ $json.recruiting_status }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}",
+            "notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-employers",
+      "name": "Upsert Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3200,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst started = staticData.sb_run_started || new Date().toISOString();\nconst finished = new Date().toISOString();\nconst nocs = staticData.sb_noc_count || 0;\nconst employers = staticData.sb_employer_count || 0;\nconst upserts = (staticData.sb_noc_upserts || 0) + (staticData.sb_employer_upserts || 0);\nconst stale = (staticData.sb_noc_stale || 0) + (staticData.sb_employer_stale || 0);\nreturn [{\n  json: {\n    run_id: 'steinbach-' + started,\n    started_at: started,\n    finished_at: finished,\n    community_id: 'steinbach',\n    adapter: 'steinbach-html-nocs+pdf-employers',\n    rows_upserted: String(upserts),\n    rows_stale: String(stale),\n    errors: '',\n    ok: 'TRUE',\n  },\n}];"
+      },
+      "id": "build-run-log",
+      "name": "Build Run Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "run_log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "run_id": "={{ $json.run_id }}",
+            "started_at": "={{ $json.started_at }}",
+            "finished_at": "={{ $json.finished_at }}",
+            "community_id": "={{ $json.community_id }}",
+            "adapter": "={{ $json.adapter }}",
+            "rows_upserted": "={{ $json.rows_upserted }}",
+            "rows_stale": "={{ $json.rows_stale }}",
+            "errors": "={{ $json.errors }}",
+            "ok": "={{ $json.ok }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "append-run-log",
+      "name": "Append Run Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3640,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Run": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly Schedule": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Run": {
+      "main": [
+        [
+          {
+            "node": "Read Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Collapse After NOC Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After NOC Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Portal HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Portal HTML": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge NOCs": {
+      "main": [
+        [
+          {
+            "node": "Has NOC Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has NOC Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Crawl Delay 3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl Delay 3s": {
+      "main": [
+        [
+          {
+            "node": "Read Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Employers": {
+      "main": [
+        [
+          {
+            "node": "Collapse After Employer Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After Employer Read": {
+      "main": [
+        [
+          {
+            "node": "Find Employer List PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Employer List PDF": {
+      "main": [
+        [
+          {
+            "node": "Download Employer PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Employer PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge Employers": {
+      "main": [
+        [
+          {
+            "node": "Has Employer Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Employer Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Employers": {
+      "main": [
+        [
+          {
+            "node": "Build Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Run Log": {
+      "main": [
+        [
+          {
+            "node": "Append Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Vancouver"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {}
+}

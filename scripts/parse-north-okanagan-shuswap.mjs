@@ -63,6 +63,19 @@ function tableRows(tableHtml) {
   return rows;
 }
 
+function isDesignatedEmployersListUrl(url) {
+  // Filenames vary: designated-employer-list / Designated-Employers-List-Aug-31-2026
+  return /designated-employers?-list/i.test(url);
+}
+
+function isDesignatedEmployersListLabel(label) {
+  const t = String(label || '')
+    .replace(/&#8211;/g, '–')
+    .replace(/&amp;/g, '&')
+    .replace(/<[^>]+>/g, ' ');
+  return /designated\s+employers?\s+list/i.test(t);
+}
+
 export function findLatestEmployerListPdf(html) {
   const urls = new Set();
   const hrefRe = /href="(https?:\/\/[^"]+\.pdf[^"]*|\/[^"]+\.pdf[^"]*)"/gi;
@@ -70,10 +83,12 @@ export function findLatestEmployerListPdf(html) {
   while ((m = hrefRe.exec(html))) {
     let url = m[1];
     if (url.startsWith('/')) url = 'https://rcipnorthokanaganshuswap.com' + url;
-    if (/designated-employer-list/i.test(url)) urls.add(url);
+    if (isDesignatedEmployersListUrl(url)) urls.add(url);
   }
-  const withText = /href="([^"]+\.pdf[^"]*)"[^>]*>([^<]*Designated Employer List[^<]*)</gi;
+  // Link text: "… Designated Employers List Aug 31, 2026" (may include &#8211;)
+  const withText = /href="([^"]+\.pdf[^"]*)"[^>]*>([\s\S]*?)<\/a>/gi;
   while ((m = withText.exec(html))) {
+    if (!isDesignatedEmployersListLabel(m[2])) continue;
     let url = m[1];
     if (url.startsWith('/')) url = 'https://rcipnorthokanaganshuswap.com' + url;
     urls.add(url);

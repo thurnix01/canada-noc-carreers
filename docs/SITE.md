@@ -30,7 +30,8 @@ VITE_BASE=/REPO_NAME/ npm run build
 npx gh-pages -d dist
 ```
 
-3. In GitHub → Settings → Pages → source **gh-pages** branch.
+3. In GitHub → Settings → Pages → source **gh-pages** branch.  
+4. Custom domain: keep `web/public/CNAME` as `noc.absolondesigns.ca` so every `gh-pages` deploy does not wipe the domain (missing CNAME → GitHub 404 on the custom URL).
 
 For a **user/org** root site, keep `VITE_BASE=/`.
 

@@ -5,13 +5,14 @@
  *
  * Usage: node scripts/export-listings.mjs
  */
-import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync, readdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SHEET_ID = process.env.GOOGLE_SHEET_ID || '1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo';
 const LOCAL_COMMUNITIES = join(__dirname, '..', 'data', 'communities.json');
+const SEEDS_DIR = join(__dirname, '..', 'database', 'seeds');
 
 function csvUrl(sheetName) {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
@@ -39,6 +40,7 @@ function parseCsv(text) {
       inQuotes = true;
     } else if (ch === ',') {
       row.push(cell);
+      cell = '';
     } else if (ch === '\n') {
       row.push(cell);
       rows.push(row);
@@ -82,6 +84,32 @@ async function fetchSheet(name) {
   return parseCsv(text);
 }
 
+/**
+ * Merge local seed CSVs (from parsers) under Sheet rows.
+ * Sheet wins on duplicate record_id so n8n remains source of truth once imported.
+ */
+function loadSeedRows(suffix) {
+  if (!existsSync(SEEDS_DIR)) return [];
+  const files = readdirSync(SEEDS_DIR).filter((f) => f.endsWith(suffix));
+  const rows = [];
+  for (const file of files) {
+    const text = readFileSync(join(SEEDS_DIR, file), 'utf8');
+    rows.push(...parseCsv(text));
+  }
+  return rows;
+}
+
+function mergeByRecordId(sheetRows, seedRows) {
+  const byId = new Map();
+  for (const row of seedRows) {
+    if (row.record_id) byId.set(row.record_id, row);
+  }
+  for (const row of sheetRows) {
+    if (row.record_id) byId.set(row.record_id, row);
+  }
+  return [...byId.values()];
+}
+
 function isActive(row) {
   const s = (row.status || '').toLowerCase();
   return !s || s === 'active';
@@ -112,6 +140,15 @@ function mergeCommunities(sheetRows, localPayload) {
     if (!c.active) continue;
     if (!byId.has(c.community_id)) {
       byId.set(c.community_id, mapCommunity(c, 'local'));
+    } else {
+      const existing = byId.get(c.community_id);
+      // Local registry can promote directory → ready before Sheet is updated
+      if (c.scrape_status && c.scrape_status !== 'directory') {
+        if (!existing.scrape_status || existing.scrape_status === 'directory') {
+          existing.scrape_status = c.scrape_status;
+          existing.source = 'local+sheet';
+        }
+      }
     }
   }
 
@@ -129,12 +166,17 @@ function mergeCommunities(sheetRows, localPayload) {
 
 async function main() {
   const localPayload = JSON.parse(readFileSync(LOCAL_COMMUNITIES, 'utf8'));
-  const [sheetCommunities, priorityNocs, employers, jobs] = await Promise.all([
+  const [sheetCommunities, sheetPriorityNocs, sheetEmployers, jobs] = await Promise.all([
     fetchSheet('database'),
     fetchSheet('priority_nocs'),
     fetchSheet('employers'),
     fetchSheet('jobs'),
   ]);
+
+  const priorityNocs = mergeByRecordId(sheetPriorityNocs, loadSeedRows('-priority-nocs.csv'));
+  const employers = mergeByRecordId(sheetEmployers, loadSeedRows('-employers.csv'));
+  const seedNocCount = loadSeedRows('-priority-nocs.csv').length;
+  const seedEmpCount = loadSeedRows('-employers.csv').length;
 
   const activeCommunities = mergeCommunities(sheetCommunities, localPayload);
   const communityMeta = Object.fromEntries(
@@ -249,6 +291,9 @@ async function main() {
   writeFileSync(outPath, JSON.stringify(payload, null, 2));
   console.log('Wrote', outPath);
   console.log(payload.counts);
+  if (seedNocCount || seedEmpCount) {
+    console.log(`Merged local seeds: ${seedNocCount} NOCs, ${seedEmpCount} employers`);
+  }
   console.log(
     'Communities:',
     payload.communities.map((c) => `${c.id}${c.scrape_status === 'directory' ? ' (directory)' : ''}`).join(', '),

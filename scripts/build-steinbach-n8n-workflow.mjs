@@ -1,6 +1,6 @@
 /**
- * Builds n8n/north-okanagan-shuswap-scrape.workflow.json
- * Run: node scripts/build-nos-n8n-workflow.mjs
+ * Builds n8n/steinbach-scrape.workflow.json
+ * Run: node scripts/build-steinbach-n8n-workflow.mjs
  */
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -10,30 +10,41 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const SHEET_ID = '1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo';
 
 const sharedHelpers = `
-const COMMUNITY_ID = 'north-okanagan-shuswap';
+const COMMUNITY_ID = 'steinbach';
 const YEAR = '2026';
-const PRIORITIES_URL = 'https://rcipnorthokanaganshuswap.com/priority-sectors-nocs/';
-const RESOURCES_URL = 'https://rcipnorthokanaganshuswap.com/resources-and-policies/';
+const PORTAL_URL = 'https://steinbachedc.com/rcip/';
+const FALLBACK_PDF = 'https://steinbachedc.com/wp-content/uploads/2026/09/RCIP-Designated-Employers-1.pdf';
+const DEFAULT_CAP = 'Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).';
+const NOC_SECTOR_BY_PREFIX = {
+  '1': 'Business, finance and administration',
+  '2': 'Natural and applied sciences',
+  '3': 'Health',
+  '4': 'Education, law and social, community and government services',
+  '6': 'Sales and service',
+  '7': 'Trades and transport',
+  '8': 'Natural resources and agriculture',
+  '9': 'Manufacturing and utilities',
+};
 
-const SECTORS = [
-  'Business, Finance and Administration',
-  'Education, Law and Social, Community and Government Services',
-  'Health',
-  'Sales and Services',
-  'Trades and Transport',
-  'Natural Resources and Agriculture',
-  'Manufacturing and Utilities',
-];
-
-function stripTags(html) {
-  return String(html || '')
-    .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')
-    .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
+function decodeEntities(s) {
+  return String(s || '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&#8211;/g, '–')
+    .replace(/&#8217;/g, "'")
     .replace(/&#038;/g, '&')
+    .replace(/&rsquo;/g, "'")
+    .replace(/&lsquo;/g, "'")
+    .replace(/&[a-z]+;/gi, ' ');
+}
+
+function stripTags(html) {
+  return decodeEntities(
+    String(html || '')
+      .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')
+      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' '),
+  )
     .replace(/\\s+/g, ' ')
     .trim();
 }
@@ -46,102 +57,83 @@ function normalizeIdPart(s) {
     .slice(0, 80);
 }
 
-function extractTables(html) {
-  const tables = [];
-  const re = /<table[^>]*>([\\s\\S]*?)<\\/table>/gi;
-  let m;
-  while ((m = re.exec(html))) tables.push(m[1]);
-  return tables;
-}
-
-function tableRows(tableHtml) {
-  const rows = [];
-  const re = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;
-  let m;
-  while ((m = re.exec(tableHtml))) {
-    const cells = [];
-    const cre = /<t[dh][^>]*>([\\s\\S]*?)<\\/t[dh]>/gi;
-    let c;
-    while ((c = cre.exec(m[1]))) cells.push(stripTags(c[1]));
-    if (cells.length) rows.push(cells);
-  }
-  return rows;
-}
-
-function isDesignatedEmployersListUrl(url) {
-  return /designated-employers?-list/i.test(url);
-}
-
-function isDesignatedEmployersListLabel(label) {
-  const t = String(label || '')
-    .replace(/&#8211;/g, '–')
-    .replace(/&amp;/g, '&')
-    .replace(/<[^>]+>/g, ' ');
-  return /designated\\s+employers?\\s+list/i.test(t);
-}
-
-function findLatestEmployerListPdf(html) {
-  const urls = new Set();
+function findEmployerListPdf(html) {
+  const urls = [];
   const hrefRe = /href="(https?:\\/\\/[^"]+\\.pdf[^"]*|\\/[^"]+\\.pdf[^"]*)"/gi;
   let m;
   while ((m = hrefRe.exec(html))) {
     let url = m[1];
-    if (url.startsWith('/')) url = 'https://rcipnorthokanaganshuswap.com' + url;
-    if (isDesignatedEmployersListUrl(url)) urls.add(url);
+    if (url.startsWith('/')) url = 'https://steinbachedc.com' + url;
+    urls.push(url);
   }
-  const withText = /href="([^"]+\\.pdf[^"]*)"[^>]*>([\\s\\S]*?)<\\/a>/gi;
-  while ((m = withText.exec(html))) {
-    if (!isDesignatedEmployersListLabel(m[2])) continue;
-    let url = m[1];
-    if (url.startsWith('/')) url = 'https://rcipnorthokanaganshuswap.com' + url;
-    urls.add(url);
+  const designated = urls.filter((u) => /designated.?employer/i.test(u) || /RCIP-Designated/i.test(u));
+  if (designated.length) {
+    designated.sort();
+    return designated[designated.length - 1];
   }
-  const list = [...urls].sort();
-  return list.length ? list[list.length - 1] : '';
+  const any = urls.filter((u) => /steinbach/i.test(u) && /employer/i.test(u));
+  if (any.length) {
+    any.sort();
+    return any[any.length - 1];
+  }
+  return FALLBACK_PDF;
+}
+
+function parseRestrictionNotes(html) {
+  const byNoc = new Map();
+  const setNote = (noc, note) => {
+    const prev = byNoc.get(noc) || '';
+    if (!prev || note.length > prev.length) byNoc.set(noc, note);
+  };
+  const liRe = /<li[^>]*>([\\s\\S]*?)<\\/li>/gi;
+  let m;
+  while ((m = liRe.exec(html))) {
+    const text = stripTags(m[1]);
+    if (!/\\d{5}/.test(text)) continue;
+    const notAvail = text.match(/(\\d{5})\\s*[–—-].*?[–—-]\\s*not available/i);
+    if (notAvail) {
+      setNote(notAvail[1], 'Not available');
+      continue;
+    }
+    const noLimit = text.match(/(\\d{5}(?:,\\s*\\d{5})*)\\s+whereby,?\\s*no limitations apply/i);
+    if (noLimit) {
+      const codes = noLimit[1].match(/\\d{5}/g) || [];
+      for (const noc of codes) setNote(noc, 'No recommendation limitations apply');
+      continue;
+    }
+    const ece = text.match(/(\\d{5})\\s*[–—-]\\s*Early Childhood Educator[^–—-]*[–—-]\\s*(.+)$/i);
+    if (ece) {
+      setNote(ece[1], ece[2].replace(/\\s+/g, ' ').trim());
+      continue;
+    }
+    const food = text.match(/(\\d{5})\\s*[–—-]\\s*Food Service Supervisors\\s*[–—-]\\s*(.+)$/i);
+    if (food) setNote(food[1], food[2].replace(/\\s+/g, ' ').trim());
+  }
+  return byNoc;
 }
 
 function parsePriorityNocs(html, nowIso) {
-  const tables = extractTables(html);
-  const restrictionByNoc = new Map();
-  if (tables[3]) {
-    for (const cells of tableRows(tables[3])) {
-      const blob = cells.join(' ');
-      const nocMatch = blob.match(/(\\d{5})\\s*[–—-]/);
-      if (!nocMatch) continue;
-      const notes = (cells[2] || cells.slice(2).join(' ') || '').trim();
-      if (notes) restrictionByNoc.set(nocMatch[1], notes);
-    }
-  }
+  const restrictions = parseRestrictionNotes(html);
   const out = [];
-  const nocTable = tables[1] || tables.find((t) => /\\d{5}\\s*[–—-]/.test(t));
-  if (!nocTable) return out;
-  for (const cells of tableRows(nocTable)) {
-    const blob = cells.join(' | ');
-    const nocMatch = blob.match(/\\b(\\d{5})\\s*[–—-]\\s*([^|]+)/);
-    if (!nocMatch) continue;
-    const noc = nocMatch[1];
-    let title = nocMatch[2].trim();
-    for (const cell of cells) {
-      const cm = cell.match(/^(\\d{5})\\s*[–—-]\\s*(.+)$/);
-      if (cm) {
-        title = cm[2].trim();
-        break;
-      }
-    }
-    const cap = cells.find((c) => /per year|N\\/A/i.test(c)) || '';
-    const notes = [restrictionByNoc.get(noc) || '', cap && cap !== 'N/A' ? 'Employer cap: ' + cap : '']
-      .filter(Boolean)
-      .join(' | ');
+  const seen = new Set();
+  const re = /<p>\\s*(\\d{5})\\s*(?:&#8211;|[–—-])\\s*([^<]+)<\\/p>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    const noc = m[1];
+    if (seen.has(noc)) continue;
+    seen.add(noc);
+    const title = decodeEntities(m[2]).replace(/\\s+/g, ' ').trim();
+    const special = restrictions.get(noc) || '';
     out.push({
       record_id: COMMUNITY_ID + '|' + noc + '|' + YEAR,
       community_id: COMMUNITY_ID,
       noc_code: noc,
       noc_title: title,
-      sector: '',
+      sector: NOC_SECTOR_BY_PREFIX[noc[0]] || '',
       year: YEAR,
       is_secondary: 'FALSE',
-      restriction_notes: notes,
-      source_url: PRIORITIES_URL,
+      restriction_notes: special || DEFAULT_CAP,
+      source_url: PORTAL_URL,
       source_type: 'html',
       first_seen_at: nowIso,
       last_seen_at: nowIso,
@@ -150,74 +142,42 @@ function parsePriorityNocs(html, nowIso) {
       review_status: 'new',
     });
   }
-  const seen = new Set();
-  return out.filter((r) => {
-    if (seen.has(r.record_id)) return false;
-    seen.add(r.record_id);
-    return true;
-  });
+  out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));
+  return out;
 }
 
 function parseEmployersFromPdfText(text, sourceUrl, nowIso) {
   let t = String(text || '').replace(/\\r/g, '');
-  t = t.replace(/Education, Law and Social, Community\\s*\\n\\s*and Government Services/g, 'Education, Law and Social, Community and Government Services');
-  t = t.replace(/RCIP NOS\\s+Designated Employer List\\s+[^\\n]+/g, '\\n');
   t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');
-  t = t.replace(/Designated Employer List\\n?/g, '\\n');
-  t = t.replace(/North Okanagan-Shuswap Rural Community Immigration Pilot \\(RCIP\\)/g, '\\n');
-  t = t.replace(/Priority Sector\\s+Business Legal Name/g, '\\n');
-  t = t.replace(/The following employers[\\s\\S]*?posted publicly by the employers\\./g, '\\n');
-  t = t.replace(/Please note, the employers with an asterisk[\\s\\S]*$/i, '\\n');
-  const listDateMatch = String(text).match(/as of\\s+([A-Za-z]+\\s+\\d{1,2},\\s+\\d{4})/i);
-  const listUpdated = listDateMatch ? listDateMatch[1] : '';
+  t = t.replace(/List of Designated Employers:\\s*/gi, '\\n');
+  t = t.replace(/D4-284 Reimer Ave[^\\n]*/gi, '\\n');
+  t = t.replace(/www\\.SteinbachEDC\\.com/gi, '\\n');
+  t = t.replace(/Office@SteinbachEDC\\.com/gi, '\\n');
   const lines = t.split('\\n').map((l) => l.replace(/\\t/g, ' ').replace(/\\s+/g, ' ').trim()).filter(Boolean);
-  const raw = [];
-  let sector = '';
-  for (const line of lines) {
-    const matched = SECTORS.find((s) => line === s || line.startsWith(s + ' '));
-    if (matched) {
-      sector = matched;
-      const rest = line.slice(matched.length).trim();
-      if (rest) raw.push({ sector, name: rest });
-      continue;
-    }
-    if (/^(Unsolicited|Candidates should|This list|published here|could result|as of )/i.test(line)) continue;
-    if (!sector) continue;
-    raw.push({ sector, name: line });
-  }
-  const merged = [];
-  for (const row of raw) {
-    const prev = merged[merged.length - 1];
-    const isCont = prev && (/^(Ltd\\.?|Inc\\.?|Corp\\.?|Limited|Society|Association|LLP|LLC)\\.?$/i.test(row.name) || (/^[a-z]/.test(row.name) && row.name.length < 40));
-    if (isCont) {
-      prev.name = (prev.name + ' ' + row.name).replace(/\\s+/g, ' ').trim();
-      continue;
-    }
-    merged.push({ ...row });
-  }
   const seen = new Set();
   const out = [];
-  for (const row of merged) {
-    const key = row.name.toLowerCase().replace(/[^a-z0-9]+/g, '');
+  for (const line of lines) {
+    if (/^\\d{3}[.\\s]?\\d{3}[.\\s]?\\d{4}$/.test(line)) continue;
+    if (/reimer|steinbachedc|designated employer|list of/i.test(line)) continue;
+    if (line.length < 2 || line.length > 120) continue;
+    const key = line.toLowerCase().replace(/[^a-z0-9]+/g, '');
     if (!key || seen.has(key)) continue;
-    if (/asterisk|subsectors until|no longer accepting/i.test(row.name)) continue;
     seen.add(key);
-    const starred = /\\*$/.test(row.name.trim());
     out.push({
-      record_id: COMMUNITY_ID + '|' + normalizeIdPart(row.name),
+      record_id: COMMUNITY_ID + '|' + normalizeIdPart(line),
       community_id: COMMUNITY_ID,
-      employer_name: row.name.replace(/\\*+$/, '').trim(),
-      locations: '',
-      sector: row.sector,
+      employer_name: line,
+      locations: 'Steinbach, MB',
+      sector: '',
       recruiting_status: 'unknown',
-      source_url: sourceUrl || RESOURCES_URL,
+      source_url: sourceUrl || FALLBACK_PDF,
       source_type: 'pdf',
       first_seen_at: nowIso,
       last_seen_at: nowIso,
       status: 'active',
       manual_override: 'FALSE',
       review_status: 'new',
-      notes: [listUpdated ? 'Source list updated: ' + listUpdated : '', starred ? 'Marked * on source list (fast food / gas station note may apply)' : ''].filter(Boolean).join(' | '),
+      notes: '',
     });
   }
   return out;
@@ -271,10 +231,11 @@ try { existing = $('Read Priority NOCs').all().map((i) => i.json); } catch (e) {
 const { upserts, stale } = mergeUpserts(scraped, existing);
 const rows = [...upserts, ...stale];
 const staticData = $getWorkflowStaticData('global');
-staticData.nos_noc_count = scraped.length;
-staticData.nos_noc_upserts = upserts.length;
-staticData.nos_noc_stale = stale.length;
-staticData.nos_run_started = staticData.nos_run_started || nowIso;
+staticData.sb_noc_count = scraped.length;
+staticData.sb_noc_upserts = upserts.length;
+staticData.sb_noc_stale = stale.length;
+staticData.sb_run_started = staticData.sb_run_started || nowIso;
+staticData.sb_portal_html = typeof html === 'string' ? html : String(html);
 
 if (!rows.length) return [{ json: { _skip: true, message: 'No priority NOC rows' } }];
 return rows.map((r) => ({ json: r }));
@@ -283,12 +244,11 @@ return rows.map((r) => ({ json: r }));
 const findPdfCode = `
 ${sharedHelpers}
 
-const raw = $input.first().json;
-const html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');
-const pdfUrl = findLatestEmployerListPdf(typeof html === 'string' ? html : String(html));
-if (!pdfUrl) throw new Error('Could not find Designated Employer List PDF on resources page');
 const staticData = $getWorkflowStaticData('global');
-staticData.nos_pdf_url = pdfUrl;
+const html = staticData.sb_portal_html || '';
+const pdfUrl = findEmployerListPdf(html);
+if (!pdfUrl) throw new Error('Could not find Designated Employers PDF on Steinbach RCIP page');
+staticData.sb_pdf_url = pdfUrl;
 return [{ json: { pdfUrl } }];
 `.trim();
 
@@ -300,7 +260,7 @@ const text = typeof item === 'string'
   ? item
   : (item.text || item.data || item.content || item.pdfText || '');
 const staticData = $getWorkflowStaticData('global');
-const sourceUrl = staticData.nos_pdf_url || RESOURCES_URL;
+const sourceUrl = staticData.sb_pdf_url || FALLBACK_PDF;
 const nowIso = new Date().toISOString();
 const scraped = parseEmployersFromPdfText(String(text || ''), sourceUrl, nowIso);
 
@@ -309,9 +269,9 @@ try { existing = $('Read Employers').all().map((i) => i.json); } catch (e) { exi
 
 const { upserts, stale } = mergeUpserts(scraped, existing);
 const rows = [...upserts, ...stale];
-staticData.nos_employer_count = scraped.length;
-staticData.nos_employer_upserts = upserts.length;
-staticData.nos_employer_stale = stale.length;
+staticData.sb_employer_count = scraped.length;
+staticData.sb_employer_upserts = upserts.length;
+staticData.sb_employer_stale = stale.length;
 
 if (!scraped.length) throw new Error('PDF text parsed to 0 employers — check Extract From File output field');
 if (!rows.length) return [{ json: { _skip: true, message: 'No employer rows' } }];
@@ -320,19 +280,19 @@ return rows.map((r) => ({ json: r }));
 
 const runLogCode = `
 const staticData = $getWorkflowStaticData('global');
-const started = staticData.nos_run_started || new Date().toISOString();
+const started = staticData.sb_run_started || new Date().toISOString();
 const finished = new Date().toISOString();
-const nocs = staticData.nos_noc_count || 0;
-const employers = staticData.nos_employer_count || 0;
-const upserts = (staticData.nos_noc_upserts || 0) + (staticData.nos_employer_upserts || 0);
-const stale = (staticData.nos_noc_stale || 0) + (staticData.nos_employer_stale || 0);
+const nocs = staticData.sb_noc_count || 0;
+const employers = staticData.sb_employer_count || 0;
+const upserts = (staticData.sb_noc_upserts || 0) + (staticData.sb_employer_upserts || 0);
+const stale = (staticData.sb_noc_stale || 0) + (staticData.sb_employer_stale || 0);
 return [{
   json: {
-    run_id: 'nos-' + started,
+    run_id: 'steinbach-' + started,
     started_at: started,
     finished_at: finished,
-    community_id: 'north-okanagan-shuswap',
-    adapter: 'nos-html-nocs+pdf-employers',
+    community_id: 'steinbach',
+    adapter: 'steinbach-html-nocs+pdf-employers',
     rows_upserted: String(upserts),
     rows_stale: String(stale),
     errors: '',
@@ -409,7 +369,7 @@ const employerUpsertColumns = {
 };
 
 const workflow = {
-  name: 'RCIP North Okanagan–Shuswap — NOCs + Employers',
+  name: 'RCIP Steinbach — NOCs + Employers',
   nodes: [
     {
       parameters: {},
@@ -427,7 +387,7 @@ const workflow = {
               field: 'weeks',
               weeksInterval: 1,
               triggerAtDay: [1],
-              triggerAtHour: 7,
+              triggerAtHour: 8,
               triggerAtMinute: 0,
             },
           ],
@@ -440,12 +400,12 @@ const workflow = {
       position: [0, 120],
       notesInFlow: true,
       notes:
-        'Weekly Mon 07:00 (workflow timezone America/Vancouver). Keep Manual Run for ad-hoc. WK runs at 06:00.',
+        'Weekly Mon 08:00 America/Vancouver (after WK 06:00 and NOS 07:00). Keep Manual Run for ad-hoc.',
     },
     {
       parameters: {
         jsCode:
-          "const s=$getWorkflowStaticData('global');\ns.nos_run_started=new Date().toISOString();\ns.nos_noc_count=0;s.nos_noc_upserts=0;s.nos_noc_stale=0;\ns.nos_employer_count=0;s.nos_employer_upserts=0;s.nos_employer_stale=0;s.nos_pdf_url='';\nreturn [{json:{ok:true}}];",
+          "const s=$getWorkflowStaticData('global');\ns.sb_run_started=new Date().toISOString();\ns.sb_noc_count=0;s.sb_noc_upserts=0;s.sb_noc_stale=0;\ns.sb_employer_count=0;s.sb_employer_upserts=0;s.sb_employer_stale=0;s.sb_pdf_url='';s.sb_portal_html='';\nreturn [{json:{ok:true}}];",
       },
       id: 'init-run',
       name: 'Init Run',
@@ -466,8 +426,7 @@ const workflow = {
     {
       parameters: {
         mode: 'runOnceForAllItems',
-        jsCode:
-          "return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];",
+        jsCode: 'return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];',
       },
       id: 'collapse-after-noc-read',
       name: 'Collapse After NOC Read',
@@ -477,7 +436,7 @@ const workflow = {
     },
     {
       parameters: {
-        url: 'https://rcipnorthokanaganshuswap.com/priority-sectors-nocs/',
+        url: 'https://steinbachedc.com/rcip/',
         sendHeaders: true,
         headerParameters: uaHeaders,
         options: {
@@ -485,8 +444,8 @@ const workflow = {
           timeout: 30000,
         },
       },
-      id: 'fetch-priorities',
-      name: 'Fetch Priorities HTML',
+      id: 'fetch-portal',
+      name: 'Fetch Portal HTML',
       type: 'n8n-nodes-base.httpRequest',
       typeVersion: 4.2,
       position: [700, 300],
@@ -539,10 +498,10 @@ const workflow = {
     {
       parameters: {
         mode: 'runOnceForAllItems',
-        jsCode: 'await new Promise((r) => setTimeout(r, 5000));\nreturn [{ json: { delayed: true } }];',
+        jsCode: 'await new Promise((r) => setTimeout(r, 3000));\nreturn [{ json: { delayed: true } }];',
       },
       id: 'delay-1',
-      name: 'Crawl Delay 5s',
+      name: 'Crawl Delay 3s',
       type: 'n8n-nodes-base.code',
       typeVersion: 2,
       position: [1540, 300],
@@ -560,8 +519,7 @@ const workflow = {
     {
       parameters: {
         mode: 'runOnceForAllItems',
-        jsCode:
-          "return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];",
+        jsCode: 'return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];',
       },
       id: 'collapse-after-employer-read',
       name: 'Collapse After Employer Read',
@@ -570,28 +528,12 @@ const workflow = {
       position: [1900, 300],
     },
     {
-      parameters: {
-        url: 'https://rcipnorthokanaganshuswap.com/resources-and-policies/',
-        sendHeaders: true,
-        headerParameters: uaHeaders,
-        options: {
-          response: { response: { responseFormat: 'text' } },
-          timeout: 30000,
-        },
-      },
-      id: 'fetch-resources',
-      name: 'Fetch Resources HTML',
-      type: 'n8n-nodes-base.httpRequest',
-      typeVersion: 4.2,
-      position: [2100, 300],
-    },
-    {
       parameters: { jsCode: findPdfCode },
       id: 'find-pdf',
       name: 'Find Employer List PDF',
       type: 'n8n-nodes-base.code',
       typeVersion: 2,
-      position: [2200, 300],
+      position: [2100, 300],
     },
     {
       parameters: {
@@ -610,7 +552,7 @@ const workflow = {
       name: 'Download Employer PDF',
       type: 'n8n-nodes-base.httpRequest',
       typeVersion: 4.2,
-      position: [2420, 300],
+      position: [2320, 300],
     },
     {
       parameters: {
@@ -621,7 +563,7 @@ const workflow = {
       name: 'Extract PDF Text',
       type: 'n8n-nodes-base.extractFromFile',
       typeVersion: 1,
-      position: [2640, 300],
+      position: [2540, 300],
     },
     {
       parameters: { jsCode: parseEmployersCode },
@@ -629,7 +571,7 @@ const workflow = {
       name: 'Parse + Merge Employers',
       type: 'n8n-nodes-base.code',
       typeVersion: 2,
-      position: [2860, 300],
+      position: [2760, 300],
     },
     {
       parameters: {
@@ -651,7 +593,7 @@ const workflow = {
       name: 'Has Employer Rows?',
       type: 'n8n-nodes-base.filter',
       typeVersion: 2,
-      position: [3080, 300],
+      position: [2980, 300],
     },
     {
       parameters: {
@@ -665,7 +607,7 @@ const workflow = {
       name: 'Upsert Employers',
       type: 'n8n-nodes-base.googleSheets',
       typeVersion: 4.5,
-      position: [3300, 300],
+      position: [3200, 300],
       credentials: sheetsCred(),
     },
     {
@@ -674,7 +616,7 @@ const workflow = {
       name: 'Build Run Log',
       type: 'n8n-nodes-base.code',
       typeVersion: 2,
-      position: [3520, 300],
+      position: [3420, 300],
     },
     {
       parameters: {
@@ -701,7 +643,7 @@ const workflow = {
       name: 'Append Run Log',
       type: 'n8n-nodes-base.googleSheets',
       typeVersion: 4.5,
-      position: [3740, 300],
+      position: [3640, 300],
       credentials: sheetsCred(),
     },
   ],
@@ -710,15 +652,14 @@ const workflow = {
     'Weekly Schedule': { main: [[{ node: 'Init Run', type: 'main', index: 0 }]] },
     'Init Run': { main: [[{ node: 'Read Priority NOCs', type: 'main', index: 0 }]] },
     'Read Priority NOCs': { main: [[{ node: 'Collapse After NOC Read', type: 'main', index: 0 }]] },
-    'Collapse After NOC Read': { main: [[{ node: 'Fetch Priorities HTML', type: 'main', index: 0 }]] },
-    'Fetch Priorities HTML': { main: [[{ node: 'Parse + Merge NOCs', type: 'main', index: 0 }]] },
+    'Collapse After NOC Read': { main: [[{ node: 'Fetch Portal HTML', type: 'main', index: 0 }]] },
+    'Fetch Portal HTML': { main: [[{ node: 'Parse + Merge NOCs', type: 'main', index: 0 }]] },
     'Parse + Merge NOCs': { main: [[{ node: 'Has NOC Rows?', type: 'main', index: 0 }]] },
     'Has NOC Rows?': { main: [[{ node: 'Upsert Priority NOCs', type: 'main', index: 0 }]] },
-    'Upsert Priority NOCs': { main: [[{ node: 'Crawl Delay 5s', type: 'main', index: 0 }]] },
-    'Crawl Delay 5s': { main: [[{ node: 'Read Employers', type: 'main', index: 0 }]] },
+    'Upsert Priority NOCs': { main: [[{ node: 'Crawl Delay 3s', type: 'main', index: 0 }]] },
+    'Crawl Delay 3s': { main: [[{ node: 'Read Employers', type: 'main', index: 0 }]] },
     'Read Employers': { main: [[{ node: 'Collapse After Employer Read', type: 'main', index: 0 }]] },
-    'Collapse After Employer Read': { main: [[{ node: 'Fetch Resources HTML', type: 'main', index: 0 }]] },
-    'Fetch Resources HTML': { main: [[{ node: 'Find Employer List PDF', type: 'main', index: 0 }]] },
+    'Collapse After Employer Read': { main: [[{ node: 'Find Employer List PDF', type: 'main', index: 0 }]] },
     'Find Employer List PDF': { main: [[{ node: 'Download Employer PDF', type: 'main', index: 0 }]] },
     'Download Employer PDF': { main: [[{ node: 'Extract PDF Text', type: 'main', index: 0 }]] },
     'Extract PDF Text': { main: [[{ node: 'Parse + Merge Employers', type: 'main', index: 0 }]] },
@@ -732,6 +673,6 @@ const workflow = {
   pinData: {},
 };
 
-const outPath = join(__dirname, '..', 'n8n', 'north-okanagan-shuswap-scrape.workflow.json');
+const outPath = join(__dirname, '..', 'n8n', 'steinbach-scrape.workflow.json');
 writeFileSync(outPath, JSON.stringify(workflow, null, 2));
 console.log('Wrote', outPath);

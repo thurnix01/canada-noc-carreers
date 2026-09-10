@@ -326,8 +326,8 @@ export default function App() {
           <p className="pill">All RCIP communities</p>
           <h2>Browse every Rural Community Immigration Pilot region</h2>
           <p>
-            BC listings are searchable here. Other communities are directory cards — open the official
-            portal, or filter the explorer when data is available.
+            Searchable listings for communities we’ve scraped. Other regions are directory cards —
+            open the official portal, or filter the explorer when data is available.
           </p>
         </div>
         <div className="community-cards">

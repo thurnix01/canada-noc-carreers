@@ -6,7 +6,7 @@ Same Sheet as West Kootenay: https://docs.google.com/spreadsheets/d/1H3RDFGINQ-l
 ## What it does
 
 1. Fetches priority NOCs from HTML → upserts into `priority_nocs` (`community_id=north-okanagan-shuswap`)  
-2. Finds the latest **Designated Employer List** PDF on the Resources page  
+2. Finds the latest **Designated Employers List** PDF on the Resources page (filename may be singular or plural, e.g. `…Designated-Employers-List-Aug-31-2026.pdf`)  
 3. Downloads PDF → **Extract From File** → parses employers → upserts into `employers`  
 4. Appends `run_log`
 
