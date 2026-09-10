@@ -126,23 +126,17 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.15rem;
-  letter-spacing: -0.03em;
-}
-
-.logo em {
-  font-style: normal;
-  color: var(--maple);
 }
 
 .logo-mark {
-  width: 1.45rem;
-  height: 1.45rem;
-  color: var(--maple);
-  flex-shrink: 0;
-  filter: drop-shadow(0 4px 8px rgba(200, 16, 46, 0.25));
+  width: auto;
+  height: 2.35rem;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(200, 16, 46, 0.12));
+}
+
+.footer-logo .logo-mark {
+  height: 2.1rem;
 }
 
 .nav-links {

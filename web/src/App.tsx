@@ -156,15 +156,13 @@ export default function App() {
 
           <header className="nav">
             <a className="logo" href="#top">
-              <svg className="logo-mark" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fill="currentColor"
-                  d="M12 2.2c.3 1.4.2 2.6-.4 3.6.9-.3 1.8-.3 2.7.1-.6 1-.9 2-1 3 .9-.2 1.8 0 2.6.4-.4 1.1-.5 2.1-.3 3.1 1 .1 1.9.5 2.6 1.1-.2 1.1-.8 2-1.6 2.7.8.5 1.4 1.3 1.7 2.3-.9.4-1.8.5-2.7.3.2 1 .1 2-.3 2.9L12 22l-2.3-1.3c-.4-.9-.5-1.9-.3-2.9-.9.2-1.8.1-2.7-.3.3-1 .9-1.8 1.7-2.3-.8-.7-1.4-1.6-1.6-2.7.7-.6 1.6-1 2.6-1.1.2-1 .1-2-.3-3.1.8-.4 1.7-.6 2.6-.4-.1-1-.4-2-1-3 .9-.4 1.8-.4 2.7-.1-.6-1-.7-2.2-.4-3.6z"
-                />
-              </svg>
-              <span>
-                NOC <em>Careers</em>
-              </span>
+              <img
+                className="logo-mark"
+                src={img('noc-careers-logo.svg')}
+                alt="NOC Careers"
+                width={220}
+                height={37}
+              />
             </a>
             <nav className="nav-links" aria-label="Primary">
               <a href="#about">About</a>
@@ -515,15 +513,13 @@ export default function App() {
       <footer className="footer">
         <div className="footer-brand">
           <div className="logo footer-logo">
-            <svg className="logo-mark" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M12 2.2c.3 1.4.2 2.6-.4 3.6.9-.3 1.8-.3 2.7.1-.6 1-.9 2-1 3 .9-.2 1.8 0 2.6.4-.4 1.1-.5 2.1-.3 3.1 1 .1 1.9.5 2.6 1.1-.2 1.1-.8 2-1.6 2.7.8.5 1.4 1.3 1.7 2.3-.9.4-1.8.5-2.7.3.2 1 .1 2-.3 2.9L12 22l-2.3-1.3c-.4-.9-.5-1.9-.3-2.9-.9.2-1.8.1-2.7-.3.3-1 .9-1.8 1.7-2.3-.8-.7-1.4-1.6-1.6-2.7.7-.6 1.6-1 2.6-1.1.2-1 .1-2-.3-3.1.8-.4 1.7-.6 2.6-.4-.1-1-.4-2-1-3 .9-.4 1.8-.4 2.7-.1-.6-1-.7-2.2-.4-3.6z"
-              />
-            </svg>
-            <span>
-              NOC <em>Careers</em>
-            </span>
+            <img
+              className="logo-mark"
+              src={img('noc-careers-logo.svg')}
+              alt="NOC Careers"
+              width={200}
+              height={34}
+            />
           </div>
           <p>
             Unofficial RCIP aggregator for priority NOCs and designated employers. Data refreshes when
