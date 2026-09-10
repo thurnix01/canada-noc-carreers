@@ -9,6 +9,7 @@ Confirm in n8n that each workflow is **Active** and timezone is **America/Vancou
 | Steinbach | `n8n/steinbach-scrape.workflow.json` | Mon **08:00** |
 | Timmins | `n8n/timmins-scrape.workflow.json` | Mon **09:00** |
 | North Bay | `n8n/north-bay-scrape.workflow.json` | Mon **10:00** |
+| Thunder Bay | `n8n/thunder-bay-scrape.workflow.json` | Mon **11:00** |
 
 After Monday runs (or any Manual Run):
 
