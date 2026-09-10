@@ -125,10 +125,10 @@
       "priority_nocs_url": "https://timminsedc.com/immigration/",
       "employers_url": "https://timminsedc.com/immigration/",
       "jobs_url": "https://timminsedc.com/immigration/",
-      "scrape_status": "directory",
+      "scrape_status": "ready",
       "active": true,
       "pilot": false,
-      "notes": "Directory card — add NOCs/employers when ready."
+      "notes": "HTML RCIP/FCIP priority NOCs + designated employers PDF (timminsedc.com/immigration)."
     },
     {
       "community_id": "sault-ste-marie",
