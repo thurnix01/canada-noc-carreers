@@ -45,17 +45,10 @@ body,
 body {
   margin: 0;
   background-color: #faf7f4;
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.88) 0%,
-      rgba(255, 252, 250, 0.86) 45%,
-      rgba(246, 247, 249, 0.9) 100%
-    ),
-    var(--topo-image);
+  background-image: linear-gradient(180deg, #ffffffe0 0%, #fffcfadb 45%, #f6f7f9e6 100%), var(--topo-image);
+  background-position: top, top;
+  background-repeat: no-repeat, repeat;
   background-size: cover, cover;
-  background-position: center top, center top;
-  background-repeat: no-repeat, no-repeat;
   background-attachment: fixed, fixed;
 }
 
@@ -993,6 +986,7 @@ img {
 @media (max-width: 1020px) {
   body {
     background-attachment: scroll, scroll;
+    background-size: auto, auto;
   }
 
   .nav-links {
