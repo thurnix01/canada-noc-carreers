@@ -452,7 +452,7 @@ export default function App() {
                         startTransition(() => setCommunity(community === c.id ? '' : c.id))
                       }
                     >
-                      {c.name}
+                      {c.name}{c.province ? `, ${c.province}` : ''}
                     </button>
                   ))}
                 </div>
