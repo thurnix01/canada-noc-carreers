@@ -1,0 +1,769 @@
+{
+  "name": "RCIP Moose Jaw — NOCs + Employers",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 17,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        120
+      ],
+      "notesInFlow": true,
+      "notes": "Weekly Mon 17:00 America/Vancouver. Keep Manual Run for ad-hoc."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\ns.mj_run_started=new Date().toISOString();\ns.mj_noc_count=0;s.mj_noc_upserts=0;s.mj_noc_stale=0;\ns.mj_employer_count=0;s.mj_employer_upserts=0;s.mj_employer_stale=0;s.mj_pdf_url='';s.mj_portal_html='';s.mj_pdf_page_html='';\nreturn [{json:{ok:true}}];"
+      },
+      "id": "init-run",
+      "name": "Init Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "options": {}
+      },
+      "id": "read-priority-nocs",
+      "name": "Read Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-noc-read",
+      "name": "Collapse After NOC Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://rcip.mjchamber.com/employers/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-portal",
+      "name": "Fetch Portal HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Moose Jaw RCIP parsers (HTML priority NOC table + designated employers PDF).\n * Usage: node scripts/parse-moose-jaw.mjs\n */\n\nconst COMMUNITY_ID = 'moose-jaw';\nconst YEAR = '2026';\nconst NOC_URL = 'https://rcip.mjchamber.com/employers/';\nconst CANDIDATES_URL = 'https://rcip.mjchamber.com/candidates/';\nconst FALLBACK_PDF =\n  'https://rcip.mjchamber.com/wp-content/uploads/2026/08/designated-employer-list-AUG-26.pdf';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(String(html || '').replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction sectorForNoc(noc) {\n  const map = {\n    1: 'Business, finance and administration',\n    2: 'Natural and applied sciences and related occupations',\n    3: 'Health',\n    4: 'Education, law and social, community and government services',\n    6: 'Sales and service',\n    7: 'Trades and transport',\n    9: 'Manufacturing and utilities',\n  };\n  return map[noc[0]] || '';\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://rcip.mjchamber.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated-employer-list/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated.at(-1);\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(html))) {\n    const cells = [...m[1].matchAll(/<td[^>]*>([\\s\\S]*?)<\\/td>/gi)].map((c) =>\n      stripTags(c[1]),\n    );\n    if (cells.length < 2) continue;\n    const noc = cells.find((c) => /^\\d{5}$/.test(c)) || cells[0].match(/\\d{5}/)?.[0];\n    if (!noc || seen.has(noc)) continue;\n    const titleIdx = cells.findIndex((c) => c !== noc && c.length > 2 && !/view wages|\\$/i.test(c));\n    const title = titleIdx >= 0 ? cells[titleIdx] : cells[1];\n    if (!title || /occupation code|occupation name/i.test(title)) continue;\n    seen.add(noc);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: sectorForNoc(noc),\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: '',\n      source_url: NOC_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction isIntroLine(line) {\n  return (\n    /^(individuals|accepting|that match|applicants first|businessess|please do not|most designated|the best way|actively advertised)/i.test(\n      line,\n    ) ||\n    (/\\b(the|and|are|not|for|with|your|them|have)\\b/i.test(line) &&\n      !/\\b(Inc|Ltd|LLC|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Services|Group|Foods|Express|Limited|Corporation|ULC|GP|YMCA|Dental|Medical|Health|Care|Living|Place|Park|Market|Bank|Spa|School|Energy|Auto|Tire|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Apartments|Motel|Brew|Burger|Chicken|Donair|Pharmacy|Grocery|Meats|Roof|Cleaners|Distillery|Rail|Truck|Trailer|Repair|Academy|Chamber|College|Weld|Spa|Box|Leaf|Chok|Chaplin|Carpet|Cash|Cell|Church|Civic|Comfort|Coral|Crescent|Delight|Edo|End|Evolve|Family|Flying|Fountain|Grant|Hertz|Holiday|Hopkin|Houston|Hub|Jade|John|Karis|KFC|Lakeview|Little|McDonald|MNP|Montana|Moose|Mr\\.|Murray|North|Panda|Philthy|Pilgrim|Pomme|Potter|Prairie|Providence|Quality|Ramada|Red|Rodo|Royal|Sahara|Seaborn|Seeds|Smitty|Smooth|Soni|Subway|Super8|Taco|Telefi|Temple|Thunder|TJ|Travelodge|Town|TrailTech|Trifon|Tunnel|Unique|Wendy|West|Western|WinMar|Wok|Wrapture|Xpert|YMCA)\\b/i.test(\n        line,\n      ))\n  );\n}\n\nfunction isLikelyNameStart(line) {\n  if (isIntroLine(line)) return false;\n  if (/^--/.test(line)) return false;\n  if (line.length < 3) return false;\n  return /^[\\dA-Z&]/.test(line);\n}\n\nfunction looksCompleteName(line) {\n  return /\\b(Inc|Ltd|LLC|ULC|Corporation|Limited|Group|Services|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Motel|Bank|Spa|School|Division|Express|Place|Park|Market|Foods|Academy|Chamber|Dental|Medical|Health|Care|Living|Village|Apartments|Distillery|Optical|Consulting|YMCA|Tire|Auto|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Roof|Cleaners|Meats|Grocery|Pharmacy|Brew|Burger|Chicken|Donair|Pharmacy|Lounge|Communications)\\b\\.?\\s*$/i.test(\n    line,\n  );\n}\n\nfunction isContinuation(prev, next) {\n  if (!prev || !next) return false;\n  if (looksCompleteName(prev)) return false;\n  if (/^(Inc|Ltd|LLC|ULC|GP|Division|College)\\.?\\s*$/i.test(next)) return true;\n  if (/^[a-z]/.test(next)) return true;\n  if (/\\b(of|our|the|&|and)\\s*$/i.test(prev.trim())) return true;\n  if (/^Jaw$/i.test(next) && /Moose$/i.test(prev)) return true;\n  if (/^(Lady|Citizen|All|Centre|Center|Foods|Maintenance|Audiology|Parlour|Roll|Villa|Residence|Kitchen|Bar|Shawarma|Dairies|Farms|Stairs|Employees|Orchard|Roofers|Manufacturing|Game On)$/i.test(next))\n    return true;\n  return false;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso = new Date().toISOString()) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/\\*\\* Important Notice[\\s\\S]*?designation later\\./gi, '\\n');\n  t = t.replace(/Current Designated Employers/gi, '\\n');\n\n  const lines = t\n    .split('\\n')\n    .map((l) => l.trim())\n    .filter(Boolean);\n\n  const startIdx = lines.findIndex((l) => isLikelyNameStart(l) && !isIntroLine(l));\n  const dataLines = startIdx >= 0 ? lines.slice(startIdx) : lines;\n\n  const joined = [];\n  let pending = '';\n  for (const line of dataLines) {\n    if (isIntroLine(line)) continue;\n    if (!pending) {\n      pending = line;\n      continue;\n    }\n    if (isContinuation(pending, line)) {\n      pending = `${pending} ${line}`.replace(/\\s+/g, ' ').trim();\n    } else {\n      joined.push(pending);\n      pending = line;\n    }\n  }\n  if (pending) joined.push(pending);\n\n  const seen = new Set();\n  const out = [];\n  for (let name of joined) {\n    name = name.replace(/\\s+/g, ' ').trim();\n    if (!name || name.length < 3) continue;\n    if (/^important notice|^current designated/i.test(name)) continue;\n    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(name)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: name,\n      locations: 'Moose Jaw, SK',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: 'Multi-column PDF; some names may be merged or split incorrectly.',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst nowIso = new Date().toISOString();\nconst scraped = parsePriorityNocs(typeof html === 'string' ? html : String(html), nowIso);\n\nlet existing = [];\ntry { existing = $('Read Priority NOCs').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.mj_noc_count = scraped.length;\nstaticData.mj_noc_upserts = upserts.length;\nstaticData.mj_noc_stale = stale.length;\nstaticData.mj_run_started = staticData.mj_run_started || nowIso;\nstaticData.mj_portal_html = typeof html === 'string' ? html : String(html);\n\nif (!rows.length) return [{ json: { _skip: true, message: 'No priority NOC rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-nocs",
+      "name": "Parse + Merge NOCs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-noc",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-nocs",
+      "name": "Has NOC Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "noc_code": "={{ $json.noc_code }}",
+            "noc_title": "={{ $json.noc_title }}",
+            "sector": "={{ $json.sector }}",
+            "year": "={{ $json.year }}",
+            "is_secondary": "={{ $json.is_secondary }}",
+            "restriction_notes": "={{ $json.restriction_notes }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-nocs",
+      "name": "Upsert Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "await new Promise((r) => setTimeout(r, 3000));\nreturn [{ json: { delayed: true } }];"
+      },
+      "id": "delay-1",
+      "name": "Crawl Delay 3s",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "options": {}
+      },
+      "id": "read-employers",
+      "name": "Read Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1760,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-employer-read",
+      "name": "Collapse After Employer Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://rcip.mjchamber.com/candidates/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/json,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "moose-jaw-fetch-pdf-page",
+      "name": "Fetch PDF Index HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Moose Jaw RCIP parsers (HTML priority NOC table + designated employers PDF).\n * Usage: node scripts/parse-moose-jaw.mjs\n */\n\nconst COMMUNITY_ID = 'moose-jaw';\nconst YEAR = '2026';\nconst NOC_URL = 'https://rcip.mjchamber.com/employers/';\nconst CANDIDATES_URL = 'https://rcip.mjchamber.com/candidates/';\nconst FALLBACK_PDF =\n  'https://rcip.mjchamber.com/wp-content/uploads/2026/08/designated-employer-list-AUG-26.pdf';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(String(html || '').replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction sectorForNoc(noc) {\n  const map = {\n    1: 'Business, finance and administration',\n    2: 'Natural and applied sciences and related occupations',\n    3: 'Health',\n    4: 'Education, law and social, community and government services',\n    6: 'Sales and service',\n    7: 'Trades and transport',\n    9: 'Manufacturing and utilities',\n  };\n  return map[noc[0]] || '';\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://rcip.mjchamber.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated-employer-list/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated.at(-1);\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(html))) {\n    const cells = [...m[1].matchAll(/<td[^>]*>([\\s\\S]*?)<\\/td>/gi)].map((c) =>\n      stripTags(c[1]),\n    );\n    if (cells.length < 2) continue;\n    const noc = cells.find((c) => /^\\d{5}$/.test(c)) || cells[0].match(/\\d{5}/)?.[0];\n    if (!noc || seen.has(noc)) continue;\n    const titleIdx = cells.findIndex((c) => c !== noc && c.length > 2 && !/view wages|\\$/i.test(c));\n    const title = titleIdx >= 0 ? cells[titleIdx] : cells[1];\n    if (!title || /occupation code|occupation name/i.test(title)) continue;\n    seen.add(noc);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: sectorForNoc(noc),\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: '',\n      source_url: NOC_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction isIntroLine(line) {\n  return (\n    /^(individuals|accepting|that match|applicants first|businessess|please do not|most designated|the best way|actively advertised)/i.test(\n      line,\n    ) ||\n    (/\\b(the|and|are|not|for|with|your|them|have)\\b/i.test(line) &&\n      !/\\b(Inc|Ltd|LLC|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Services|Group|Foods|Express|Limited|Corporation|ULC|GP|YMCA|Dental|Medical|Health|Care|Living|Place|Park|Market|Bank|Spa|School|Energy|Auto|Tire|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Apartments|Motel|Brew|Burger|Chicken|Donair|Pharmacy|Grocery|Meats|Roof|Cleaners|Distillery|Rail|Truck|Trailer|Repair|Academy|Chamber|College|Weld|Spa|Box|Leaf|Chok|Chaplin|Carpet|Cash|Cell|Church|Civic|Comfort|Coral|Crescent|Delight|Edo|End|Evolve|Family|Flying|Fountain|Grant|Hertz|Holiday|Hopkin|Houston|Hub|Jade|John|Karis|KFC|Lakeview|Little|McDonald|MNP|Montana|Moose|Mr\\.|Murray|North|Panda|Philthy|Pilgrim|Pomme|Potter|Prairie|Providence|Quality|Ramada|Red|Rodo|Royal|Sahara|Seaborn|Seeds|Smitty|Smooth|Soni|Subway|Super8|Taco|Telefi|Temple|Thunder|TJ|Travelodge|Town|TrailTech|Trifon|Tunnel|Unique|Wendy|West|Western|WinMar|Wok|Wrapture|Xpert|YMCA)\\b/i.test(\n        line,\n      ))\n  );\n}\n\nfunction isLikelyNameStart(line) {\n  if (isIntroLine(line)) return false;\n  if (/^--/.test(line)) return false;\n  if (line.length < 3) return false;\n  return /^[\\dA-Z&]/.test(line);\n}\n\nfunction looksCompleteName(line) {\n  return /\\b(Inc|Ltd|LLC|ULC|Corporation|Limited|Group|Services|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Motel|Bank|Spa|School|Division|Express|Place|Park|Market|Foods|Academy|Chamber|Dental|Medical|Health|Care|Living|Village|Apartments|Distillery|Optical|Consulting|YMCA|Tire|Auto|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Roof|Cleaners|Meats|Grocery|Pharmacy|Brew|Burger|Chicken|Donair|Pharmacy|Lounge|Communications)\\b\\.?\\s*$/i.test(\n    line,\n  );\n}\n\nfunction isContinuation(prev, next) {\n  if (!prev || !next) return false;\n  if (looksCompleteName(prev)) return false;\n  if (/^(Inc|Ltd|LLC|ULC|GP|Division|College)\\.?\\s*$/i.test(next)) return true;\n  if (/^[a-z]/.test(next)) return true;\n  if (/\\b(of|our|the|&|and)\\s*$/i.test(prev.trim())) return true;\n  if (/^Jaw$/i.test(next) && /Moose$/i.test(prev)) return true;\n  if (/^(Lady|Citizen|All|Centre|Center|Foods|Maintenance|Audiology|Parlour|Roll|Villa|Residence|Kitchen|Bar|Shawarma|Dairies|Farms|Stairs|Employees|Orchard|Roofers|Manufacturing|Game On)$/i.test(next))\n    return true;\n  return false;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso = new Date().toISOString()) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/\\*\\* Important Notice[\\s\\S]*?designation later\\./gi, '\\n');\n  t = t.replace(/Current Designated Employers/gi, '\\n');\n\n  const lines = t\n    .split('\\n')\n    .map((l) => l.trim())\n    .filter(Boolean);\n\n  const startIdx = lines.findIndex((l) => isLikelyNameStart(l) && !isIntroLine(l));\n  const dataLines = startIdx >= 0 ? lines.slice(startIdx) : lines;\n\n  const joined = [];\n  let pending = '';\n  for (const line of dataLines) {\n    if (isIntroLine(line)) continue;\n    if (!pending) {\n      pending = line;\n      continue;\n    }\n    if (isContinuation(pending, line)) {\n      pending = `${pending} ${line}`.replace(/\\s+/g, ' ').trim();\n    } else {\n      joined.push(pending);\n      pending = line;\n    }\n  }\n  if (pending) joined.push(pending);\n\n  const seen = new Set();\n  const out = [];\n  for (let name of joined) {\n    name = name.replace(/\\s+/g, ' ').trim();\n    if (!name || name.length < 3) continue;\n    if (/^important notice|^current designated/i.test(name)) continue;\n    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(name)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: name,\n      locations: 'Moose Jaw, SK',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: 'Multi-column PDF; some names may be merged or split incorrectly.',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst staticData = $getWorkflowStaticData('global');\nstaticData.mj_pdf_page_html = typeof html === 'string' ? html : String(html);\nconst pdfUrl = findEmployerListPdf(staticData.mj_pdf_page_html);\nif (!pdfUrl) throw new Error('Could not find Designated Employer PDF for moose-jaw');\nstaticData.mj_pdf_url = pdfUrl;\nreturn [{ json: { pdfUrl } }];"
+      },
+      "id": "find-pdf",
+      "name": "Find Employer List PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.pdfUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-pdf",
+      "name": "Download Employer PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "extract-pdf",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Moose Jaw RCIP parsers (HTML priority NOC table + designated employers PDF).\n * Usage: node scripts/parse-moose-jaw.mjs\n */\n\nconst COMMUNITY_ID = 'moose-jaw';\nconst YEAR = '2026';\nconst NOC_URL = 'https://rcip.mjchamber.com/employers/';\nconst CANDIDATES_URL = 'https://rcip.mjchamber.com/candidates/';\nconst FALLBACK_PDF =\n  'https://rcip.mjchamber.com/wp-content/uploads/2026/08/designated-employer-list-AUG-26.pdf';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(String(html || '').replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction sectorForNoc(noc) {\n  const map = {\n    1: 'Business, finance and administration',\n    2: 'Natural and applied sciences and related occupations',\n    3: 'Health',\n    4: 'Education, law and social, community and government services',\n    6: 'Sales and service',\n    7: 'Trades and transport',\n    9: 'Manufacturing and utilities',\n  };\n  return map[noc[0]] || '';\n}\n\nfunction findEmployerListPdf(html) {\n  const urls = [];\n  const hrefRe = /href=\"(https?:\\/\\/[^\"]+\\.pdf[^\"]*|\\/[^\"]+\\.pdf[^\"]*)\"/gi;\n  let m;\n  while ((m = hrefRe.exec(html))) {\n    let url = m[1];\n    if (url.startsWith('/')) url = 'https://rcip.mjchamber.com' + url;\n    urls.push(url);\n  }\n  const designated = urls.filter((u) => /designated-employer-list/i.test(u));\n  if (designated.length) {\n    designated.sort();\n    return designated.at(-1);\n  }\n  return FALLBACK_PDF;\n}\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(html))) {\n    const cells = [...m[1].matchAll(/<td[^>]*>([\\s\\S]*?)<\\/td>/gi)].map((c) =>\n      stripTags(c[1]),\n    );\n    if (cells.length < 2) continue;\n    const noc = cells.find((c) => /^\\d{5}$/.test(c)) || cells[0].match(/\\d{5}/)?.[0];\n    if (!noc || seen.has(noc)) continue;\n    const titleIdx = cells.findIndex((c) => c !== noc && c.length > 2 && !/view wages|\\$/i.test(c));\n    const title = titleIdx >= 0 ? cells[titleIdx] : cells[1];\n    if (!title || /occupation code|occupation name/i.test(title)) continue;\n    seen.add(noc);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector: sectorForNoc(noc),\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: '',\n      source_url: NOC_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction isIntroLine(line) {\n  return (\n    /^(individuals|accepting|that match|applicants first|businessess|please do not|most designated|the best way|actively advertised)/i.test(\n      line,\n    ) ||\n    (/\\b(the|and|are|not|for|with|your|them|have)\\b/i.test(line) &&\n      !/\\b(Inc|Ltd|LLC|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Services|Group|Foods|Express|Limited|Corporation|ULC|GP|YMCA|Dental|Medical|Health|Care|Living|Place|Park|Market|Bank|Spa|School|Energy|Auto|Tire|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Apartments|Motel|Brew|Burger|Chicken|Donair|Pharmacy|Grocery|Meats|Roof|Cleaners|Distillery|Rail|Truck|Trailer|Repair|Academy|Chamber|College|Weld|Spa|Box|Leaf|Chok|Chaplin|Carpet|Cash|Cell|Church|Civic|Comfort|Coral|Crescent|Delight|Edo|End|Evolve|Family|Flying|Fountain|Grant|Hertz|Holiday|Hopkin|Houston|Hub|Jade|John|Karis|KFC|Lakeview|Little|McDonald|MNP|Montana|Moose|Mr\\.|Murray|North|Panda|Philthy|Pilgrim|Pomme|Potter|Prairie|Providence|Quality|Ramada|Red|Rodo|Royal|Sahara|Seaborn|Seeds|Smitty|Smooth|Soni|Subway|Super8|Taco|Telefi|Temple|Thunder|TJ|Travelodge|Town|TrailTech|Trifon|Tunnel|Unique|Wendy|West|Western|WinMar|Wok|Wrapture|Xpert|YMCA)\\b/i.test(\n        line,\n      ))\n  );\n}\n\nfunction isLikelyNameStart(line) {\n  if (isIntroLine(line)) return false;\n  if (/^--/.test(line)) return false;\n  if (line.length < 3) return false;\n  return /^[\\dA-Z&]/.test(line);\n}\n\nfunction looksCompleteName(line) {\n  return /\\b(Inc|Ltd|LLC|ULC|Corporation|Limited|Group|Services|College|Hotel|Clinic|Pizza|Restaurant|Inn|Motors|Canada|Construction|Centre|Center|Division|Company|Co-op|Motel|Bank|Spa|School|Division|Express|Place|Park|Market|Foods|Academy|Chamber|Dental|Medical|Health|Care|Living|Village|Apartments|Distillery|Optical|Consulting|YMCA|Tire|Auto|Farm|Transport|Insurance|Accountants|Communications|Professional|Village|Roof|Cleaners|Meats|Grocery|Pharmacy|Brew|Burger|Chicken|Donair|Pharmacy|Lounge|Communications)\\b\\.?\\s*$/i.test(\n    line,\n  );\n}\n\nfunction isContinuation(prev, next) {\n  if (!prev || !next) return false;\n  if (looksCompleteName(prev)) return false;\n  if (/^(Inc|Ltd|LLC|ULC|GP|Division|College)\\.?\\s*$/i.test(next)) return true;\n  if (/^[a-z]/.test(next)) return true;\n  if (/\\b(of|our|the|&|and)\\s*$/i.test(prev.trim())) return true;\n  if (/^Jaw$/i.test(next) && /Moose$/i.test(prev)) return true;\n  if (/^(Lady|Citizen|All|Centre|Center|Foods|Maintenance|Audiology|Parlour|Roll|Villa|Residence|Kitchen|Bar|Shawarma|Dairies|Farms|Stairs|Employees|Orchard|Roofers|Manufacturing|Game On)$/i.test(next))\n    return true;\n  return false;\n}\n\nfunction parseEmployersFromPdfText(text, sourceUrl, nowIso = new Date().toISOString()) {\n  let t = String(text || '').replace(/\\r/g, '');\n  t = t.replace(/--\\s*\\d+\\s*of\\s*\\d+\\s*--/g, '\\n');\n  t = t.replace(/\\*\\* Important Notice[\\s\\S]*?designation later\\./gi, '\\n');\n  t = t.replace(/Current Designated Employers/gi, '\\n');\n\n  const lines = t\n    .split('\\n')\n    .map((l) => l.trim())\n    .filter(Boolean);\n\n  const startIdx = lines.findIndex((l) => isLikelyNameStart(l) && !isIntroLine(l));\n  const dataLines = startIdx >= 0 ? lines.slice(startIdx) : lines;\n\n  const joined = [];\n  let pending = '';\n  for (const line of dataLines) {\n    if (isIntroLine(line)) continue;\n    if (!pending) {\n      pending = line;\n      continue;\n    }\n    if (isContinuation(pending, line)) {\n      pending = `${pending} ${line}`.replace(/\\s+/g, ' ').trim();\n    } else {\n      joined.push(pending);\n      pending = line;\n    }\n  }\n  if (pending) joined.push(pending);\n\n  const seen = new Set();\n  const out = [];\n  for (let name of joined) {\n    name = name.replace(/\\s+/g, ' ').trim();\n    if (!name || name.length < 3) continue;\n    if (/^important notice|^current designated/i.test(name)) continue;\n    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(name)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: name,\n      locations: 'Moose Jaw, SK',\n      sector: '',\n      recruiting_status: 'unknown',\n      source_url: sourceUrl || FALLBACK_PDF,\n      source_type: 'pdf',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: 'Multi-column PDF; some names may be merged or split incorrectly.',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst item = $input.first().json;\nconst text = typeof item === 'string'\n  ? item\n  : (item.text || item.data || item.content || item.pdfText || '');\nconst staticData = $getWorkflowStaticData('global');\nconst sourceUrl = staticData.mj_pdf_url || (typeof FALLBACK_PDF !== 'undefined' ? FALLBACK_PDF : '');\nconst nowIso = new Date().toISOString();\nconst scraped = parseEmployersFromPdfText(String(text || ''), sourceUrl, nowIso);\n\nlet existing = [];\ntry { existing = $('Read Employers').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nstaticData.mj_employer_count = scraped.length;\nstaticData.mj_employer_upserts = upserts.length;\nstaticData.mj_employer_stale = stale.length;\n\nif (!scraped.length) throw new Error('PDF text parsed to 0 employers — check Extract From File output field');\nif (!rows.length) return [{ json: { _skip: true, message: 'No employer rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-employers",
+      "name": "Parse + Merge Employers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-emp",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-employers",
+      "name": "Has Employer Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        2980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "employer_name": "={{ $json.employer_name }}",
+            "locations": "={{ $json.locations }}",
+            "sector": "={{ $json.sector }}",
+            "recruiting_status": "={{ $json.recruiting_status }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}",
+            "notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-employers",
+      "name": "Upsert Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3200,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst started = staticData.mj_run_started || new Date().toISOString();\nconst finished = new Date().toISOString();\nconst upserts = (staticData.mj_noc_upserts || 0) + (staticData.mj_employer_upserts || 0);\nconst stale = (staticData.mj_noc_stale || 0) + (staticData.mj_employer_stale || 0);\nreturn [{\n  json: {\n    run_id: 'moose-jaw-' + started,\n    started_at: started,\n    finished_at: finished,\n    community_id: 'moose-jaw',\n    adapter: 'moose-jaw-html-nocs+pdf-employers',\n    rows_upserted: String(upserts),\n    rows_stale: String(stale),\n    errors: '',\n    ok: 'TRUE',\n  },\n}];"
+      },
+      "id": "build-run-log",
+      "name": "Build Run Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "run_log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "run_id": "={{ $json.run_id }}",
+            "started_at": "={{ $json.started_at }}",
+            "finished_at": "={{ $json.finished_at }}",
+            "community_id": "={{ $json.community_id }}",
+            "adapter": "={{ $json.adapter }}",
+            "rows_upserted": "={{ $json.rows_upserted }}",
+            "rows_stale": "={{ $json.rows_stale }}",
+            "errors": "={{ $json.errors }}",
+            "ok": "={{ $json.ok }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "append-run-log",
+      "name": "Append Run Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3640,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Run": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly Schedule": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Run": {
+      "main": [
+        [
+          {
+            "node": "Read Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Collapse After NOC Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After NOC Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Portal HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Portal HTML": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge NOCs": {
+      "main": [
+        [
+          {
+            "node": "Has NOC Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has NOC Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Crawl Delay 3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl Delay 3s": {
+      "main": [
+        [
+          {
+            "node": "Read Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Employers": {
+      "main": [
+        [
+          {
+            "node": "Collapse After Employer Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After Employer Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch PDF Index HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Employer List PDF": {
+      "main": [
+        [
+          {
+            "node": "Download Employer PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Employer PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge Employers": {
+      "main": [
+        [
+          {
+            "node": "Has Employer Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Employer Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Employers": {
+      "main": [
+        [
+          {
+            "node": "Build Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Run Log": {
+      "main": [
+        [
+          {
+            "node": "Append Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch PDF Index HTML": {
+      "main": [
+        [
+          {
+            "node": "Find Employer List PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Vancouver"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {}
+}

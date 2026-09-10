@@ -1,0 +1,26 @@
+record_id,community_id,noc_code,noc_title,sector,year,is_secondary,restriction_notes,source_url,source_type,first_seen_at,last_seen_at,status,manual_override,review_status
+moose-jaw|12200|2026,moose-jaw,12200,Accounting Technicians and Bookkeepers,"Business, finance and administration",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|13100|2026,moose-jaw,13100,Administrative Officer,"Business, finance and administration",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|14201|2026,moose-jaw,14201,"Banking, Insurance, and Other Financial Clerks","Business, finance and administration",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|22111|2026,moose-jaw,22111,16.,Natural and applied sciences and related occupations,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|33102|2026,moose-jaw,33102,"Nurse Aides, Orderlies & Patient Service Workers (CCAs)",Health,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|33109|2026,moose-jaw,33109,Other Assisting Occupations in Support of Health,Health,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|42201|2026,moose-jaw,42201,Social and Community Service Workers,"Education, law and social, community and government services",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|42202|2026,moose-jaw,42202,ECEs and Assistants,"Education, law and social, community and government services",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|44101|2026,moose-jaw,44101,"Home Support Workers, Caregivers","Education, law and social, community and government services",2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|60020|2026,moose-jaw,60020,23.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|62010|2026,moose-jaw,62010,24.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|63200|2026,moose-jaw,63200,25.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|63211|2026,moose-jaw,63211,"Estheticians, Skin and Nail Techs",Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|64314|2026,moose-jaw,64314,22.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|65310|2026,moose-jaw,65310,19.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|65312|2026,moose-jaw,65312,20.,Sales and service,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|72106|2026,moose-jaw,72106,10.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|72410|2026,moose-jaw,72410,12.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|72411|2026,moose-jaw,72411,13.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|73113|2026,moose-jaw,73113,14.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|73201|2026,moose-jaw,73201,21.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|74203|2026,moose-jaw,74203,11.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|75101|2026,moose-jaw,75101,15.,Trades and transport,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|94141|2026,moose-jaw,94141,18.,Manufacturing and utilities,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new
+moose-jaw|95106|2026,moose-jaw,95106,17.,Manufacturing and utilities,2026,FALSE,,https://rcip.mjchamber.com/employers/,html,2026-09-10T21:07:39.855Z,2026-09-10T21:07:39.855Z,active,FALSE,new

@@ -1,0 +1,676 @@
+{
+  "name": "RCIP Altona/Rhineland — NOCs + Employers",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 15,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        120
+      ],
+      "notesInFlow": true,
+      "notes": "Weekly Mon 15:00 America/Vancouver. Keep Manual Run for ad-hoc."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\ns.ar_run_started=new Date().toISOString();\ns.ar_noc_count=0;s.ar_noc_upserts=0;s.ar_noc_stale=0;\ns.ar_employer_count=0;s.ar_employer_upserts=0;s.ar_employer_stale=0;s.ar_portal_html='';\nreturn [{json:{ok:true}}];"
+      },
+      "id": "init-run",
+      "name": "Init Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "options": {}
+      },
+      "id": "read-priority-nocs",
+      "name": "Read Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_noc_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-noc-read",
+      "name": "Collapse After NOC Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://ared-rpga.com/immigration/rcip-sector/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "fetch-portal",
+      "name": "Fetch Portal HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Altona/Rhineland RCIP parsers (HTML priority NOC table + designated employers list).\n * Usage: node scripts/parse-altona-rhineland.mjs\n */\n\nconst COMMUNITY_ID = 'altona-rhineland';\nconst YEAR = '2026';\nconst NOC_URL = 'https://ared-rpga.com/immigration/rcip-sector/';\nconst EMPLOYERS_URL = 'https://ared-rpga.com/immigration/rcip-employers/';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(String(html || '').replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(html))) {\n    const cells = [...m[1].matchAll(/<td[^>]*>([\\s\\S]*?)<\\/td>/gi)].map((c) =>\n      stripTags(c[1]),\n    );\n    if (cells.length < 2) continue;\n    const noc = cells[0].match(/\\d{5}/)?.[0];\n    if (!noc || seen.has(noc)) continue;\n    const title = cells[1];\n    if (!title || /occupation name|national occupation/i.test(title)) continue;\n    seen.add(noc);\n    const sector = cells[2] || '';\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector,\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: '',\n      source_url: NOC_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction parseEmployers(html, nowIso = new Date().toISOString()) {\n  const start = html.indexOf('List of Designated Employers');\n  const chunk = start >= 0 ? html.slice(start) : html;\n  const re = /<div class=\"td-content\">\\s*([\\s\\S]*?)\\s*<\\/div>/g;\n  const out = [];\n  const seen = new Set();\n  let m;\n  while ((m = re.exec(chunk))) {\n    let text = decodeEntities(m[1].replace(/\\s+/g, ' ').trim());\n    if (!text || text.length < 3) continue;\n\n    let recruiting_status = 'unknown';\n    if (/\\s*[–—-]\\s*Not Currently Hiring\\s*$/i.test(text)) {\n      recruiting_status = 'not_hiring';\n      text = text.replace(/\\s*[–—-]\\s*Not Currently Hiring\\s*$/i, '').trim();\n    }\n\n    const key = text.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(text)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: text,\n      locations: 'Altona/Rhineland, MB',\n      sector: '',\n      recruiting_status,\n      source_url: EMPLOYERS_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: recruiting_status === 'not_hiring' ? 'Source marks employer as not currently hiring.' : '',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst nowIso = new Date().toISOString();\nconst scraped = parsePriorityNocs(typeof html === 'string' ? html : String(html), nowIso);\n\nlet existing = [];\ntry { existing = $('Read Priority NOCs').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.ar_noc_count = scraped.length;\nstaticData.ar_noc_upserts = upserts.length;\nstaticData.ar_noc_stale = stale.length;\nstaticData.ar_run_started = staticData.ar_run_started || nowIso;\nstaticData.ar_portal_html = typeof html === 'string' ? html : String(html);\n\nif (!rows.length) return [{ json: { _skip: true, message: 'No priority NOC rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-nocs",
+      "name": "Parse + Merge NOCs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-noc",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-nocs",
+      "name": "Has NOC Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "priority_nocs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "noc_code": "={{ $json.noc_code }}",
+            "noc_title": "={{ $json.noc_title }}",
+            "sector": "={{ $json.sector }}",
+            "year": "={{ $json.year }}",
+            "is_secondary": "={{ $json.is_secondary }}",
+            "restriction_notes": "={{ $json.restriction_notes }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-nocs",
+      "name": "Upsert Priority NOCs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "await new Promise((r) => setTimeout(r, 3000));\nreturn [{ json: { delayed: true } }];"
+      },
+      "id": "delay-1",
+      "name": "Crawl Delay 3s",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "options": {}
+      },
+      "id": "read-employers",
+      "name": "Read Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1760,
+        300
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: { ready: true, existing_employer_rows: $input.all().length } }];"
+      },
+      "id": "collapse-after-employer-read",
+      "name": "Collapse After Employer Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Altona/Rhineland RCIP parsers (HTML priority NOC table + designated employers list).\n * Usage: node scripts/parse-altona-rhineland.mjs\n */\n\nconst COMMUNITY_ID = 'altona-rhineland';\nconst YEAR = '2026';\nconst NOC_URL = 'https://ared-rpga.com/immigration/rcip-sector/';\nconst EMPLOYERS_URL = 'https://ared-rpga.com/immigration/rcip-employers/';\nconst UA = 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)';\n\nfunction decodeEntities(s) {\n  return String(s || '')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&#8211;/g, '–')\n    .replace(/&#8217;/g, \"'\")\n    .replace(/&#038;/g, '&')\n    .replace(/&rsquo;/g, \"'\")\n    .replace(/&[a-z]+;/gi, ' ');\n}\n\nfunction stripTags(html) {\n  return decodeEntities(String(html || '').replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction normalizeIdPart(s) {\n  return String(s || '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/^-+|-+$/g, '')\n    .slice(0, 80);\n}\n\n\nfunction parsePriorityNocs(html, nowIso = new Date().toISOString()) {\n  const out = [];\n  const seen = new Set();\n  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;\n  let m;\n  while ((m = rowRe.exec(html))) {\n    const cells = [...m[1].matchAll(/<td[^>]*>([\\s\\S]*?)<\\/td>/gi)].map((c) =>\n      stripTags(c[1]),\n    );\n    if (cells.length < 2) continue;\n    const noc = cells[0].match(/\\d{5}/)?.[0];\n    if (!noc || seen.has(noc)) continue;\n    const title = cells[1];\n    if (!title || /occupation name|national occupation/i.test(title)) continue;\n    seen.add(noc);\n    const sector = cells[2] || '';\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${noc}|${YEAR}`,\n      community_id: COMMUNITY_ID,\n      noc_code: noc,\n      noc_title: title,\n      sector,\n      year: YEAR,\n      is_secondary: 'FALSE',\n      restriction_notes: '',\n      source_url: NOC_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n    });\n  }\n  return out.sort((a, b) => a.noc_code.localeCompare(b.noc_code));\n}\n\nfunction parseEmployers(html, nowIso = new Date().toISOString()) {\n  const start = html.indexOf('List of Designated Employers');\n  const chunk = start >= 0 ? html.slice(start) : html;\n  const re = /<div class=\"td-content\">\\s*([\\s\\S]*?)\\s*<\\/div>/g;\n  const out = [];\n  const seen = new Set();\n  let m;\n  while ((m = re.exec(chunk))) {\n    let text = decodeEntities(m[1].replace(/\\s+/g, ' ').trim());\n    if (!text || text.length < 3) continue;\n\n    let recruiting_status = 'unknown';\n    if (/\\s*[–—-]\\s*Not Currently Hiring\\s*$/i.test(text)) {\n      recruiting_status = 'not_hiring';\n      text = text.replace(/\\s*[–—-]\\s*Not Currently Hiring\\s*$/i, '').trim();\n    }\n\n    const key = text.toLowerCase().replace(/[^a-z0-9]+/g, '');\n    if (!key || seen.has(key)) continue;\n    seen.add(key);\n\n    out.push({\n      record_id: `${COMMUNITY_ID}|${normalizeIdPart(text)}`,\n      community_id: COMMUNITY_ID,\n      employer_name: text,\n      locations: 'Altona/Rhineland, MB',\n      sector: '',\n      recruiting_status,\n      source_url: EMPLOYERS_URL,\n      source_type: 'html',\n      first_seen_at: nowIso,\n      last_seen_at: nowIso,\n      status: 'active',\n      manual_override: 'FALSE',\n      review_status: 'new',\n      notes: recruiting_status === 'not_hiring' ? 'Source marks employer as not currently hiring.' : '',\n    });\n  }\n  return out.sort((a, b) => a.employer_name.localeCompare(b.employer_name));\n}\n\nfunction mergeUpserts(scraped, existingRows, communityId = COMMUNITY_ID) {\n  const existingById = new Map();\n  for (const row of existingRows) {\n    const id = (row.record_id || '').toString();\n    if (id) existingById.set(id, row);\n  }\n  const scrapedIds = new Set(scraped.map((r) => r.record_id));\n  const nowIso = new Date().toISOString();\n  const upserts = [];\n  for (const row of scraped) {\n    const prev = existingById.get(row.record_id);\n    if (prev && String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if (prev) {\n      upserts.push({\n        ...row,\n        first_seen_at: prev.first_seen_at || row.first_seen_at,\n        last_seen_at: nowIso,\n        review_status: prev.review_status === 'ok' ? 'ok' : 'new',\n        manual_override: prev.manual_override || 'FALSE',\n      });\n    } else upserts.push(row);\n  }\n  const stale = [];\n  for (const [id, prev] of existingById) {\n    if (scrapedIds.has(id)) continue;\n    if (String(prev.manual_override).toUpperCase() === 'TRUE') continue;\n    if ((prev.community_id || '') !== communityId) continue;\n    if (prev.status === 'stale' || prev.status === 'removed') continue;\n    stale.push({ ...prev, status: 'stale', last_seen_at: nowIso, review_status: 'needs_review' });\n  }\n  return { upserts, stale };\n}\n\nconst raw = $input.first().json;\nconst html = typeof raw === 'string' ? raw : (raw.data || raw.body || '');\nconst nowIso = new Date().toISOString();\nconst scraped = parseEmployers(typeof html === 'string' ? html : String(html), nowIso);\n\nlet existing = [];\ntry { existing = $('Read Employers').all().map((i) => i.json); } catch (e) { existing = []; }\n\nconst { upserts, stale } = mergeUpserts(scraped, existing);\nconst rows = [...upserts, ...stale];\nconst staticData = $getWorkflowStaticData('global');\nstaticData.ar_employer_count = scraped.length;\nstaticData.ar_employer_upserts = upserts.length;\nstaticData.ar_employer_stale = stale.length;\n\nif (!scraped.length) throw new Error('HTML parsed to 0 employers');\nif (!rows.length) return [{ json: { _skip: true, message: 'No employer rows' } }];\nreturn rows.map((r) => ({ json: r }));"
+      },
+      "id": "parse-employers",
+      "name": "Parse + Merge Employers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip-emp",
+              "leftValue": "={{ $json._skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-employers",
+      "name": "Has Employer Rows?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        2980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "employers"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ $json.record_id }}",
+            "community_id": "={{ $json.community_id }}",
+            "employer_name": "={{ $json.employer_name }}",
+            "locations": "={{ $json.locations }}",
+            "sector": "={{ $json.sector }}",
+            "recruiting_status": "={{ $json.recruiting_status }}",
+            "source_url": "={{ $json.source_url }}",
+            "source_type": "={{ $json.source_type }}",
+            "first_seen_at": "={{ $json.first_seen_at }}",
+            "last_seen_at": "={{ $json.last_seen_at }}",
+            "status": "={{ $json.status }}",
+            "manual_override": "={{ $json.manual_override }}",
+            "review_status": "={{ $json.review_status }}",
+            "notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "upsert-employers",
+      "name": "Upsert Employers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3200,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst started = staticData.ar_run_started || new Date().toISOString();\nconst finished = new Date().toISOString();\nconst upserts = (staticData.ar_noc_upserts || 0) + (staticData.ar_employer_upserts || 0);\nconst stale = (staticData.ar_noc_stale || 0) + (staticData.ar_employer_stale || 0);\nreturn [{\n  json: {\n    run_id: 'altona-rhineland-' + started,\n    started_at: started,\n    finished_at: finished,\n    community_id: 'altona-rhineland',\n    adapter: 'altona-html-nocs+html-employers',\n    rows_upserted: String(upserts),\n    rows_stale: String(stale),\n    errors: '',\n    ok: 'TRUE',\n  },\n}];"
+      },
+      "id": "build-run-log",
+      "name": "Build Run Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "run_log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "run_id": "={{ $json.run_id }}",
+            "started_at": "={{ $json.started_at }}",
+            "finished_at": "={{ $json.finished_at }}",
+            "community_id": "={{ $json.community_id }}",
+            "adapter": "={{ $json.adapter }}",
+            "rows_upserted": "={{ $json.rows_upserted }}",
+            "rows_stale": "={{ $json.rows_stale }}",
+            "errors": "={{ $json.errors }}",
+            "ok": "={{ $json.ok }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "append-run-log",
+      "name": "Append Run Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3640,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://ared-rpga.com/immigration/rcip-employers/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/json,application/pdf"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "altona-rhineland-fetch-employers",
+      "name": "Fetch Employers HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Run": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly Schedule": {
+      "main": [
+        [
+          {
+            "node": "Init Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Run": {
+      "main": [
+        [
+          {
+            "node": "Read Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Collapse After NOC Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After NOC Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Portal HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Portal HTML": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge NOCs": {
+      "main": [
+        [
+          {
+            "node": "Has NOC Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has NOC Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Priority NOCs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Priority NOCs": {
+      "main": [
+        [
+          {
+            "node": "Crawl Delay 3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl Delay 3s": {
+      "main": [
+        [
+          {
+            "node": "Read Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Employers": {
+      "main": [
+        [
+          {
+            "node": "Collapse After Employer Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collapse After Employer Read": {
+      "main": [
+        [
+          {
+            "node": "Fetch Employers HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Merge Employers": {
+      "main": [
+        [
+          {
+            "node": "Has Employer Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Employer Rows?": {
+      "main": [
+        [
+          {
+            "node": "Upsert Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Employers": {
+      "main": [
+        [
+          {
+            "node": "Build Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Run Log": {
+      "main": [
+        [
+          {
+            "node": "Append Run Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Employers HTML": {
+      "main": [
+        [
+          {
+            "node": "Parse + Merge Employers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Vancouver"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {}
+}

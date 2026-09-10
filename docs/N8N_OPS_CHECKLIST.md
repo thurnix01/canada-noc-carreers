@@ -10,6 +10,17 @@ Confirm in n8n that each workflow is **Active** and timezone is **America/Vancou
 | Timmins | `n8n/timmins-scrape.workflow.json` | Mon **09:00** |
 | North Bay | `n8n/north-bay-scrape.workflow.json` | Mon **10:00** |
 | Thunder Bay | `n8n/thunder-bay-scrape.workflow.json` | Mon **11:00** |
+| Pictou County | `n8n/pictou-county-scrape.workflow.json` | Mon **12:00** |
+| Sudbury | `n8n/sudbury-scrape.workflow.json` | Mon **13:00** |
+| Sault Ste. Marie | `n8n/sault-ste-marie-scrape.workflow.json` | Mon **14:00** |
+| Altona/Rhineland | `n8n/altona-rhineland-scrape.workflow.json` | Mon **15:00** |
+| Brandon | `n8n/brandon-scrape.workflow.json` | Mon **16:00** |
+| Moose Jaw | `n8n/moose-jaw-scrape.workflow.json` | Mon **17:00** |
+| Claresholm | `n8n/claresholm-scrape.workflow.json` | Mon **18:00** |
+
+**Peace Liard** stays manual (NOCs in Sheet/seeds; no scrapable employer list on the Wix site).
+
+PDF workflows (Pictou, Moose Jaw, Thunder Bay, Steinbach, Timmins, NOS): enable **Extract From File** / PDF text node after import.
 
 After Monday runs (or any Manual Run):
 
