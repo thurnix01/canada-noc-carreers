@@ -33,7 +33,7 @@ function prefix(id) {
     .slice(0, 4);
 }
 
-function httpTextNode(id, name, url, position) {
+function httpTextNode(id, name, url, position, { allowUnauthorizedCerts = false } = {}) {
   return {
     parameters: {
       url,
@@ -47,6 +47,7 @@ function httpTextNode(id, name, url, position) {
       options: {
         response: { response: { responseFormat: 'text' } },
         timeout: 30000,
+        ...(allowUnauthorizedCerts ? { allowUnauthorizedCerts: true } : {}),
       },
     },
     id,
@@ -166,11 +167,25 @@ return [{
     if (node.name === 'Init Run') {
       node.parameters.jsCode = `const s=$getWorkflowStaticData('global');\ns.${p}_run_started=new Date().toISOString();\ns.${p}_noc_count=0;s.${p}_noc_upserts=0;s.${p}_noc_stale=0;\ns.${p}_employer_count=0;s.${p}_employer_upserts=0;s.${p}_employer_stale=0;s.${p}_pdf_url='';s.${p}_portal_html='';s.${p}_pdf_page_html='';\nreturn [{json:{ok:true}}];`;
     }
-    if (node.name === 'Fetch Portal HTML') node.parameters.url = cfg.nocUrl;
+    if (node.name === 'Fetch Portal HTML') {
+      node.parameters.url = cfg.nocUrl;
+      if (cfg.allowUnauthorizedCerts) {
+        node.parameters.options = {
+          ...(node.parameters.options || {}),
+          allowUnauthorizedCerts: true,
+        };
+      }
+    }
     if (node.name === 'Parse + Merge NOCs') node.parameters.jsCode = parseNocsCode;
     if (node.name === 'Find Employer List PDF') node.parameters.jsCode = findPdfCode;
     if (node.name === 'Parse + Merge Employers') node.parameters.jsCode = parseEmployersCode;
     if (node.name === 'Build Run Log') node.parameters.jsCode = runLogCode;
+    if (cfg.allowUnauthorizedCerts && node.type === 'n8n-nodes-base.httpRequest') {
+      node.parameters.options = {
+        ...(node.parameters.options || {}),
+        allowUnauthorizedCerts: true,
+      };
+    }
   }
 
   // For communities that need a separate page to discover the PDF link
@@ -181,6 +196,7 @@ return [{
       'Fetch PDF Index HTML',
       cfg.pdfPageUrl,
       [2000, 300],
+      { allowUnauthorizedCerts: !!cfg.allowUnauthorizedCerts },
     );
     workflow.nodes.splice(findIdx, 0, fetchPdfPage);
     // rewire: Collapse After Employer Read -> Fetch PDF Index HTML -> Find Employer List PDF
@@ -345,6 +361,7 @@ return [{
         'Fetch Employers HTML',
         cfg.employersUrl,
         [2100, 300],
+        { allowUnauthorizedCerts: !!cfg.allowUnauthorizedCerts },
       ),
     );
   } else {
@@ -368,13 +385,27 @@ return [{
     if (node.name === 'Init Run') {
       node.parameters.jsCode = `const s=$getWorkflowStaticData('global');\ns.${p}_run_started=new Date().toISOString();\ns.${p}_noc_count=0;s.${p}_noc_upserts=0;s.${p}_noc_stale=0;\ns.${p}_employer_count=0;s.${p}_employer_upserts=0;s.${p}_employer_stale=0;s.${p}_portal_html='';\nreturn [{json:{ok:true}}];`;
     }
-    if (node.name === 'Fetch Portal HTML') node.parameters.url = cfg.nocUrl;
+    if (node.name === 'Fetch Portal HTML') {
+      node.parameters.url = cfg.nocUrl;
+      if (cfg.allowUnauthorizedCerts) {
+        node.parameters.options = {
+          ...(node.parameters.options || {}),
+          allowUnauthorizedCerts: true,
+        };
+      }
+    }
     if (node.name === 'Parse + Merge NOCs') node.parameters.jsCode = parseNocsCode;
     if (node.name === 'Parse + Merge Employers') {
       node.parameters.jsCode = parseEmployersCode;
       node.position = [2320, 300];
     }
     if (node.name === 'Build Run Log') node.parameters.jsCode = runLogCode;
+    if (cfg.allowUnauthorizedCerts && node.type === 'n8n-nodes-base.httpRequest') {
+      node.parameters.options = {
+        ...(node.parameters.options || {}),
+        allowUnauthorizedCerts: true,
+      };
+    }
   }
 
   const employerSourceNode = cfg.samePageForEmployers ? 'Reuse Portal HTML' : 'Fetch Employers HTML';
@@ -449,6 +480,8 @@ const configs = [
     employersUrl: 'https://economicdevelopmentbrandon.com/rcip/rcip-list-of-designated-employers',
     hour: 16,
     adapter: 'brandon-html-nocs+html-employers',
+    // Site presents an incomplete TLS chain; local parser already uses rejectUnauthorized:false.
+    allowUnauthorizedCerts: true,
   },
   {
     mode: 'pdf',

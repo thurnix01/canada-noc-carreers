@@ -8,7 +8,7 @@ Import each workflow JSON from `n8n/`, attach Google Sheets credentials, run **M
 | Sudbury | `n8n/sudbury-scrape.workflow.json` | No |
 | Sault Ste. Marie | `n8n/sault-ste-marie-scrape.workflow.json` | No |
 | Altona/Rhineland | `n8n/altona-rhineland-scrape.workflow.json` | No |
-| Brandon | `n8n/brandon-scrape.workflow.json` | No |
+| Brandon | `n8n/brandon-scrape.workflow.json` | No (enable **Ignore SSL Issues** on HTTP nodes — site has a broken cert chain) |
 | Moose Jaw | `n8n/moose-jaw-scrape.workflow.json` | Yes |
 | Claresholm | `n8n/claresholm-scrape.workflow.json` | No |
 
