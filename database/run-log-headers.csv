@@ -1,0 +1,1 @@
+run_id,started_at,finished_at,community_id,adapter,rows_upserted,rows_stale,errors,ok

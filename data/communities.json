@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "program": "Rural Community Immigration Pilot (RCIP)",
+    "ircc_job_offer_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration/job-offer.html",
+    "pilot_phase": "bc-3",
+    "updated_at": "2026-09-09",
+    "notes": "Canada.ca is a directory only. Job/NOC/employer data lives on community portals."
+  },
+  "communities": [
+    {
+      "community_id": "west-kootenay",
+      "name": "West Kootenay",
+      "province": "BC",
+      "canada_ca_label": "West Kootenay, BC",
+      "portal_url": "https://westkootenayimmigration.ca/",
+      "portal_alias_urls": ["https://wk-rnip.ca/"],
+      "operator": "Community Futures Central Kootenay",
+      "priority_nocs_url": "https://westkootenayimmigration.ca/priorities/",
+      "employers_url": "https://westkootenayimmigration.ca/designated-employers/",
+      "jobs_url": "https://westkootenayimmigration.ca/find-a-job/",
+      "robots_notes": "Crawl-delay 3; Disallow /*?",
+      "scrape_status": "ready",
+      "adapters": {
+        "priority_nocs": "html",
+        "employers": "html",
+        "jobs": "link_out"
+      },
+      "active": true,
+      "pilot": true
+    },
+    {
+      "community_id": "north-okanagan-shuswap",
+      "name": "North Okanagan Shuswap",
+      "province": "BC",
+      "canada_ca_label": "North Okanagan Shuswap, BC",
+      "portal_url": "https://rcipnorthokanaganshuswap.com/",
+      "portal_alias_urls": [],
+      "operator": "Community Futures North Okanagan; Community Futures Shuswap",
+      "priority_nocs_url": "https://rcipnorthokanaganshuswap.com/priority-sectors-nocs/",
+      "employers_url": "https://rcipnorthokanaganshuswap.com/resources-and-policies/",
+      "employers_list_pdf_example": "https://rcipnorthokanaganshuswap.com/wp-content/uploads/2026/08/RCIP-North-Okanagan-Shuswap-Designated-Employer-List-July-31-2026.pdf",
+      "jobs_url": "https://rcipnorthokanaganshuswap.com/faqs/",
+      "employer_platform_url": "https://rcip.northstarats.com/",
+      "robots_notes": "Allow all; sitemap available",
+      "scrape_status": "ready",
+      "adapters": {
+        "priority_nocs": "html",
+        "employers": "pdf",
+        "jobs": "link_out"
+      },
+      "active": true,
+      "pilot": true
+    },
+    {
+      "community_id": "peace-liard",
+      "name": "Peace Liard",
+      "province": "BC",
+      "canada_ca_label": "Peace Liard, BC",
+      "portal_url": "https://www.nebcimmigration.ca/",
+      "portal_alias_urls": [],
+      "operator": "Northeast BC RCIP (Peace Liard Region)",
+      "priority_nocs_url": "https://www.nebcimmigration.ca/priority-occupations",
+      "employers_url": "https://www.nebcimmigration.ca/employers",
+      "jobs_url": "https://www.nebcimmigration.ca/candidates",
+      "robots_notes": "Allow /; Disallow *?lightbox=",
+      "scrape_status": "manual",
+      "adapters": {
+        "priority_nocs": "manual",
+        "employers": "manual",
+        "jobs": "link_out"
+      },
+      "active": true,
+      "pilot": true,
+      "notes": "Wix site; 2026 priority NOC list not reliably extractable from HTML (likely image). Prefer manual Sheet entry until PDF/OCR adapter."
+    },
+    {
+      "community_id": "pictou-county",
+      "name": "Pictou County",
+      "province": "NS",
+      "canada_ca_label": "Pictou County, NS",
+      "portal_url": "https://pictoucountypartnership.com/rcip/",
+      "portal_alias_urls": ["https://pcrcip.ca/"],
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "north-bay",
+      "name": "North Bay",
+      "province": "ON",
+      "canada_ca_label": "North Bay, ON",
+      "portal_url": "https://nbrcip.ca/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "sudbury",
+      "name": "Sudbury",
+      "province": "ON",
+      "canada_ca_label": "Sudbury, ON",
+      "portal_url": "https://investsudbury.ca/why-sudbury/newcomers/rcipfcip/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "timmins",
+      "name": "Timmins",
+      "province": "ON",
+      "canada_ca_label": "Timmins, ON",
+      "portal_url": "https://timminsedc.com/immigration/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "sault-ste-marie",
+      "name": "Sault Ste. Marie",
+      "province": "ON",
+      "canada_ca_label": "Sault Ste. Marie, ON",
+      "portal_url": "https://welcometossm.com/rcip/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "thunder-bay",
+      "name": "Thunder Bay",
+      "province": "ON",
+      "canada_ca_label": "Thunder Bay, ON",
+      "portal_url": "https://gotothunderbay.ca/why-thunder-bay/immigration/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "steinbach",
+      "name": "Steinbach",
+      "province": "MB",
+      "canada_ca_label": "Steinbach, MB",
+      "portal_url": "https://steinbachedc.com/rcip/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "altona-rhineland",
+      "name": "Altona/Rhineland",
+      "province": "MB",
+      "canada_ca_label": "Altona/Rhineland, MB",
+      "portal_url": "https://ared-rpga.com/immigration/rcip/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "brandon",
+      "name": "Brandon",
+      "province": "MB",
+      "canada_ca_label": "Brandon, MB",
+      "portal_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "moose-jaw",
+      "name": "Moose Jaw",
+      "province": "SK",
+      "canada_ca_label": "Moose Jaw, SK",
+      "portal_url": "https://rcip.mjchamber.com/",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    },
+    {
+      "community_id": "claresholm",
+      "name": "Claresholm",
+      "province": "AB",
+      "canada_ca_label": "Claresholm, AB",
+      "portal_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
+      "scrape_status": "todo",
+      "active": false,
+      "pilot": false
+    }
+  ]
+}

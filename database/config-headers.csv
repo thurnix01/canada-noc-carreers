@@ -1,0 +1,13 @@
+key,value
+google_sheet_id,1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo
+google_sheet_url,https://docs.google.com/spreadsheets/d/1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo/edit
+communities_tab,database
+pilot_communities,"west-kootenay,north-okanagan-shuswap,peace-liard"
+crawl_delay_ms,3000
+user_agent,RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)
+export_path,public/data/listings.json
+utm_source,rcip-aggregator
+utm_medium,referral
+utm_campaign,bc-pilot
+clarity_note,Install Microsoft Clarity on the GitHub Pages site before public launch — track search filters and outbound clicks to community portals
+last_export_at,

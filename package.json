@@ -1,0 +1,21 @@
+{
+  "name": "canada-noc-carreers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "RCIP curated aggregator — n8n + Google Sheets + GitHub Pages",
+  "scripts": {
+    "parse:wk": "node scripts/parse-west-kootenay.mjs",
+    "parse:nos": "node scripts/parse-north-okanagan-shuswap.mjs",
+    "build:wk-n8n": "node scripts/build-wk-n8n-workflow.mjs",
+    "build:nos-n8n": "node scripts/build-nos-n8n-workflow.mjs",
+    "export:data": "node scripts/export-listings.mjs",
+    "dev": "npm run export:data && npm run dev --prefix web",
+    "build": "npm run export:data && npm run build --prefix web",
+    "preview": "npm run preview --prefix web",
+    "deploy": "npm run export:data && npm run deploy --prefix web"
+  },
+  "dependencies": {
+    "pdf-parse": "^2.4.5"
+  }
+}

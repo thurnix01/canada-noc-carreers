@@ -1,0 +1,11 @@
+node_modules/
+web/node_modules/
+web/dist/
+.DS_Store
+.env
+.env.*
+*.log
+*.zip
+
+# Raw stock / Envato masters (optimized copies live in web/public/images)
+images/
