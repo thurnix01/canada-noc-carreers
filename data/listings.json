@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-11T03:52:55.372Z",
+  "generated_at": "2026-09-11T03:53:56.574Z",
   "sheet_id": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo",
   "counts": {
     "communities": 14,
@@ -52376,8 +52376,8 @@
       "jobs_url": "https://pcrcip.ca/candidates/",
       "notes": "",
       "updated_at": "2026-09-10T21:27:17.684Z",
-      "hiring_status": "hiring",
-      "jobbank_hits": 31
+      "hiring_status": "unknown",
+      "jobbank_hits": null
     }
   ]
 }
