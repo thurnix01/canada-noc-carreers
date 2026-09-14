@@ -26,10 +26,12 @@
     "build:thunder-bay-n8n": "node scripts/build-thunder-bay-n8n-workflow.mjs",
     "build:remaining-n8n": "node scripts/build-remaining-n8n-workflows.mjs",
     "export:data": "node scripts/export-listings.mjs",
-    "dev": "npm run export:data && npm run dev --prefix web",
+    "export:data:fast": "SKIP_JOBBANK=1 node scripts/export-listings.mjs",
+    "dev": "npm run export:data:fast && npm run dev --prefix web",
     "build": "npm run export:data && npm run build --prefix web",
     "preview": "npm run preview --prefix web",
-    "deploy": "npm run export:data && npm run deploy --prefix web"
+    "deploy": "npm run export:data && npm run deploy --prefix web",
+    "deploy:pages": "npm run deploy --prefix web"
   },
   "dependencies": {
     "pdf-parse": "^2.4.5"

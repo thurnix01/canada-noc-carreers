@@ -105,7 +105,20 @@ function mergeByRecordId(sheetRows, seedRows) {
     if (row.record_id) byId.set(row.record_id, row);
   }
   for (const row of sheetRows) {
-    if (row.record_id) byId.set(row.record_id, row);
+    if (!row.record_id) continue;
+    const existing = byId.get(row.record_id);
+    if (!existing) {
+      byId.set(row.record_id, row);
+      continue;
+    }
+    // Sheet wins by default, but keep a real occupation title when Sheet stored a list rank ("11").
+    const merged = { ...existing, ...row };
+    const sheetTitle = String(row.noc_title || '').trim();
+    const seedTitle = String(existing.noc_title || '').trim();
+    if (/^\d+\.?$/.test(sheetTitle) && seedTitle && !/^\d+\.?$/.test(seedTitle)) {
+      merged.noc_title = seedTitle;
+    }
+    byId.set(row.record_id, merged);
   }
   return [...byId.values()];
 }
@@ -113,6 +126,221 @@ function mergeByRecordId(sheetRows, seedRows) {
 function isActive(row) {
   const s = (row.status || '').toLowerCase();
   return !s || s === 'active';
+}
+
+/** Normalize portal recruiting flags + note heuristics into a provisional hiring_status.
+ *  Portal "hiring" is only kept after Job Bank verification finds postings. */
+function deriveHiringStatus(type, row) {
+  if (type === 'priority_noc') return 'eligible';
+  if (type === 'job') return 'open';
+
+  const raw = String(row.recruiting_status || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, '_');
+  if (
+    raw === 'not_hiring' ||
+    raw === 'not_recruiting' ||
+    raw === 'no' ||
+    raw === 'closed'
+  ) {
+    return 'not_hiring';
+  }
+
+  const blob = `${row.notes || ''} ${row.employer_name || ''}`.toLowerCase();
+  if (/\bnot\s+(currently\s+)?(hiring|recruiting)\b|\bnot\s+hiring\b|\bdo not contact\b/.test(blob)) {
+    return 'not_hiring';
+  }
+  // PDF/HTML scrapes sometimes emit status phrases as fake employer names.
+  const name = String(row.employer_name || '').trim().toLowerCase();
+  if (
+    !name ||
+    name.length < 3 ||
+    /^(recruiting|not currently recruiting|hiring|designated employers?)$/i.test(name)
+  ) {
+    return 'unknown';
+  }
+  if (raw === 'hiring' || raw === 'recruiting' || raw === 'yes') return 'hiring';
+  if (/\b(currently\s+)?hiring\b|\brecruiting\b|\bseeking to hire\b/.test(blob)) return 'hiring';
+  return 'unknown';
+}
+
+const JOB_BANK_LOCATIONS = {
+  'west-kootenay': 'Nelson, BC',
+  'north-okanagan-shuswap': 'Vernon, BC',
+  'peace-liard': 'Fort St. John, BC',
+  'pictou-county': 'New Glasgow, NS',
+  'north-bay': 'North Bay, ON',
+  sudbury: 'Greater Sudbury, ON',
+  timmins: 'Timmins, ON',
+  'sault-ste-marie': 'Sault Ste. Marie, ON',
+  'thunder-bay': 'Thunder Bay, ON',
+  steinbach: 'Steinbach, MB',
+  'altona-rhineland': 'Altona, MB',
+  brandon: 'Brandon, MB',
+  'moose-jaw': 'Moose Jaw, SK',
+  claresholm: 'Claresholm, AB',
+};
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+/** Count Job Bank postings for an employer or NOC near a community hub. */
+async function fetchJobBankHits({ employerName, nocCode, communityId, province, communityName, radiusKm = 100 }) {
+  const location =
+    JOB_BANK_LOCATIONS[communityId] || [communityName, province].filter(Boolean).join(', ');
+  const u = new URL('https://www.jobbank.gc.ca/jobsearch/jobsearch');
+  u.searchParams.set('sort', 'M');
+  u.searchParams.set('d', String(radiusKm));
+  if (location) u.searchParams.set('locationstring', location);
+  if (nocCode) u.searchParams.set('fn21', String(nocCode).replace(/\D/g, ''));
+  else if (employerName) u.searchParams.set('empl', employerName);
+
+  const res = await fetch(u, {
+    headers: {
+      'User-Agent': 'RCIPAggregatorBot/0.1 (+mailto:absolondesigns@gmail.com)',
+      'Accept-Language': 'en-CA',
+      Accept: 'text/html',
+    },
+  });
+  if (!res.ok) throw new Error(`Job Bank HTTP ${res.status}`);
+  const html = await res.text();
+  const m = html.match(/View\s+([\d,]+)\s+job/i);
+  if (!m) return null;
+  return Number(m[1].replace(/,/g, ''));
+}
+
+/**
+ * Portal "hiring" claims are provisional until Job Bank shows matching postings.
+ * Demote to unknown when hits are 0; keep hiring only when hits > 0.
+ * Also attach Job Bank hit counts to eligible NOCs for the Job Bank button label.
+ */
+async function verifyHiringAgainstJobBank(listings) {
+  const prevPath = join(__dirname, '..', 'web', 'public', 'data', 'listings.json');
+  let prevById = new Map();
+  let prevCheckedAt = null;
+  if (existsSync(prevPath)) {
+    try {
+      const prev = JSON.parse(readFileSync(prevPath, 'utf8'));
+      prevCheckedAt = prev.jobbank_checked_at || null;
+      for (const l of prev.listings || []) {
+        if (l?.id) prevById.set(l.id, l);
+      }
+    } catch {
+      /* ignore stale cache */
+    }
+  }
+
+  if (String(process.env.SKIP_JOBBANK || '').match(/^(1|true|yes)$/i)) {
+    console.log('SKIP_JOBBANK set — copying prior jobbank_hits from listings.json when available');
+    for (const listing of listings) {
+      const prev = prevById.get(listing.id);
+      if (!prev) continue;
+      if ('jobbank_hits' in prev) listing.jobbank_hits = prev.jobbank_hits;
+      if (prev.jobbank_checked_at) listing.jobbank_checked_at = prev.jobbank_checked_at;
+      if (
+        listing.type === 'employer' &&
+        listing.hiring_status === 'hiring' &&
+        typeof prev.jobbank_hits === 'number'
+      ) {
+        listing.hiring_status = prev.jobbank_hits > 0 ? 'hiring' : 'unknown';
+      }
+    }
+    return prevCheckedAt;
+  }
+
+  const checkedAt = new Date().toISOString();
+  const candidates = listings.filter((l) => l.type === 'employer' && l.hiring_status === 'hiring');
+  console.log(`Verifying Job Bank hits for ${candidates.length} portal-hiring employers…`);
+  let kept = 0;
+  let demoted = 0;
+  let failed = 0;
+
+  for (const listing of candidates) {
+    try {
+      const hits = await fetchJobBankHits({
+        employerName: listing.employer_name || listing.title,
+        communityId: listing.community_id,
+        province: listing.province,
+        communityName: listing.community_name,
+        radiusKm: 100,
+      });
+      listing.jobbank_hits = hits;
+      listing.jobbank_checked_at = checkedAt;
+      if (hits == null) {
+        listing.hiring_status = 'unknown';
+        failed += 1;
+      } else if (hits > 0) {
+        listing.hiring_status = 'hiring';
+        kept += 1;
+      } else {
+        listing.hiring_status = 'unknown';
+        demoted += 1;
+      }
+      console.log(
+        `  ${listing.employer_name}: ${hits == null ? 'parse-fail' : hits + ' hits'} → ${listing.hiring_status}`,
+      );
+    } catch (err) {
+      listing.jobbank_hits = null;
+      listing.jobbank_checked_at = checkedAt;
+      listing.hiring_status = 'unknown';
+      failed += 1;
+      console.warn(`  ${listing.employer_name}: ${err.message} → unknown`);
+    }
+    await sleep(350);
+  }
+
+  console.log(`Job Bank verify: kept ${kept} hiring, demoted ${demoted}, failed ${failed}`);
+
+  const nocs = listings.filter((l) => l.type === 'priority_noc' && l.noc_code);
+  console.log(`Verifying Job Bank hits for ${nocs.length} eligible NOCs (parallel)…`);
+  const cache = new Map();
+  let nocOk = 0;
+  let nocFail = 0;
+
+  async function hitsForNoc(listing) {
+    const key = `${listing.noc_code}|${listing.community_id}`;
+    if (cache.has(key)) return cache.get(key);
+    const hits = await fetchJobBankHits({
+      nocCode: listing.noc_code,
+      communityId: listing.community_id,
+      province: listing.province,
+      communityName: listing.community_name,
+      radiusKm: 500,
+    });
+    cache.set(key, hits);
+    return hits;
+  }
+
+  await mapPool(nocs, 8, async (listing) => {
+    try {
+      const hits = await hitsForNoc(listing);
+      listing.jobbank_hits = hits;
+      listing.jobbank_checked_at = checkedAt;
+      if (hits == null) nocFail += 1;
+      else nocOk += 1;
+    } catch (err) {
+      listing.jobbank_hits = null;
+      listing.jobbank_checked_at = checkedAt;
+      nocFail += 1;
+      console.warn(`  NOC ${listing.noc_code} (${listing.community_id}): ${err.message}`);
+    }
+  });
+  console.log(`NOC Job Bank verify: ${nocOk} counted, ${nocFail} failed (${cache.size} unique queries)`);
+  return checkedAt;
+}
+
+/** Run async work over items with a fixed concurrency limit. */
+async function mapPool(items, concurrency, worker) {
+  let i = 0;
+  const runners = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (i < items.length) {
+      const idx = i++;
+      await worker(items[idx], idx);
+    }
+  });
+  await Promise.all(runners);
 }
 
 function mapCommunity(c, source) {
@@ -219,6 +447,8 @@ async function main() {
       jobs_url: meta.jobs_url || '',
       notes: row.restriction_notes || '',
       updated_at: row.last_seen_at || '',
+      hiring_status: deriveHiringStatus('priority_noc', row),
+      jobbank_hits: null,
     });
   }
 
@@ -240,6 +470,8 @@ async function main() {
       jobs_url: meta.jobs_url || '',
       notes: row.notes || '',
       updated_at: row.last_seen_at || '',
+      hiring_status: deriveHiringStatus('employer', row),
+      jobbank_hits: null,
     });
   }
 
@@ -261,11 +493,15 @@ async function main() {
       jobs_url: meta.jobs_url || '',
       notes: row.notes || '',
       updated_at: row.last_seen_at || row.posted_at || '',
+      hiring_status: deriveHiringStatus('job', row),
     });
   }
 
+  const jobbankCheckedAt = await verifyHiringAgainstJobBank(listings);
+
   const payload = {
     generated_at: new Date().toISOString(),
+    jobbank_checked_at: jobbankCheckedAt,
     sheet_id: SHEET_ID,
     counts: {
       communities: activeCommunities.length,

@@ -1,6 +1,21 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState, startTransition } from 'react'
 import type { Listing, ListingType, ListingsPayload } from './types'
-import { matchesQuery, sortListings, typeLabel, withUtm, type SortMode } from './lib'
+import {
+  formatVerifiedAt,
+  hiringStatusLabel,
+  hiringStatusOf,
+  jobBankButtonLabel,
+  jobBankCountTitle,
+  jobBankSearchUrl,
+  listingNocCodes,
+  matchesQuery,
+  sortListings,
+  toDisplayItems,
+  typeLabel,
+  withUtm,
+  type DisplayItem,
+  type SortMode,
+} from './lib'
 import './index.css'
 
 const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
@@ -36,53 +51,152 @@ const COMMUNITY_PHOTOS: Record<string, string> = {
 
 const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}`
 
-function ResultCard({ listing, index }: { listing: Listing; index: number }) {
+function ResultCard({
+  listing,
+  index,
+  communities,
+  onSelectCommunity,
+  jobbankCheckedAt,
+}: {
+  listing: Listing
+  index: number
+  communities?: Listing[]
+  onSelectCommunity?: (communityId: string) => void
+  jobbankCheckedAt?: string | null
+}) {
   const primary = withUtm(listing.source_url || listing.portal_url, listing.community_id, listing.type)
   const jobsLink = listing.jobs_url
     ? withUtm(listing.jobs_url, listing.community_id, 'find-job')
     : ''
+  const hiringStatus = hiringStatusOf(listing)
+  const verified = formatVerifiedAt(listing.updated_at)
+  const jobBank = withUtm(jobBankSearchUrl(listing), listing.community_id, 'jobbank')
+  const jobBankTitle = jobBankCountTitle(listing, jobbankCheckedAt)
+  const showHiringBadge = listing.type === 'employer' || listing.type === 'job'
+  const nocJobBankHits =
+    listing.type === 'priority_noc' && typeof listing.jobbank_hits === 'number'
+      ? listing.jobbank_hits
+      : null
+  const grouped = Boolean(communities && communities.length > 1)
+  const place = grouped
+    ? `${communities!.length} RCIP communities`
+    : [listing.community_name, listing.province].filter(Boolean).join(', ')
+  const metaBits = [listing.sector, listing.locations, place, verified ? `Verified ${verified}` : ''].filter(
+    Boolean,
+  )
+  // Avoid a second tip when notes only repeat the hiring flag (e.g. "Source status: Hiring").
+  const employerExtraNotes =
+    listing.type === 'employer' && listing.notes
+      ? (() => {
+          const n = listing.notes.trim()
+          if (/^source status:\s*/i.test(n)) return ''
+          if (/^source marks this employer/i.test(n)) return ''
+          if (/designated\s*[≠!=]+\s*hiring/i.test(n)) return ''
+          return n
+        })()
+      : ''
+  const uniqueNotes = grouped
+    ? [
+        ...new Set(
+          (communities || [])
+            .map((c) => c.notes?.trim())
+            .filter((n): n is string => Boolean(n)),
+        ),
+      ]
+    : listing.notes && listing.type === 'priority_noc'
+      ? [listing.notes]
+      : []
+  const nocCodes = listingNocCodes(listing)
+  const nocLabel =
+    nocCodes.length === 0
+      ? ''
+      : nocCodes.length === 1
+        ? `NOC ${nocCodes[0]}`
+        : `NOC ${nocCodes.slice(0, 3).join(' · ')}`
 
   return (
     <article className="card" style={{ animationDelay: `${Math.min(index, 16) * 0.035}s` }}>
       <div className="card-top">
         <div className="card-tags">
           <span className={`badge type-${listing.type}`}>{typeLabel(listing.type)}</span>
-          <span className="badge">
-            {listing.community_name}
-            {listing.province ? `, ${listing.province}` : ''}
-          </span>
+          {grouped ? (
+            <span className="badge">Eligible in {communities!.length} places</span>
+          ) : null}
+          {showHiringBadge ? (
+            <span className={`badge status-${hiringStatus}`} title={jobBankTitle}>
+              {hiringStatusLabel(hiringStatus, listing)}
+            </span>
+          ) : null}
+          {nocJobBankHits != null && nocJobBankHits > 0 ? (
+            <span className="badge status-hiring" title={jobBankTitle}>
+              ~{nocJobBankHits} on Job Bank
+            </span>
+          ) : null}
+          {nocJobBankHits === 0 ? (
+            <span className="badge status-unknown" title={jobBankTitle}>
+              No Job Bank roles
+            </span>
+          ) : null}
         </div>
-        {listing.noc_code ? <span className="noc">NOC {listing.noc_code}</span> : null}
+        {nocLabel ? (
+          <span className="noc" title={nocCodes.join(', ')}>
+            {nocLabel}
+          </span>
+        ) : null}
       </div>
       <h3>{listing.title}</h3>
-      {listing.sector ? <p className="card-meta">{listing.sector}</p> : null}
-      {listing.locations ? <p className="card-meta">{listing.locations}</p> : null}
-      {listing.type === 'employer' ? (
-        <p className="card-tip">Designated ≠ hiring. Apply only to publicly posted jobs.</p>
+      {metaBits.length ? <p className="card-meta">{metaBits.join(' · ')}</p> : null}
+      {grouped ? (
+        <div className="card-communities" aria-label="Eligible communities">
+          {communities!.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              className="community-chip"
+              onClick={() => onSelectCommunity?.(c.community_id)}
+              title={`Filter to ${c.community_name}`}
+            >
+              {c.community_name}
+              {c.province ? `, ${c.province}` : ''}
+            </button>
+          ))}
+        </div>
       ) : null}
-      {listing.notes && listing.type === 'priority_noc' ? (
-        <p className="card-tip">{listing.notes}</p>
-      ) : null}
+      {uniqueNotes.map((note) => (
+        <p key={note.slice(0, 48)} className="card-tip">
+          {note}
+        </p>
+      ))}
+      {employerExtraNotes ? <p className="card-tip">{employerExtraNotes}</p> : null}
       <div className="actions">
-        {primary ? (
+        {!grouped && primary ? (
           <a className="btn btn-primary" href={primary} target="_blank" rel="noreferrer noopener">
-            View official source
+            Official source
             <span aria-hidden="true">↗</span>
           </a>
         ) : null}
-        {jobsLink ? (
+        <a
+          className="btn btn-ghost"
+          href={jobBank}
+          target="_blank"
+          rel="noreferrer noopener"
+          title={jobBankTitle}
+        >
+          {jobBankButtonLabel(listing)}
+        </a>
+        {!grouped && jobsLink ? (
           <a className="btn btn-ghost" href={jobsLink} target="_blank" rel="noreferrer noopener">
-            Job guidance
+            Local jobs
           </a>
         ) : null}
-        {listing.portal_url && listing.portal_url !== listing.source_url ? (
+        {!grouped && listing.portal_url && listing.portal_url !== listing.source_url ? (
           <a
             className="btn btn-ghost"
             href={withUtm(listing.portal_url, listing.community_id, 'portal')}
             target="_blank"
             rel="noreferrer noopener"
           >
-            Community portal
+            Portal
           </a>
         ) : null}
       </div>
@@ -148,6 +262,11 @@ export default function App() {
     return sortListings(rows, sort)
   }, [data, community, type, deferredQuery, sort])
 
+  const displayItems = useMemo(
+    () => toDisplayItems(filtered, !community),
+    [filtered, community],
+  )
+
   const hasFilters = Boolean(deferredQuery || community || type)
 
   useEffect(() => {
@@ -202,7 +321,7 @@ export default function App() {
       <div className="site-header">
         <div className="shell header-inner">
           <div className="topbar">
-            <span>Rural Community Immigration Pilot · British Columbia</span>
+            <span>Rural Community Immigration Pilot · Canada</span>
             <span>Unofficial search aid — verify on official portals</span>
           </div>
 
@@ -218,9 +337,11 @@ export default function App() {
             </a>
             <nav className="nav-links" aria-label="Primary">
               <a href="#about">About</a>
+              <a href="#impact">Impact</a>
               <a href="#communities">Communities</a>
               <a href="#explore">Explore</a>
               <a href="#support">Guidance</a>
+              <a href="#contact">Contact</a>
             </nav>
             <button type="button" className="btn btn-primary nav-cta" onClick={scrollToExplore}>
               Search listings
@@ -261,13 +382,16 @@ export default function App() {
                   ★★★★★
                 </span>
                 <div>
-                  <strong>BC pilot focus</strong>
-                  <span>{data.counts.communities} RCIP communities</span>
+                  <strong>All 14 RCIP communities</strong>
+                  <span>
+                    {data.counts.priority_nocs.toLocaleString()} NOCs ·{' '}
+                    {data.counts.employers.toLocaleString()} employers
+                  </span>
                 </div>
               </div>
               <div className="stat-card">
-                <strong>{data.counts.employers.toLocaleString()}+</strong>
-                <span>designated employers</span>
+                <strong>{data.counts.total.toLocaleString()}</strong>
+                <span>searchable listings</span>
               </div>
             </div>
           </section>
@@ -325,9 +449,9 @@ export default function App() {
       <div className="shell shell-main">
       <section className="split about" id="about">
         <div className="collage" aria-hidden="true">
-          <img src={img('workers.jpg')} alt="" className="collage-main" />
-          <img src={img('farmers.jpg')} alt="" className="collage-top" />
-          <img src={img('rural-team.jpg')} alt="" className="collage-bot" />
+          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
+          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
+          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
         </div>
         <div className="split-copy">
           <p className="pill">Welcome to NOC Careers</p>
@@ -369,6 +493,85 @@ export default function App() {
           <button type="button" className="btn btn-primary" onClick={scrollToExplore}>
             Explore listings
           </button>
+        </div>
+      </section>
+
+      <section className="impact" id="impact">
+        <div className="section-head">
+          <p className="pill">Why RCIP matters</p>
+          <h2>Rural immigration is already moving people into real jobs</h2>
+          <p>
+            NOC Careers helps candidates find the right community list faster. The figures below are
+            public community / press reports about the Rural Community Immigration Pilot — not IRCC
+            national totals, and not claims about this website’s outcomes.
+          </p>
+        </div>
+
+        <div className="impact-grid">
+          <article className="impact-stat">
+            <strong>14</strong>
+            <span>RCIP communities across Canada recommending workers for permanent residence</span>
+          </article>
+          <article className="impact-stat">
+            <strong>1,000+</strong>
+            <span>
+              Community recommendations reported in 2025 from Sudbury (517), Thunder Bay (475), and
+              North Bay (190) alone
+            </span>
+          </article>
+          <article className="impact-stat">
+            <strong>~800</strong>
+            <span>
+              Permanent residency grants reported in the first two months of 2026 as demand stayed high
+            </span>
+          </article>
+          <article className="impact-stat">
+            <strong>{data.counts.total.toLocaleString()}</strong>
+            <span>
+              Live listings on this site right now — {data.counts.priority_nocs.toLocaleString()}{' '}
+              priority NOCs and {data.counts.employers.toLocaleString()} designated employers
+            </span>
+          </article>
+        </div>
+
+        <div className="impact-panels">
+          <div className="impact-panel">
+            <h3>What success looks like locally</h3>
+            <ul>
+              <li>
+                Employers fill hard-to-staff NOCs (health, trades, early childhood, hospitality) with
+                workers who already have a real job offer.
+              </li>
+              <li>
+                Communities keep annual recommendation allotments focused on priority occupations —
+                with caps so one NOC doesn’t consume the whole year.
+              </li>
+              <li>
+                Many successful candidates are already working in the region as temporary residents;
+                RCIP often retains people who are already contributing.
+              </li>
+            </ul>
+          </div>
+          <div className="impact-panel">
+            <h3>How to use this site well</h3>
+            <ol>
+              <li>Search your NOC or occupation title across all 14 communities.</li>
+              <li>Open Job Bank from the card to see whether public postings exist.</li>
+              <li>Continue only on the official community portal — we never host applications.</li>
+            </ol>
+            <p className="impact-cite">
+              Sources: community RCIP updates and press coverage of 2025–2026 pilot activity (e.g. CIC
+              News year-in-review; Canadian Press reporting). Always confirm current rules on{' '}
+              <a
+                href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Canada.ca
+              </a>{' '}
+              and your community portal.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -453,8 +656,13 @@ export default function App() {
           <p className="pill">Live listings</p>
           <h2>Explore priority NOCs &amp; designated employers</h2>
           <p>
-            Updated {new Date(data.generated_at).toLocaleString()} · {filtered.length.toLocaleString()}{' '}
-            shown{hasFilters ? ' (filtered)' : ''}
+            Updated {new Date(data.generated_at).toLocaleString()}
+            {data.jobbank_checked_at
+              ? ` · Job Bank counts as of ${formatVerifiedAt(data.jobbank_checked_at)}`
+              : ''}{' '}
+            · {displayItems.length.toLocaleString()} shown
+            {hasFilters ? ' (filtered)' : ''}
+            {!community ? ' · same NOC grouped across communities' : ''}
           </p>
         </div>
 
@@ -546,7 +754,7 @@ export default function App() {
             </div>
 
             <div className="results-scroll">
-              {filtered.length === 0 ? (
+              {displayItems.length === 0 ? (
                 <p className="empty">
                   {community && communityStats.find((c) => c.id === community)?.directoryOnly
                     ? 'No searchable listings for this community yet — use Official portal on the community card, then verify on the source site.'
@@ -554,14 +762,31 @@ export default function App() {
                 </p>
               ) : (
                 <div className="list">
-                  {filtered.slice(0, 200).map((listing, index) => (
-                    <ResultCard key={listing.id} listing={listing} index={index} />
-                  ))}
+                  {displayItems.slice(0, 200).map((item: DisplayItem, index) =>
+                    item.kind === 'noc_group' ? (
+                      <ResultCard
+                        key={`noc-${item.listing.noc_code}`}
+                        listing={item.listing}
+                        index={index}
+                        communities={item.communities}
+                        onSelectCommunity={(id) => startTransition(() => setCommunity(id))}
+                        jobbankCheckedAt={data.jobbank_checked_at}
+                      />
+                    ) : (
+                      <ResultCard
+                        key={item.listing.id}
+                        listing={item.listing}
+                        index={index}
+                        jobbankCheckedAt={data.jobbank_checked_at}
+                      />
+                    ),
+                  )}
                 </div>
               )}
-              {filtered.length > 200 ? (
+              {displayItems.length > 200 ? (
                 <p className="empty truncate-note">
-                  Showing first 200 of {filtered.length.toLocaleString()}. Narrow your search for more.
+                  Showing first 200 of {displayItems.length.toLocaleString()}. Narrow your search for
+                  more.
                 </p>
               ) : null}
             </div>
@@ -573,7 +798,7 @@ export default function App() {
         <div className="support-media">
           <img
             src={img('citizens.jpg')}
-            alt="Community members wearing patriotic pins at a civic event"
+            alt="Community members wearing civic pins together"
             width={900}
             height={400}
           />
@@ -596,8 +821,73 @@ export default function App() {
               <li>Confirm the NOC is still on the community’s current priority list.</li>
               <li>Confirm the employer is designated for the role you want.</li>
               <li>Apply only through publicly advertised postings or the portal’s job guidance.</li>
+              <li>Language, education, work experience, and settlement funds are assessed by IRCC.</li>
             </ul>
           </div>
+          <div className="useful-links">
+            <strong>Official starting points</strong>
+            <a
+              href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              IRCC — Rural Community Immigration Pilot
+            </a>
+            <a
+              href="https://www.jobbank.gc.ca/home"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Job Bank Canada
+            </a>
+            <a href="#communities">Community portals on this site</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="contact" id="contact">
+        <div className="contact-copy">
+          <p className="pill">Contact</p>
+          <h2>Questions about the site, partnerships, or data corrections?</h2>
+          <p>
+            We build and maintain this unofficial referral layer for candidates, EDOs, and settlement
+            partners. For partnership inquiries, listing corrections, or press, email us — we do not
+            provide immigration advice or process applications.
+          </p>
+          <a className="contact-email" href="mailto:info@noccareers.ca">
+            info@noccareers.ca
+          </a>
+          <ul className="contact-points">
+            <li>Report a stale employer or NOC list</li>
+            <li>Ask about co-branding or referral metrics for your community office</li>
+            <li>Request a walkthrough of the explorer for settlement staff</li>
+          </ul>
+        </div>
+        <div className="contact-card">
+          <h3>NOC Careers</h3>
+          <p>Unofficial RCIP search aid for priority NOCs and designated employers.</p>
+          <dl>
+            <div>
+              <dt>Email</dt>
+              <dd>
+                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Web</dt>
+              <dd>
+                <a href="https://noccareers.ca">noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Response</dt>
+              <dd>We aim to reply within 2 business days</dd>
+            </div>
+          </dl>
+          <p className="contact-note">
+            Not affiliated with Immigration, Refugees and Citizenship Canada (IRCC). Always verify on
+            the official community RCIP website before applying.
+          </p>
         </div>
       </section>
 
@@ -609,7 +899,7 @@ export default function App() {
             Open explorer
           </button>
         </div>
-        <img src={img('friends-flags.jpg')} alt="" className="cta-photo" />
+        <img src={img('retail.jpg')} alt="" className="cta-photo" />
       </section>
 
       <footer className="footer">
@@ -631,11 +921,15 @@ export default function App() {
         <div>
           <h3>Explore</h3>
           <a href="#about">About</a>
+          <a href="#impact">Impact</a>
           <a href="#communities">Communities</a>
           <a href="#explore">Listings</a>
+          <a href="#contact">Contact</a>
         </div>
         <div>
-          <h3>Remember</h3>
+          <h3>Contact</h3>
+          <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
+          <a href="https://noccareers.ca">noccareers.ca</a>
           <p>Not affiliated with IRCC. Always verify on the community portal before applying.</p>
         </div>
       </footer>
