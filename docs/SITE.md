@@ -85,6 +85,16 @@ npm run export:data:fast   # SKIP_JOBBANK=1 — keeps prior counts
 npm run dev
 ```
 
+### Career Trek (WorkBC) links
+
+B.C. eligible NOC cards show **Career Trek · WorkBC** when a matching public video exists (34 of 51 BC RCIP NOCs at last check). Map: `web/public/data/career-trek.json`. Refresh:
+
+```bash
+npm run fetch:career-trek
+```
+
+Courtesy outreach copy: `docs/OUTREACH_CAREER_TREK.md`.
+
 Or add an n8n step later that writes `listings.json` into the repo.
 
 ## Microsoft Clarity
