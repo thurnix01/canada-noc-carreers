@@ -1,6 +1,9 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState, startTransition } from 'react'
 import type { Listing, ListingType, ListingsPayload } from './types'
 import {
+  careerTrekButtonLabel,
+  careerTrekTitle,
+  careerTrekUrl,
   formatVerifiedAt,
   hiringStatusLabel,
   hiringStatusOf,
@@ -8,6 +11,7 @@ import {
   jobBankCountTitle,
   jobBankSearchUrl,
   listingNocCodes,
+  listingTouchesBc,
   matchesQuery,
   sortListings,
   toDisplayItems,
@@ -72,6 +76,14 @@ function ResultCard({
   const verified = formatVerifiedAt(listing.updated_at)
   const jobBank = withUtm(jobBankSearchUrl(listing), listing.community_id, 'jobbank')
   const jobBankTitle = jobBankCountTitle(listing, jobbankCheckedAt)
+  const nocForTrek = listing.type === 'priority_noc' ? listing.noc_code : ''
+  const trekRaw =
+    listing.type === 'priority_noc' && listingTouchesBc(listing, communities)
+      ? careerTrekUrl(nocForTrek)
+      : null
+  const careerTrek = trekRaw
+    ? withUtm(trekRaw, listing.community_id || 'bc', 'career-trek')
+    : ''
   const showHiringBadge = listing.type === 'employer' || listing.type === 'job'
   const nocJobBankHits =
     listing.type === 'priority_noc' && typeof listing.jobbank_hits === 'number'
@@ -184,6 +196,18 @@ function ResultCard({
         >
           {jobBankButtonLabel(listing)}
         </a>
+        {careerTrek ? (
+          <a
+            className="btn btn-ghost"
+            href={careerTrek}
+            target="_blank"
+            rel="noreferrer noopener"
+            title={careerTrekTitle()}
+          >
+            {careerTrekButtonLabel(nocForTrek)}
+            <span aria-hidden="true">↗</span>
+          </a>
+        ) : null}
         {!grouped && jobsLink ? (
           <a className="btn btn-ghost" href={jobsLink} target="_blank" rel="noreferrer noopener">
             Local jobs

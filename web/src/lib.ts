@@ -1,8 +1,14 @@
 import type { HiringStatus, Listing } from './types'
+import careerTrekData from './data/career-trek.json'
 
 const UTM_SOURCE = 'rcip-aggregator'
 const UTM_MEDIUM = 'referral'
 const UTM_CAMPAIGN = 'bc-pilot'
+
+const CAREER_TREK_VIDEOS = careerTrekData.videos as Record<
+  string,
+  { noc: string; path: string; count: number }
+>
 
 /** Primary Job Bank search hubs for multi-community RCIP regions. */
 const JOB_BANK_LOCATIONS: Record<string, string> = {
@@ -169,6 +175,35 @@ export function jobBankCountTitle(
   const base =
     'Job Bank count from our last weekly check near this community (not a live Canada-wide total).'
   return asOf ? `${base} As of ${asOf}.` : base
+}
+
+/** True when this card is for a B.C. community (or a NOC group that includes B.C.). */
+export function listingTouchesBc(listing: Listing, communities?: Listing[]): boolean {
+  if (listing.province === 'BC') return true
+  return Boolean(communities?.some((c) => c.province === 'BC'))
+}
+
+/**
+ * WorkBC Career Trek video URL for a NOC when a matching B.C. video exists.
+ * Source: public Career Trek library (see data/career-trek.json).
+ */
+export function careerTrekUrl(nocCode: string): string | null {
+  const noc = (nocCode || '').replace(/\D/g, '')
+  if (noc.length !== 5) return null
+  const hit = CAREER_TREK_VIDEOS[noc]
+  if (!hit?.path) return null
+  return `https://www.workbc.ca${hit.path}`
+}
+
+export function careerTrekButtonLabel(nocCode: string): string {
+  const noc = (nocCode || '').replace(/\D/g, '')
+  const count = CAREER_TREK_VIDEOS[noc]?.count
+  if (typeof count === 'number' && count > 1) return `Career Trek · ${count} videos`
+  return 'Career Trek · WorkBC'
+}
+
+export function careerTrekTitle(): string {
+  return 'Unofficial link to WorkBC Career Trek — B.C. career videos. Not affiliated with WorkBC or IRCC.'
 }
 
 export function matchesQuery(listing: Listing, q: string): boolean {
