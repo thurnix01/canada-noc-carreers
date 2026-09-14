@@ -439,7 +439,7 @@ export default function App() {
                 ))}
               </select>
             </label>
-            <button type="submit" className="btn btn-dark btn-lg dock-submit">
+            <button type="submit" className="btn btn-primary btn-lg dock-submit">
               Check listings
             </button>
           </form>
