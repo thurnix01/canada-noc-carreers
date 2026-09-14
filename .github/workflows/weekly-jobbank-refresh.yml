@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
 
 concurrency:
   group: weekly-jobbank-refresh
@@ -23,6 +22,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Needed so the later git push of listings.json can authenticate.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -56,10 +59,15 @@ jobs:
             git push
           fi
 
-      - name: Build and deploy Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npm run deploy:pages
+      - name: Build site
+        run: VITE_BASE=/ npm run build --prefix web
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web/dist
+          # Keep custom domain file if Vite/build already copied it into dist.
+          cname: noccareers.ca
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
