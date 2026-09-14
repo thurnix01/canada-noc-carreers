@@ -494,7 +494,7 @@ img {
 
 .community-card {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.4rem;
   text-align: left;
   padding: 0.55rem;
   border-radius: 16px;
@@ -506,7 +506,7 @@ img {
 
 .community-card-main {
   display: grid;
-  gap: 0.7rem;
+  gap: 0.45rem;
   text-align: left;
   padding: 0;
   border: 0;
@@ -586,6 +586,7 @@ img {
   gap: 0.35rem;
   flex-wrap: wrap;
   font-size: 0.95rem;
+  line-height: 1.2;
 }
 
 .community-card em {
@@ -597,8 +598,9 @@ img {
 
 .community-card span {
   display: block;
-  margin-top: 0.2rem;
+  margin-top: 0.08rem;
   font-size: 0.8rem;
+  line-height: 1.25;
   color: var(--muted);
 }
 
@@ -1476,12 +1478,44 @@ img {
 
 @media (max-width: 640px) {
   .search-dock,
-  .community-cards,
   .impact-grid {
     grid-template-columns: 1fr;
   }
 
+  .community-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .community-card {
+    gap: 0.35rem;
+    padding: 0.45rem;
+  }
+
+  .community-card-main {
+    gap: 0.35rem;
+  }
+
+  .community-card strong {
+    font-size: 0.86rem;
+  }
+
+  .community-card span {
+    margin-top: 0.02rem;
+    font-size: 0.72rem;
+  }
+
+  .community-portal-link {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
   .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.12rem;
+    line-height: 1.25;
+    padding: 0.55rem 0;
     font-size: 0.72rem;
   }
 
