@@ -26,7 +26,6 @@ const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
   { value: '', label: 'All types' },
   { value: 'priority_noc', label: 'Eligible NOCs' },
   { value: 'employer', label: 'Designated employers' },
-  { value: 'job', label: 'Open roles' },
 ]
 
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
