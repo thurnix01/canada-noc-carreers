@@ -1086,45 +1086,48 @@ export default function App() {
             </div>
 
             <p className="share-label">Share to</p>
-            <div className="share-targets" role="list">
-              {SHARE_TARGETS.map((target) => (
-                <a
-                  key={target.id}
-                  className={`share-target share-target-${target.id}`}
-                  href={target.href}
-                  target={target.id === 'email' ? undefined : '_blank'}
-                  rel={target.id === 'email' ? undefined : 'noreferrer noopener'}
-                  role="listitem"
-                >
-                  <span className="share-target-icon" aria-hidden="true">
-                    {target.id === 'facebook'
-                      ? 'f'
-                      : target.id === 'x'
-                        ? '𝕏'
-                        : target.id === 'whatsapp'
-                          ? 'W'
-                          : target.id === 'linkedin'
-                            ? 'in'
-                            : '@'}
-                  </span>
-                  <span>{target.label}</span>
-                </a>
-              ))}
-            </div>
-
-            <div className="share-actions">
-              {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
-                <button type="button" className="btn btn-light" onClick={shareNative}>
-                  Share from device
+            <div className="share-row">
+              <div className="share-targets" role="list">
+                {SHARE_TARGETS.map((target) => (
+                  <a
+                    key={target.id}
+                    className={`share-target share-target-${target.id}`}
+                    href={target.href}
+                    target={target.id === 'email' ? undefined : '_blank'}
+                    rel={target.id === 'email' ? undefined : 'noreferrer noopener'}
+                    role="listitem"
+                  >
+                    <span className="share-target-icon" aria-hidden="true">
+                      {target.id === 'facebook'
+                        ? 'f'
+                        : target.id === 'x'
+                          ? '𝕏'
+                          : target.id === 'whatsapp'
+                            ? 'W'
+                            : target.id === 'linkedin'
+                              ? 'in'
+                              : '@'}
+                    </span>
+                    <span>{target.label}</span>
+                  </a>
+                ))}
+              </div>
+              <div className="share-actions">
+                {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
+                  <button type="button" className="btn btn-light" onClick={shareNative}>
+                    Share from device
+                  </button>
+                ) : null}
+                <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
+                  Open explorer
                 </button>
-              ) : null}
-              <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
-                Open explorer
-              </button>
+              </div>
             </div>
           </div>
         </div>
-        <img src={img('retail.jpg')} alt="" className="cta-photo" />
+        <div className="cta-photo-wrap">
+          <img src={img('retail.jpg')} alt="" className="cta-photo" />
+        </div>
       </section>
 
       <footer className="footer">

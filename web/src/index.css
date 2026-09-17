@@ -1806,13 +1806,22 @@ body.nav-lock {
 
   .cta-banner {
     grid-template-columns: 1fr;
-    padding: 1.35rem;
+    width: 100%;
+    padding: 1.05rem;
+  }
+
+  .cta-photo-wrap {
+    min-height: 11rem;
+    max-height: 14rem;
   }
 
   .cta-photo {
-    justify-self: start;
-    transform: none;
-    width: min(100%, 420px);
+    min-height: 11rem;
+  }
+
+  .share-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .share-link-row {
