@@ -190,7 +190,7 @@ img {
   justify-self: end;
 }
 
-.nav-cta-mobile {
+.btn.nav-cta-mobile {
   display: none;
 }
 
@@ -1587,7 +1587,7 @@ body.nav-lock {
     display: none;
   }
 
-  .nav-cta-mobile {
+  .btn.nav-cta-mobile {
     display: inline-flex;
     margin: 0.45rem 0.35rem 0.2rem;
     width: calc(100% - 0.7rem);
