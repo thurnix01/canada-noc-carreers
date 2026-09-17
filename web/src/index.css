@@ -428,12 +428,27 @@ img {
 }
 
 .split-copy > p,
-.section-head > p:last-child,
+.section-head > p:not(.pill):not(.explore-credit),
 .support-copy > p,
 .cta-copy p {
   margin: 0 0 1.1rem;
   color: var(--maple-deep);
   line-height: 1.55;
+}
+
+.explore-credit {
+  margin: -0.35rem 0 0;
+  max-width: 46rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.explore-credit a {
+  color: var(--maple-deep);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
 }
 
 .feature-list {

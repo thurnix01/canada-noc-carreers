@@ -198,12 +198,12 @@ export function careerTrekUrl(nocCode: string): string | null {
 export function careerTrekButtonLabel(nocCode: string): string {
   const noc = (nocCode || '').replace(/\D/g, '')
   const count = CAREER_TREK_VIDEOS[noc]?.count
-  if (typeof count === 'number' && count > 1) return `Career Trek · ${count} videos`
-  return 'Career Trek · WorkBC'
+  if (typeof count === 'number' && count > 1) return `WorkBC Career Trek · ${count}`
+  return 'WorkBC Career Trek'
 }
 
 export function careerTrekTitle(): string {
-  return 'Unofficial link to WorkBC Career Trek — B.C. career videos. Not affiliated with WorkBC or IRCC.'
+  return 'Opens WorkBC Career Trek on WorkBC.ca. Credit: WorkBC. WorkBC does not endorse this site.'
 }
 
 export function matchesQuery(listing: Listing, q: string): boolean {

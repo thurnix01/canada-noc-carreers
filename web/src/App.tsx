@@ -687,6 +687,17 @@ export default function App() {
             {hasFilters ? ' (filtered)' : ''}
             {!community ? ' · same NOC grouped across communities' : ''}
           </p>
+          <p className="explore-credit">
+            B.C. eligible NOCs may link out to{' '}
+            <a
+              href="https://www.workbc.ca/plan-career/career-trek-videos"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              WorkBC Career Trek
+            </a>{' '}
+            videos (credit: WorkBC). WorkBC does not endorse this site.
+          </p>
         </div>
 
         <div className="workspace">
@@ -908,8 +919,9 @@ export default function App() {
             </div>
           </dl>
           <p className="contact-note">
-            Not affiliated with Immigration, Refugees and Citizenship Canada (IRCC). Always verify on
-            the official community RCIP website before applying.
+            Not affiliated with Immigration, Refugees and Citizenship Canada (IRCC) or WorkBC.
+            Always verify on the official community RCIP website before applying. Links to WorkBC
+            Career Trek are for credit and convenience only and are not an endorsement.
           </p>
         </div>
       </section>

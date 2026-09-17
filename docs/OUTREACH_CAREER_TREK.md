@@ -2,19 +2,49 @@
 
 **Goal:** Courtesy notice that noccareers.ca links to public Career Trek videos for matching B.C. RCIP NOCs. Ask preferred attribution / guidelines. **Not** a funding or YouTube co-branding ask.
 
-**When to send:** After the Career Trek button is live on [noccareers.ca](https://noccareers.ca) (filter to a B.C. community, open an Eligible NOC that has a video — e.g. NOC 42202).
+**Status (Sep 2026):** Sent to `WorkBC.ca@gov.bc.ca`. Reply received — **linking is welcome**; hosting/embedding their video files is not. Keep outbound links + clear WorkBC credit + no-endorsement wording.
 
 **From:** Your name · Absolon Designs · `info@noccareers.ca`
 
-**Suggested contact paths (try in order):**
+---
 
-1. WorkBC Support / contact form on [workbc.ca](https://www.workbc.ca/) — note “Career Trek resource citation”
-2. Any Career Trek or web-content contact listed on WorkBC pages
-3. Only use `CEPTEAM@gov.bc.ca` if they redirect you there (that inbox is mainly **funding**, not citations)
+## Their reply (summary)
+
+- Do **not** host / share video files with third parties  
+- **Do** link to WorkBC Career Trek from your site  
+- Provide **credit to WorkBC**  
+- Ensure WorkBC.ca is **not portrayed as officially endorsing** your site  
+- Review WorkBC Disclaimer for further info  
+
+Our current product (buttons that open WorkBC.ca video pages) matches this. No need to remove the feature.
 
 ---
 
-## Email copy
+## Optional thank-you reply
+
+**Subject:** Re: Citing WorkBC Career Trek videos on noccareers.ca
+
+```
+Good afternoon,
+
+Thank you for the clear guidance.
+
+To confirm: we are not hosting or embedding Career Trek video files. We only link out to the relevant pages on WorkBC.ca, with on-site credit to WorkBC and wording that WorkBC does not endorse noccareers.ca.
+
+We have refreshed the explore section and contact disclaimer to make that credit and no-endorsement note more visible:
+https://noccareers.ca
+
+Please let us know if you would like any wording adjusted.
+
+Kind regards,
+{Your name}
+Absolon Designs
+info@noccareers.ca
+```
+
+---
+
+## Original outreach email
 
 **Subject:** Citing WorkBC Career Trek videos next to BC RCIP occupations on noccareers.ca
 
@@ -48,14 +78,8 @@ info@noccareers.ca · https://noccareers.ca
 
 ---
 
-## What we are *not* asking for
-
-- Feature on the Career Trek YouTube channel  
-- Endorsement or “official partner” language  
-- Funding (CEP / LMP) in this email  
-
 ## Tracking
 
 | Date sent | Via | Reply | Notes |
 |---|---|---|---|
-| | | | |
+| Sep 2026 | WorkBC.ca@gov.bc.ca | Yes — link OK, no hosting | Credit + no-endorsement strengthened on site |
