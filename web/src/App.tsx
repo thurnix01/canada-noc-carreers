@@ -234,6 +234,9 @@ export default function App() {
   const [community, setCommunity] = useState('')
   const [type, setType] = useState<'' | ListingType>('')
   const [sort, setSort] = useState<SortMode>('featured')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [navScrolled, setNavScrolled] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
   const deferredQuery = useDeferredValue(query)
   const exploreRef = useRef<HTMLElement | null>(null)
   const sidebarCardRef = useRef<HTMLDivElement | null>(null)
@@ -242,6 +245,30 @@ export default function App() {
   useEffect(() => {
     document.documentElement.style.setProperty('--topo-image', `url(${img('topo-light.jpg')})`)
   }, [])
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY
+      setNavScrolled(y > 12)
+      setShowScrollTop(y > 480)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.classList.add('nav-lock')
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.classList.remove('nav-lock')
+    }
+  }, [menuOpen])
 
   useEffect(() => {
     let cancelled = false
@@ -316,8 +343,25 @@ export default function App() {
   }, [data, communityStats.length])
 
   const scrollToExplore = () => {
+    setMenuOpen(false)
     exploreRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  const scrollToTop = () => {
+    setMenuOpen(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const closeMenu = () => setMenuOpen(false)
+
+  const NAV_LINKS = [
+    { href: '#about', label: 'About' },
+    { href: '#impact', label: 'Impact' },
+    { href: '#communities', label: 'Communities' },
+    { href: '#explore', label: 'Explore' },
+    { href: '#support', label: 'Guidance' },
+    { href: '#contact', label: 'Contact' },
+  ] as const
 
   const clearFilters = () => {
     startTransition(() => {
@@ -341,37 +385,66 @@ export default function App() {
 
   return (
     <>
-      <div className="site-header">
-        <div className="shell header-inner">
-          <div className="topbar">
-            <span>Rural Community Immigration Pilot · Canada</span>
-            <span>Unofficial search aid — verify on official portals</span>
-          </div>
+      <div className="topbar">
+        <div className="shell topbar-inner">
+          <span>Rural Community Immigration Pilot · Canada</span>
+          <span>Unofficial search aid — verify on official portals</span>
+        </div>
+      </div>
 
-          <header className="nav">
-            <a className="logo" href="#top">
-              <img
-                className="logo-mark"
-                src={img('noc-careers-logo.svg')}
-                alt="NOC Careers"
-                width={220}
-                height={37}
-              />
-            </a>
-            <nav className="nav-links" aria-label="Primary">
-              <a href="#about">About</a>
-              <a href="#impact">Impact</a>
-              <a href="#communities">Communities</a>
-              <a href="#explore">Explore</a>
-              <a href="#support">Guidance</a>
-              <a href="#contact">Contact</a>
-            </nav>
-            <button type="button" className="btn btn-primary nav-cta" onClick={scrollToExplore}>
+      <header className={`site-nav ${navScrolled ? 'is-scrolled' : ''} ${menuOpen ? 'is-open' : ''}`}>
+        <div className="shell site-nav-inner">
+          <a className="logo" href="#top" onClick={closeMenu}>
+            <img
+              className="logo-mark"
+              src={img('noc-careers-logo.svg')}
+              alt="NOC Careers"
+              width={220}
+              height={37}
+            />
+          </a>
+
+          <nav
+            id="site-menu"
+            className={`nav-links ${menuOpen ? 'is-open' : ''}`}
+            aria-label="Primary"
+          >
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} onClick={closeMenu}>
+                {link.label}
+              </a>
+            ))}
+            <button type="button" className="btn btn-primary nav-cta nav-cta-mobile" onClick={scrollToExplore}>
               Search listings
             </button>
-          </header>
+          </nav>
 
-          <section className="hero" id="top">
+          <button type="button" className="btn btn-primary nav-cta nav-cta-desktop" onClick={scrollToExplore}>
+            Search listings
+          </button>
+
+          <button
+            type="button"
+            className={`nav-toggle ${menuOpen ? 'is-open' : ''}`}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="site-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
+        </div>
+      </header>
+
+      {menuOpen ? (
+        <button type="button" className="nav-backdrop" aria-label="Close menu" onClick={closeMenu} />
+      ) : null}
+
+      <div className="site-header" id="top">
+        <div className="shell header-inner">
+          <section className="hero">
             <div className="hero-copy">
               <p className="pill">Build your future in rural Canada</p>
               <h1>
@@ -969,6 +1042,15 @@ export default function App() {
         </div>
       </footer>
       </div>
+
+      <button
+        type="button"
+        className={`scroll-top ${showScrollTop ? 'is-visible' : ''}`}
+        aria-label="Scroll to top"
+        onClick={scrollToTop}
+      >
+        <span aria-hidden="true">↑</span>
+      </button>
     </>
   )
 }
