@@ -237,10 +237,17 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
   const deferredQuery = useDeferredValue(query)
   const exploreRef = useRef<HTMLElement | null>(null)
   const sidebarCardRef = useRef<HTMLDivElement | null>(null)
   const resultsRef = useRef<HTMLElement | null>(null)
+  const copyResetRef = useRef<number | null>(null)
+
+  const shareUrl = 'https://noccareers.ca'
+  const shareMessage =
+    'Explore RCIP priority NOCs and designated employers across Canada — then verify on official community portals.'
+  const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
     document.documentElement.style.setProperty('--topo-image', `url(${img('topo-light.jpg')})`)
@@ -269,6 +276,12 @@ export default function App() {
       document.body.classList.remove('nav-lock')
     }
   }, [menuOpen])
+
+  useEffect(() => {
+    return () => {
+      if (copyResetRef.current) window.clearTimeout(copyResetRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -354,6 +367,26 @@ export default function App() {
 
   const closeMenu = () => setMenuOpen(false)
 
+  const copyShareLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setLinkCopied(true)
+      if (copyResetRef.current) window.clearTimeout(copyResetRef.current)
+      copyResetRef.current = window.setTimeout(() => setLinkCopied(false), 2000)
+    } catch {
+      window.prompt('Copy this link:', shareUrl)
+    }
+  }
+
+  const shareNative = async () => {
+    if (!navigator.share) return
+    try {
+      await navigator.share({ title: 'NOC Careers', text: shareMessage, url: shareUrl })
+    } catch {
+      /* user cancelled */
+    }
+  }
+
   const NAV_LINKS = [
     { href: '#about', label: 'About' },
     { href: '#impact', label: 'Impact' },
@@ -361,6 +394,34 @@ export default function App() {
     { href: '#explore', label: 'Explore' },
     { href: '#support', label: 'Guidance' },
     { href: '#contact', label: 'Contact' },
+  ] as const
+
+  const SHARE_TARGETS = [
+    {
+      id: 'facebook',
+      label: 'Facebook',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+    },
+    {
+      id: 'x',
+      label: 'X',
+      href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareMessage)}`,
+    },
+    {
+      id: 'whatsapp',
+      label: 'WhatsApp',
+      href: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+    },
+    {
+      id: 'linkedin',
+      label: 'LinkedIn',
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      href: `mailto:?subject=${encodeURIComponent('NOC Careers — RCIP search aid')}&body=${encodeURIComponent(shareText)}`,
+    },
   ] as const
 
   const clearFilters = () => {
@@ -999,13 +1060,69 @@ export default function App() {
         </div>
       </section>
 
-      <section className="cta-banner">
+      <section className="cta-banner" id="share" aria-labelledby="share-heading">
         <div className="cta-copy">
-          <h2>Ready to check a NOC or employer?</h2>
-          <p>Jump back to the explorer and open the official community source in one click.</p>
-          <button type="button" className="btn btn-light btn-lg" onClick={scrollToExplore}>
-            Open explorer
-          </button>
+          <p className="cta-kicker">Share NOC Careers</p>
+          <h2 id="share-heading">Help someone find the right RCIP pathway</h2>
+          <p>
+            Send the search aid to a friend, settlement worker, or community contact — then they can
+            verify on the official portal.
+          </p>
+
+          <div className="share-panel">
+            <p className="share-label">Share your link</p>
+            <div className="share-link-row">
+              <input
+                className="share-link-input"
+                type="text"
+                value={shareUrl}
+                readOnly
+                aria-label="Site link"
+                onFocus={(e) => e.currentTarget.select()}
+              />
+              <button type="button" className="btn btn-light share-copy-btn" onClick={copyShareLink}>
+                {linkCopied ? 'Copied' : 'Copy link'}
+              </button>
+            </div>
+
+            <p className="share-label">Share to</p>
+            <div className="share-targets" role="list">
+              {SHARE_TARGETS.map((target) => (
+                <a
+                  key={target.id}
+                  className={`share-target share-target-${target.id}`}
+                  href={target.href}
+                  target={target.id === 'email' ? undefined : '_blank'}
+                  rel={target.id === 'email' ? undefined : 'noreferrer noopener'}
+                  role="listitem"
+                >
+                  <span className="share-target-icon" aria-hidden="true">
+                    {target.id === 'facebook'
+                      ? 'f'
+                      : target.id === 'x'
+                        ? '𝕏'
+                        : target.id === 'whatsapp'
+                          ? 'W'
+                          : target.id === 'linkedin'
+                            ? 'in'
+                            : '@'}
+                  </span>
+                  <span>{target.label}</span>
+                </a>
+              ))}
+            </div>
+
+            <div className="share-actions">
+              {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
+                <button type="button" className="btn btn-light" onClick={shareNative}>
+                  Share from device
+                </button>
+              ) : null}
+              <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
+                Open explorer
+              </button>
+            </div>
+          </div>
         </div>
         <img src={img('retail.jpg')} alt="" className="cta-photo" />
       </section>
@@ -1031,6 +1148,7 @@ export default function App() {
           <a href="#impact">Impact</a>
           <a href="#communities">Communities</a>
           <a href="#explore">Listings</a>
+          <a href="#share">Share</a>
           <a href="#contact">Contact</a>
         </div>
         <div>
