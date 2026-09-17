@@ -1022,8 +1022,7 @@ export default function App() {
             />
           </div>
           <p>
-            Unofficial RCIP aggregator for priority NOCs and designated employers. Data refreshes when
-            exported from Google Sheets / n8n.
+            Unofficial RCIP aggregator for priority NOCs and designated employers.
           </p>
         </div>
         <div>
