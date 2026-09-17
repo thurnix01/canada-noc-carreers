@@ -1279,6 +1279,23 @@ body.nav-lock {
   justify-content: center;
 }
 
+.cta-photo-wrap {
+  position: relative;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.cta-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 0;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
 .cta-kicker {
   margin: 0 0 0.28rem;
   font-size: 0.7rem;
@@ -1436,21 +1453,6 @@ body.nav-lock {
 .btn-outline-light:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
-}
-
-.cta-photo-wrap {
-  min-height: 100%;
-  display: flex;
-}
-
-.cta-photo {
-  width: 100%;
-  height: 100%;
-  min-height: 11rem;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 0;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
 }
 
 .impact {
@@ -1825,12 +1827,14 @@ body.nav-lock {
   }
 
   .cta-photo-wrap {
-    min-height: 11rem;
-    max-height: 14rem;
+    position: relative;
+    min-height: 12rem;
+    height: 12rem;
   }
 
   .cta-photo {
-    min-height: 11rem;
+    position: absolute;
+    inset: 0;
   }
 
   .share-row {
