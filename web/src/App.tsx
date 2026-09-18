@@ -1083,6 +1083,16 @@ export default function App() {
               <button type="button" className="btn btn-light share-copy-btn" onClick={copyShareLink}>
                 {linkCopied ? 'Copied' : 'Copy link'}
               </button>
+              <div className="share-actions">
+                {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
+                  <button type="button" className="btn btn-light" onClick={shareNative}>
+                    Share from device
+                  </button>
+                ) : null}
+                <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
+                  Open explorer
+                </button>
+              </div>
             </div>
 
             <p className="share-label">Share to</p>
@@ -1111,16 +1121,6 @@ export default function App() {
                     <span>{target.label}</span>
                   </a>
                 ))}
-              </div>
-              <div className="share-actions">
-                {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
-                  <button type="button" className="btn btn-light" onClick={shareNative}>
-                    Share from device
-                  </button>
-                ) : null}
-                <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
-                  Open explorer
-                </button>
               </div>
             </div>
           </div>
