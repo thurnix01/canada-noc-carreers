@@ -182,7 +182,7 @@ function ResultCard({
       <div className="actions">
         {!grouped && primary ? (
           <a className="btn btn-primary" href={primary} target="_blank" rel="noreferrer noopener">
-            Official source
+            Official list
             <span aria-hidden="true">↗</span>
           </a>
         ) : null}
@@ -209,7 +209,7 @@ function ResultCard({
         ) : null}
         {!grouped && jobsLink ? (
           <a className="btn btn-ghost" href={jobsLink} target="_blank" rel="noreferrer noopener">
-            Local jobs
+            Community jobs
           </a>
         ) : null}
         {!grouped && listing.portal_url && listing.portal_url !== listing.source_url ? (
@@ -219,7 +219,7 @@ function ResultCard({
             target="_blank"
             rel="noreferrer noopener"
           >
-            Portal
+            Community portal
           </a>
         ) : null}
       </div>
@@ -246,7 +246,7 @@ export default function App() {
 
   const shareUrl = 'https://noccareers.ca'
   const shareMessage =
-    'Explore RCIP priority NOCs and designated employers across Canada — then verify on official community portals.'
+    'A free starting point for RCIP: search priority NOCs and designated employers, then continue on the official community portal.'
   const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
@@ -388,11 +388,12 @@ export default function App() {
   }
 
   const NAV_LINKS = [
-    { href: '#about', label: 'About' },
+    { href: '#about', label: 'How it works' },
     { href: '#impact', label: 'Impact' },
     { href: '#communities', label: 'Communities' },
-    { href: '#explore', label: 'Explore' },
-    { href: '#support', label: 'Guidance' },
+    { href: '#explore', label: 'Search' },
+    { href: '#next-steps', label: 'Next steps' },
+    { href: '#share', label: 'Share' },
     { href: '#contact', label: 'Contact' },
   ] as const
 
@@ -449,7 +450,7 @@ export default function App() {
       <div className="topbar">
         <div className="shell topbar-inner">
           <span>Rural Community Immigration Pilot · Canada</span>
-          <span>Unofficial search aid — verify on official portals</span>
+          <span>Search the lists. Confirm on the official portal.</span>
         </div>
       </div>
 
@@ -507,17 +508,17 @@ export default function App() {
         <div className="shell header-inner">
           <section className="hero">
             <div className="hero-copy">
-              <p className="pill">Build your future in rural Canada</p>
+              <p className="pill">A starting point for rural Canada</p>
               <h1>
-                Priority NOCs &amp; employers for <span>RCIP communities</span>
+                See <span>where your work is wanted</span> — then take the official next step
               </h1>
               <p className="lede">
-                Find eligible occupations and designated employers, then continue on the official community
-                portal. Unofficial search aid — always verify on the source site.
+                Search priority occupations and designated employers across all 14 RCIP communities. This is
+                an unofficial aid: when you find a match, continue on that community’s portal.
               </p>
               <div className="hero-actions">
                 <button type="button" className="btn btn-primary btn-lg" onClick={scrollToExplore}>
-                  Start searching
+                  Search listings
                 </button>
                 <a className="btn btn-outline btn-lg" href="#about">
                   How it works
@@ -597,7 +598,7 @@ export default function App() {
               </select>
             </label>
             <button type="submit" className="btn btn-primary btn-lg dock-submit">
-              Check listings
+              Search listings
             </button>
           </form>
         </div>
@@ -611,56 +612,54 @@ export default function App() {
           <img src={img('farmers.jpg')} alt="" className="collage-bot" />
         </div>
         <div className="split-copy">
-          <p className="pill">Welcome to NOC Careers</p>
-          <h2>A clearer path from NOC code to community portal</h2>
+          <p className="pill">How it works</p>
+          <h2>Three steps. Then the official portal.</h2>
           <p>
-            RCIP job offers and priority occupations live on community economic development sites — not a
-            single federal list. We aggregate what those portals publish so candidates can explore faster,
-            then verify and apply on the official source.
+            RCIP lists live on 14 community sites, not one federal page. Use this search to compare them
+            quickly — then verify and apply only where the community tells you to.
           </p>
           <ul className="feature-list">
             <li>
               <span className="feat-icon" aria-hidden="true">
-                ✓
+                1
               </span>
               <div>
-                <strong>Priority NOCs first</strong>
-                <p>See which occupations each pilot community is actively prioritizing.</p>
+                <strong>Search your NOC or job title</strong>
+                <p>See which communities currently list that occupation.</p>
               </div>
             </li>
             <li>
               <span className="feat-icon" aria-hidden="true">
-                ✓
+                2
               </span>
               <div>
-                <strong>Designated employers, labelled clearly</strong>
-                <p>Find who is designated — then only apply to publicly advertised roles.</p>
+                <strong>Open Job Bank from the card</strong>
+                <p>A designated employer is not the same as a job opening. Look for a public posting.</p>
               </div>
             </li>
             <li>
               <span className="feat-icon" aria-hidden="true">
-                ✓
+                3
               </span>
               <div>
-                <strong>Always link out</strong>
-                <p>Every result points back to the community portal or source document.</p>
+                <strong>Finish on the community portal</strong>
+                <p>We never take applications or give immigration advice.</p>
               </div>
             </li>
           </ul>
           <button type="button" className="btn btn-primary" onClick={scrollToExplore}>
-            Explore listings
+            Search listings
           </button>
         </div>
       </section>
 
       <section className="impact" id="impact">
         <div className="section-head">
-          <p className="pill">Why RCIP matters</p>
-          <h2>Rural immigration is already moving people into real jobs</h2>
+          <p className="pill">Why this pathway exists</p>
+          <h2>Rural communities are already recommending people with real job offers</h2>
           <p>
-            NOC Careers helps candidates find the right community list faster. The figures below are
-            public community / press reports about the Rural Community Immigration Pilot — not IRCC
-            national totals, and not claims about this website’s outcomes.
+            These figures come from public community and press reports about RCIP — not IRCC national
+            totals, and not results from this website.
           </p>
         </div>
 
@@ -693,52 +692,43 @@ export default function App() {
 
         <div className="impact-panels">
           <div className="impact-panel">
-            <h3>What success looks like locally</h3>
+            <h3>What the pilot is for</h3>
             <ul>
               <li>
-                Employers fill hard-to-staff NOCs (health, trades, early childhood, hospitality) with
-                workers who already have a real job offer.
+                Fill hard-to-staff work — health, trades, early childhood, hospitality — with people who
+                already have a job offer.
               </li>
               <li>
-                Communities keep annual recommendation allotments focused on priority occupations —
-                with caps so one NOC doesn’t consume the whole year.
+                Keep each year’s recommendations focused on priority occupations, with caps so one NOC
+                does not use the whole allotment.
               </li>
               <li>
-                Many successful candidates are already working in the region as temporary residents;
-                RCIP often retains people who are already contributing.
+                Often retain people already living and working in the region as temporary residents.
               </li>
             </ul>
           </div>
-          <div className="impact-panel">
-            <h3>How to use this site well</h3>
-            <ol>
-              <li>Search your NOC or occupation title across all 14 communities.</li>
-              <li>Open Job Bank from the card to see whether public postings exist.</li>
-              <li>Continue only on the official community portal — we never host applications.</li>
-            </ol>
-            <p className="impact-cite">
-              Sources: community RCIP updates and press coverage of 2025–2026 pilot activity (e.g. CIC
-              News year-in-review; Canadian Press reporting). Always confirm current rules on{' '}
-              <a
-                href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Canada.ca
-              </a>{' '}
-              and your community portal.
-            </p>
-          </div>
         </div>
+        <p className="impact-cite">
+          Sources: community RCIP updates and press coverage of 2025–2026 pilot activity (e.g. CIC News
+          year-in-review; Canadian Press reporting). Always confirm current rules on{' '}
+          <a
+            href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Canada.ca
+          </a>{' '}
+          and your community portal.
+        </p>
       </section>
 
       <section className="communities" id="communities">
         <div className="section-head">
-          <p className="pill">All RCIP communities</p>
-          <h2>Browse every Rural Community Immigration Pilot region</h2>
+          <p className="pill">14 communities</p>
+          <h2>Choose a region, or search them all</h2>
           <p>
-            Searchable listings for communities we’ve scraped. Other regions are directory cards —
-            open the official portal, or filter the explorer when data is available.
+            Cards with counts are searchable here. Cards marked “Portal only” still send you to the
+            official site until that list is in the explorer.
           </p>
         </div>
         <div className="community-cards">
@@ -786,7 +776,7 @@ export default function App() {
                     </strong>
                     <span>
                       {c.directoryOnly
-                        ? 'Directory — open official portal'
+                        ? 'Portal only — open the official site'
                         : `${c.nocs} NOCs · ${c.employers} employers`}
                     </span>
                   </div>
@@ -810,8 +800,8 @@ export default function App() {
 
       <section className="explore" id="explore" ref={exploreRef}>
         <div className="section-head explore-head">
-          <p className="pill">Live listings</p>
-          <h2>Explore priority NOCs &amp; designated employers</h2>
+          <p className="pill">Search</p>
+          <h2>Find your NOC or a designated employer</h2>
           <p>
             Updated {new Date(data.generated_at).toLocaleString()}
             {data.jobbank_checked_at
@@ -822,7 +812,7 @@ export default function App() {
             {!community ? ' · same NOC grouped across communities' : ''}
           </p>
           <p className="explore-credit">
-            B.C. eligible NOCs may link out to{' '}
+            B.C. NOCs may include{' '}
             <a
               href="https://www.workbc.ca/plan-career/career-trek-videos"
               target="_blank"
@@ -830,13 +820,30 @@ export default function App() {
             >
               WorkBC Career Trek
             </a>{' '}
-            videos (credit: WorkBC). WorkBC does not endorse this site.
+            videos. WorkBC does not endorse this site.
           </p>
         </div>
 
         <div className="workspace">
           <aside className="sidebar" aria-label="Refine results">
             <div className="sidebar-card" ref={sidebarCardRef}>
+              <div className="card-legend">
+                <strong>How to read a card</strong>
+                <ul>
+                  <li>
+                    <strong>Eligible NOC</strong> = that occupation is on the community’s current priority
+                    list.
+                  </li>
+                  <li>
+                    <strong>Designated employer</strong> = they may support an RCIP job offer; it does not
+                    mean they are hiring you.
+                  </li>
+                  <li>
+                    <strong>Job Bank counts</strong> are weekly snapshots, not live totals.
+                  </li>
+                  <li>Click a community name on a grouped card to search that place only.</li>
+                </ul>
+              </div>
               <div className="field">
                 <label htmlFor="q">Search NOC, title, or employer</label>
                 <input
@@ -896,9 +903,8 @@ export default function App() {
               ) : null}
 
               <p className="notice">
-                Unofficial search aid — not affiliated with IRCC or community economic development offices.
-                Do not mass-email designated employers; apply only to publicly advertised jobs. Always
-                verify on the source site.
+                Unofficial aid — not IRCC or a community office. Do not email designated employers. Apply
+                only to jobs that are publicly posted, then confirm on the source site.
               </p>
             </div>
           </aside>
@@ -925,8 +931,8 @@ export default function App() {
               {displayItems.length === 0 ? (
                 <p className="empty">
                   {community && communityStats.find((c) => c.id === community)?.directoryOnly
-                    ? 'No searchable listings for this community yet — use Official portal on the community card, then verify on the source site.'
-                    : 'No matches. Try another NOC code or clear filters.'}
+                    ? 'No searchable listings for this community yet — use Official portal on the community card.'
+                    : 'No matches. Try a 5-digit NOC, a shorter job title, or clear filters.'}
                 </p>
               ) : (
                 <div className="list">
@@ -953,8 +959,7 @@ export default function App() {
               )}
               {displayItems.length > 200 ? (
                 <p className="empty truncate-note">
-                  Showing first 200 of {displayItems.length.toLocaleString()}. Narrow your search for
-                  more.
+                  Showing first 200 of {displayItems.length.toLocaleString()}. Narrow your search.
                 </p>
               ) : null}
             </div>
@@ -962,7 +967,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="support" id="support">
+      <section className="support" id="next-steps">
         <div className="support-media">
           <img
             src={img('citizens.jpg')}
@@ -972,24 +977,27 @@ export default function App() {
           />
           <div className="stat-float">
             <strong>{data.counts.communities}</strong>
-            <span>RCIP communities in this build</span>
+            <span>RCIP communities on this site</span>
           </div>
         </div>
         <div className="support-copy">
-          <p className="pill">Candidate guidance</p>
-          <h2>Use this tool to orient — then apply where jobs are posted</h2>
+          <p className="pill">After you find a match</p>
+          <h2>Four checks before you apply</h2>
           <p>
-            Designated employer lists are not open invitation lists. Mass outreach hurts candidates and
-            communities. Treat every card as a pointer to the official page, then follow that community’s
-            process.
+            A list is a map, not a permission slip. Use it to aim — then follow that community’s process.
           </p>
           <div className="info-box">
             <strong>Before you apply</strong>
             <ul>
-              <li>Confirm the NOC is still on the community’s current priority list.</li>
-              <li>Confirm the employer is designated for the role you want.</li>
-              <li>Apply only through publicly advertised postings or the portal’s job guidance.</li>
-              <li>Language, education, work experience, and settlement funds are assessed by IRCC.</li>
+              <li>The NOC is still on that community’s current priority list.</li>
+              <li>The employer is designated for the role you want.</li>
+              <li>
+                There is a public job posting (Job Bank, the portal, or the employer’s careers page).
+              </li>
+              <li>
+                You will meet IRCC’s language, education, experience, and settlement-fund rules — the
+                community cannot skip those.
+              </li>
             </ul>
           </div>
           <div className="useful-links">
@@ -1009,64 +1017,18 @@ export default function App() {
               Job Bank Canada
             </a>
             <a href="#communities">Community portals on this site</a>
+            <a href="#share">If this saved you time, send it to someone still opening 14 tabs.</a>
           </div>
-        </div>
-      </section>
-
-      <section className="contact" id="contact">
-        <div className="contact-copy">
-          <p className="pill">Contact</p>
-          <h2>Questions about the site, partnerships, or data corrections?</h2>
-          <p>
-            We build and maintain this unofficial referral layer for candidates, EDOs, and settlement
-            partners. For partnership inquiries, listing corrections, or press, email us — we do not
-            provide immigration advice or process applications.
-          </p>
-          <a className="contact-email" href="mailto:info@noccareers.ca">
-            info@noccareers.ca
-          </a>
-          <ul className="contact-points">
-            <li>Report a stale employer or NOC list</li>
-            <li>Ask about co-branding or referral metrics for your community office</li>
-            <li>Request a walkthrough of the explorer for settlement staff</li>
-          </ul>
-        </div>
-        <div className="contact-card">
-          <h3>NOC Careers</h3>
-          <p>Unofficial RCIP search aid for priority NOCs and designated employers.</p>
-          <dl>
-            <div>
-              <dt>Email</dt>
-              <dd>
-                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Web</dt>
-              <dd>
-                <a href="https://noccareers.ca">noccareers.ca</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Response</dt>
-              <dd>We aim to reply within 2 business days</dd>
-            </div>
-          </dl>
-          <p className="contact-note">
-            Not affiliated with Immigration, Refugees and Citizenship Canada (IRCC) or WorkBC.
-            Always verify on the official community RCIP website before applying. Links to WorkBC
-            Career Trek are for credit and convenience only and are not an endorsement.
-          </p>
         </div>
       </section>
 
       <section className="cta-banner" id="share" aria-labelledby="share-heading">
         <div className="cta-copy">
-          <p className="cta-kicker">Share NOC Careers</p>
-          <h2 id="share-heading">Help someone find the right RCIP pathway</h2>
+          <p className="cta-kicker">Pass it on</p>
+          <h2 id="share-heading">Help someone else find their community</h2>
           <p>
-            Send the search aid to a friend, settlement worker, or community contact — then they can
-            verify on the official portal.
+            Settlement workers, classmates, and family often need the same starting point. Send the
+            link — they should still verify on the official portal.
           </p>
 
           <div className="share-panel">
@@ -1083,16 +1045,13 @@ export default function App() {
               <button type="button" className="btn btn-light share-copy-btn" onClick={copyShareLink}>
                 {linkCopied ? 'Copied' : 'Copy link'}
               </button>
-              <div className="share-actions">
-                {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
+              {typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? (
+                <div className="share-actions">
                   <button type="button" className="btn btn-light" onClick={shareNative}>
                     Share from device
                   </button>
-                ) : null}
-                <button type="button" className="btn btn-outline-light" onClick={scrollToExplore}>
-                  Open explorer
-                </button>
-              </div>
+                </div>
+              ) : null}
             </div>
 
             <p className="share-label">Share to</p>
@@ -1130,6 +1089,47 @@ export default function App() {
         </div>
       </section>
 
+      <section className="contact" id="contact">
+        <div className="contact-copy">
+          <p className="pill">Contact</p>
+          <h2>Corrections, walkthroughs, and partnerships</h2>
+          <p>
+            We maintain this unofficial search for candidates, community offices, and settlement staff. We
+            do not give immigration advice or process applications.
+          </p>
+          <a className="contact-email" href="mailto:info@noccareers.ca">
+            info@noccareers.ca
+          </a>
+          <ul className="contact-points">
+            <li>Tell us if a NOC or employer list looks out of date</li>
+            <li>Book a 15-minute walkthrough for settlement or EDO staff</li>
+            <li>Ask about listing this as a referral aid for your community</li>
+          </ul>
+        </div>
+        <div className="contact-card">
+          <h3>NOC Careers</h3>
+          <p>Unofficial RCIP search — lists in, official portals out.</p>
+          <dl>
+            <div>
+              <dt>Email</dt>
+              <dd>
+                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Web</dt>
+              <dd>
+                <a href="https://noccareers.ca">noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Response</dt>
+              <dd>We aim to reply within 2 business days</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
       <footer className="footer">
         <div className="footer-brand">
           <div className="logo footer-logo">
@@ -1142,15 +1142,16 @@ export default function App() {
             />
           </div>
           <p>
-            Unofficial RCIP aggregator for priority NOCs and designated employers.
+            Unofficial RCIP search for priority NOCs and designated employers.
           </p>
         </div>
         <div>
           <h3>Explore</h3>
-          <a href="#about">About</a>
+          <a href="#about">How it works</a>
           <a href="#impact">Impact</a>
           <a href="#communities">Communities</a>
-          <a href="#explore">Listings</a>
+          <a href="#explore">Search</a>
+          <a href="#next-steps">Next steps</a>
           <a href="#share">Share</a>
           <a href="#contact">Contact</a>
         </div>
@@ -1158,7 +1159,10 @@ export default function App() {
           <h3>Contact</h3>
           <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
           <a href="https://noccareers.ca">noccareers.ca</a>
-          <p>Not affiliated with IRCC. Always verify on the community portal before applying.</p>
+          <p>
+            Not affiliated with IRCC or WorkBC. Always confirm on the community RCIP website before you
+            apply.
+          </p>
         </div>
       </footer>
       </div>

@@ -163,9 +163,10 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.05rem;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.8rem;
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 650;
   color: var(--muted);
 }
@@ -311,7 +312,7 @@ body.nav-lock {
 .hero-copy {
   position: relative;
   z-index: 2;
-  max-width: 34rem;
+  max-width: 38rem;
 }
 
 .hero-copy h1 {
@@ -817,6 +818,35 @@ body.nav-lock {
   border-radius: var(--radius);
   background: var(--white);
   box-shadow: var(--shadow-sm);
+}
+
+.card-legend {
+  padding: 0.8rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(200, 16, 46, 0.05);
+  border: 1px solid rgba(200, 16, 46, 0.12);
+}
+
+.card-legend > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+}
+
+.card-legend ul {
+  margin: 0;
+  padding-left: 1.05rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.card-legend li + li {
+  margin-top: 0.32rem;
+}
+
+.card-legend li strong {
+  color: var(--charcoal);
 }
 
 .field {
@@ -1475,7 +1505,7 @@ body.nav-lock {
 
 .impact-panels {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.9rem;
 }
 
