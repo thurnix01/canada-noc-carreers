@@ -1336,10 +1336,13 @@ body.nav-lock {
   display: flex;
   gap: 0.4rem;
   align-items: stretch;
+  width: max-content;
+  max-width: 100%;
 }
 
 .share-link-input {
-  flex: 1;
+  flex: 0 1 auto;
+  width: 11.25rem;
   min-width: 0;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 10px;
