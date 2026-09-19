@@ -448,7 +448,9 @@ export default function App() {
         results.style.height = ''
         return
       }
-      results.style.height = `${Math.round(sidebar.getBoundingClientRect().height)}px`
+      const sidebarH = Math.round(sidebar.getBoundingClientRect().height)
+      const cap = Math.min(Math.round(window.innerHeight * 0.52), 512)
+      results.style.height = `${Math.min(sidebarH, cap)}px`
     }
 
     syncHeight()
