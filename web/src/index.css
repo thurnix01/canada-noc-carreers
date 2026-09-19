@@ -1923,6 +1923,17 @@ body.nav-lock {
     grid-template-columns: 1fr 1fr;
   }
 
+  .community-card-all {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .community-card-all .community-card-media img {
+    aspect-ratio: 16 / 9;
+  }
+
   .cta-banner {
     grid-template-columns: 1fr;
     width: 100%;

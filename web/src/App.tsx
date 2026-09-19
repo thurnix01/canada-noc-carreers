@@ -851,7 +851,7 @@ export default function App() {
         <div className="community-cards">
           <button
             type="button"
-            className={`community-card ${community === '' ? 'is-active' : ''}`}
+            className={`community-card community-card-all ${community === '' ? 'is-active' : ''}`}
             onClick={() => {
               startTransition(() => setCommunity(''))
               scrollToExplore()
