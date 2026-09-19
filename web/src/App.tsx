@@ -39,8 +39,8 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'eligible_noc', label: 'Eligible NOC' },
 ]
 
-const PAGE_SIZE = 20
 const DESKTOP_PAGER_MQ = '(min-width: 861px)'
+const FALLBACK_PAGE_SIZE = 8
 
 /** Place photography for directory cards (portal heroes + Commons fills). */
 const COMMUNITY_PHOTOS: Record<string, string> = {
@@ -310,6 +310,7 @@ export default function App() {
   const [type, setType] = useState<'' | ListingType>('')
   const [sort, setSort] = useState<SortMode>('featured')
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(FALLBACK_PAGE_SIZE)
   const [desktopPager, setDesktopPager] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(DESKTOP_PAGER_MQ).matches,
   )
@@ -411,9 +412,9 @@ export default function App() {
   )
 
   const hasFilters = Boolean(deferredQuery || community || type)
-  const pageCount = Math.max(1, Math.ceil(displayItems.length / PAGE_SIZE))
+  const pageCount = Math.max(1, Math.ceil(displayItems.length / pageSize))
   const pagedItems = desktopPager
-    ? displayItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+    ? displayItems.slice((page - 1) * pageSize, page * pageSize)
     : displayItems.slice(0, 200)
 
   useEffect(() => {
@@ -443,25 +444,33 @@ export default function App() {
     const results = resultsRef.current
     if (!sidebar || !results) return
 
-    const syncHeight = () => {
+    const syncLayout = () => {
       if (window.matchMedia('(max-width: 860px)').matches) {
         results.style.height = ''
         return
       }
-      const sidebarH = Math.round(sidebar.getBoundingClientRect().height)
-      const cap = Math.min(Math.round(window.innerHeight * 0.52), 512)
-      results.style.height = `${Math.min(sidebarH, cap)}px`
+      results.style.height = `${Math.round(sidebar.getBoundingClientRect().height)}px`
+      const scroll = resultsScrollRef.current
+      const card = scroll?.querySelector('.card')
+      if (!scroll || !card) return
+      const list = scroll.querySelector('.list')
+      const gap = list ? parseFloat(getComputedStyle(list).rowGap || getComputedStyle(list).gap || '14') : 14
+      const row = card.getBoundingClientRect().height + gap
+      if (row < 80) return
+      const rows = Math.max(2, Math.floor((scroll.clientHeight + gap) / row))
+      const nextSize = rows * 2
+      setPageSize((current) => (current === nextSize ? current : nextSize))
     }
 
-    syncHeight()
-    const observer = new ResizeObserver(syncHeight)
+    syncLayout()
+    const observer = new ResizeObserver(syncLayout)
     observer.observe(sidebar)
-    window.addEventListener('resize', syncHeight)
+    window.addEventListener('resize', syncLayout)
     return () => {
       observer.disconnect()
-      window.removeEventListener('resize', syncHeight)
+      window.removeEventListener('resize', syncLayout)
     }
-  }, [data, communityStats.length])
+  }, [data, communityStats.length, pagedItems.length])
 
   const scrollToExplore = () => {
     setMenuOpen(false)
@@ -1019,7 +1028,7 @@ export default function App() {
 
           <main className="results" aria-live="polite" ref={resultsRef}>
             <div className="results-toolbar">
-              {desktopPager && displayItems.length > PAGE_SIZE ? (
+              {desktopPager && displayItems.length > pageSize ? (
                 <nav className="pagination" aria-label="Search results pages">
                   <button
                     type="button"

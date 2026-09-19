@@ -913,7 +913,6 @@ body.nav-lock {
   flex-direction: column;
   gap: 0.75rem;
   min-height: 0;
-  max-height: min(32rem, 52vh);
   overflow: hidden;
   padding: 1.05rem;
   border-radius: var(--radius);
@@ -1060,6 +1059,13 @@ body.nav-lock {
   scroll-behavior: smooth;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+}
+
+@media (min-width: 861px) {
+  .results-scroll {
+    overflow-y: hidden;
+    scrollbar-gutter: auto;
+  }
 }
 
 .results-scroll::-webkit-scrollbar {
