@@ -16,6 +16,7 @@ import {
   sortListings,
   toDisplayItems,
   typeLabel,
+  visiblePages,
   withUtm,
   type DisplayItem,
   type SortMode,
@@ -31,8 +32,15 @@ const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'alphabetical', label: 'Alphabetically' },
   { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newly added' },
+  { value: 'newest', label: 'Newest' },
+  { value: 'oldest', label: 'Oldest' },
+  { value: 'noc', label: 'By NOC' },
+  { value: 'employer', label: 'Designated employer' },
+  { value: 'eligible_noc', label: 'Eligible NOC' },
 ]
+
+const PAGE_SIZE = 20
+const DESKTOP_PAGER_MQ = '(min-width: 861px)'
 
 /** Place photography for directory cards (portal heroes + Commons fills). */
 const COMMUNITY_PHOTOS: Record<string, string> = {
@@ -227,6 +235,73 @@ function ResultCard({
   )
 }
 
+function SortSelect({
+  value,
+  onChange,
+}: {
+  value: SortMode
+  onChange: (next: SortMode) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const current = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0]
+
+  useEffect(() => {
+    if (!open) return
+    const onDoc = (event: MouseEvent) => {
+      if (!wrapRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDoc)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDoc)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div className={`sort-field ${open ? 'is-open' : ''}`} ref={wrapRef}>
+      <span className="field-label" id="sort-label">
+        Sort
+      </span>
+      <button
+        type="button"
+        className="sort-trigger"
+        id="sort-results"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-labelledby="sort-label sort-results"
+        onClick={() => setOpen((next) => !next)}
+      >
+        {current.label}
+      </button>
+      {open ? (
+        <ul className="sort-menu" role="listbox" aria-labelledby="sort-label">
+          {SORT_OPTIONS.map((opt) => (
+            <li key={opt.value} role="none">
+              <button
+                type="button"
+                role="option"
+                aria-selected={opt.value === value}
+                className={opt.value === value ? 'is-active' : ''}
+                onClick={() => {
+                  onChange(opt.value)
+                  setOpen(false)
+                }}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  )
+}
+
 export default function App() {
   const [data, setData] = useState<ListingsPayload | null>(null)
   const [error, setError] = useState('')
@@ -234,6 +309,10 @@ export default function App() {
   const [community, setCommunity] = useState('')
   const [type, setType] = useState<'' | ListingType>('')
   const [sort, setSort] = useState<SortMode>('featured')
+  const [page, setPage] = useState(1)
+  const [desktopPager, setDesktopPager] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(DESKTOP_PAGER_MQ).matches,
+  )
   const [menuOpen, setMenuOpen] = useState(false)
   const [navScrolled, setNavScrolled] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -242,6 +321,7 @@ export default function App() {
   const exploreRef = useRef<HTMLElement | null>(null)
   const sidebarCardRef = useRef<HTMLDivElement | null>(null)
   const resultsRef = useRef<HTMLElement | null>(null)
+  const resultsScrollRef = useRef<HTMLDivElement | null>(null)
   const copyResetRef = useRef<number | null>(null)
 
   const shareUrl = 'https://noccareers.ca'
@@ -331,6 +411,32 @@ export default function App() {
   )
 
   const hasFilters = Boolean(deferredQuery || community || type)
+  const pageCount = Math.max(1, Math.ceil(displayItems.length / PAGE_SIZE))
+  const pagedItems = desktopPager
+    ? displayItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+    : displayItems.slice(0, 200)
+
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_PAGER_MQ)
+    const sync = () => setDesktopPager(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    setPage(1)
+  }, [deferredQuery, community, type, sort])
+
+  useEffect(() => {
+    setPage((current) => Math.min(current, pageCount))
+  }, [pageCount])
+
+  const goToPage = (next: number) => {
+    const clamped = Math.min(pageCount, Math.max(1, next))
+    setPage(clamped)
+    resultsScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     const sidebar = sidebarCardRef.current
@@ -911,23 +1017,50 @@ export default function App() {
 
           <main className="results" aria-live="polite" ref={resultsRef}>
             <div className="results-toolbar">
-              <label className="sort-field" htmlFor="sort-results">
-                <span className="field-label">Sort</span>
-                <select
-                  id="sort-results"
-                  value={sort}
-                  onChange={(e) => startTransition(() => setSort(e.target.value as SortMode))}
-                >
-                  {SORT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              {desktopPager && displayItems.length > PAGE_SIZE ? (
+                <nav className="pagination" aria-label="Search results pages">
+                  <button
+                    type="button"
+                    className="page-btn page-nav"
+                    disabled={page <= 1}
+                    onClick={() => goToPage(page - 1)}
+                  >
+                    Prev
+                  </button>
+                  {visiblePages(page, pageCount).map((item, index) =>
+                    item === 'ellipsis' ? (
+                      <span key={`ellipsis-${index}`} className="page-ellipsis" aria-hidden="true">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        className={`page-btn ${page === item ? 'is-active' : ''}`}
+                        aria-current={page === item ? 'page' : undefined}
+                        onClick={() => goToPage(item)}
+                      >
+                        {item}
+                      </button>
+                    ),
+                  )}
+                  <button
+                    type="button"
+                    className="page-btn page-nav"
+                    disabled={page >= pageCount}
+                    onClick={() => goToPage(page + 1)}
+                  >
+                    Next
+                  </button>
+                </nav>
+              ) : null}
+              <SortSelect
+                value={sort}
+                onChange={(next) => startTransition(() => setSort(next))}
+              />
             </div>
 
-            <div className="results-scroll">
+            <div className="results-scroll" ref={resultsScrollRef}>
               {displayItems.length === 0 ? (
                 <p className="empty">
                   {community && communityStats.find((c) => c.id === community)?.directoryOnly
@@ -936,7 +1069,7 @@ export default function App() {
                 </p>
               ) : (
                 <div className="list">
-                  {displayItems.slice(0, 200).map((item: DisplayItem, index) =>
+                  {pagedItems.map((item: DisplayItem, index) =>
                     item.kind === 'noc_group' ? (
                       <ResultCard
                         key={`noc-${item.listing.noc_code}`}
@@ -957,7 +1090,7 @@ export default function App() {
                   )}
                 </div>
               )}
-              {displayItems.length > 200 ? (
+              {!desktopPager && displayItems.length > 200 ? (
                 <p className="empty truncate-note">
                   Showing first 200 of {displayItems.length.toLocaleString()}. Narrow your search.
                 </p>

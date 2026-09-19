@@ -226,10 +226,31 @@ export function matchesQuery(listing: Listing, q: string): boolean {
     .every((token) => hay.includes(token))
 }
 
-export type SortMode = 'alphabetical' | 'featured' | 'newest'
+export type SortMode =
+  | 'alphabetical'
+  | 'featured'
+  | 'newest'
+  | 'oldest'
+  | 'noc'
+  | 'employer'
+  | 'eligible_noc'
 
 function titleKey(listing: Listing): string {
   return (listing.title || listing.employer_name || listing.noc_code || '').toLowerCase()
+}
+
+function byTitleThenPlace(a: Listing, b: Listing): number {
+  const byTitle = titleKey(a).localeCompare(titleKey(b), undefined, { sensitivity: 'base' })
+  if (byTitle) return byTitle
+  return a.community_name.localeCompare(b.community_name)
+}
+
+function updatedAt(listing: Listing): number {
+  return Date.parse(listing.updated_at || '') || 0
+}
+
+function nocKey(listing: Listing): string {
+  return (listing.noc_code || listingNocCodes(listing)[0] || '').padStart(5, '0')
 }
 
 /** Hiring employers first, then eligible NOCs, then other employers / roles. */
@@ -247,29 +268,74 @@ function featuredRank(listing: Listing): number {
 export function sortListings(listings: Listing[], mode: SortMode): Listing[] {
   const rows = [...listings]
   if (mode === 'alphabetical') {
-    rows.sort((a, b) => {
-      const byTitle = titleKey(a).localeCompare(titleKey(b), undefined, { sensitivity: 'base' })
-      if (byTitle) return byTitle
-      return a.community_name.localeCompare(b.community_name)
-    })
+    rows.sort(byTitleThenPlace)
     return rows
   }
   if (mode === 'newest') {
     rows.sort((a, b) => {
-      const ta = Date.parse(a.updated_at || '') || 0
-      const tb = Date.parse(b.updated_at || '') || 0
-      if (tb !== ta) return tb - ta
-      return titleKey(a).localeCompare(titleKey(b), undefined, { sensitivity: 'base' })
+      const delta = updatedAt(b) - updatedAt(a)
+      return delta || byTitleThenPlace(a, b)
+    })
+    return rows
+  }
+  if (mode === 'oldest') {
+    rows.sort((a, b) => {
+      const delta = updatedAt(a) - updatedAt(b)
+      return delta || byTitleThenPlace(a, b)
+    })
+    return rows
+  }
+  if (mode === 'noc') {
+    rows.sort((a, b) => {
+      const aNoc = nocKey(a)
+      const bNoc = nocKey(b)
+      const aEmpty = !a.noc_code && listingNocCodes(a).length === 0
+      const bEmpty = !b.noc_code && listingNocCodes(b).length === 0
+      if (aEmpty !== bEmpty) return aEmpty ? 1 : -1
+      const byNoc = aNoc.localeCompare(bNoc)
+      return byNoc || byTitleThenPlace(a, b)
+    })
+    return rows
+  }
+  if (mode === 'employer') {
+    rows.sort((a, b) => {
+      const ra = a.type === 'employer' ? 0 : a.type === 'priority_noc' ? 1 : 2
+      const rb = b.type === 'employer' ? 0 : b.type === 'priority_noc' ? 1 : 2
+      return ra - rb || byTitleThenPlace(a, b)
+    })
+    return rows
+  }
+  if (mode === 'eligible_noc') {
+    rows.sort((a, b) => {
+      const ra = a.type === 'priority_noc' ? 0 : a.type === 'employer' ? 1 : 2
+      const rb = b.type === 'priority_noc' ? 0 : b.type === 'employer' ? 1 : 2
+      return ra - rb || byTitleThenPlace(a, b)
     })
     return rows
   }
   rows.sort((a, b) => {
     const ra = featuredRank(a)
     const rb = featuredRank(b)
-    if (ra !== rb) return ra - rb
-    return titleKey(a).localeCompare(titleKey(b), undefined, { sensitivity: 'base' })
+    return ra - rb || byTitleThenPlace(a, b)
   })
   return rows
+}
+
+export function visiblePages(current: number, total: number): Array<number | 'ellipsis'> {
+  if (total < 1) return []
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const picks = new Set<number>([1, total, current, current - 1, current + 1])
+  if (current <= 3) [2, 3, 4, 5].forEach((n) => picks.add(n))
+  if (current >= total - 2) [total - 1, total - 2, total - 3, total - 4].forEach((n) => picks.add(n))
+  const sorted = [...picks].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b)
+  const pages: Array<number | 'ellipsis'> = []
+  let prev = 0
+  for (const n of sorted) {
+    if (prev && n - prev > 1) pages.push('ellipsis')
+    pages.push(n)
+    prev = n
+  }
+  return pages
 }
 
 export type DisplayItem =

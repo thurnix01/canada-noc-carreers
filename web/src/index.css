@@ -197,31 +197,31 @@ img {
 
 .nav-toggle {
   display: none;
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.05rem;
+  height: 2.05rem;
   margin-left: 0.15rem;
   border: 1px solid rgba(20, 24, 31, 0.1);
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--white);
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 0.28rem;
+  gap: 0.2rem;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .nav-toggle span {
   display: block;
-  width: 1.05rem;
-  height: 2px;
+  width: 0.85rem;
+  height: 1.5px;
   border-radius: 999px;
   background: var(--charcoal);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .nav-toggle.is-open span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(4.5px) rotate(45deg);
 }
 
 .nav-toggle.is-open span:nth-child(2) {
@@ -229,7 +229,7 @@ img {
 }
 
 .nav-toggle.is-open span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-4.5px) rotate(-45deg);
 }
 
 .nav-backdrop {
@@ -923,15 +923,64 @@ body.nav-lock {
 .results-toolbar {
   flex: 0 0 auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+}
+
+.page-btn {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.page-btn:hover:not(:disabled):not(.is-active) {
+  background: var(--maple-soft);
+  color: var(--maple-deep);
+}
+
+.page-btn.is-active {
+  background: var(--maple);
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.page-btn.page-nav {
+  color: var(--maple-deep);
+}
+
+.page-ellipsis {
+  min-width: 1.1rem;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 650;
 }
 
 .sort-field {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  margin: 0;
+  margin: 0 0 0 auto;
+  z-index: 4;
 }
 
 .sort-field .field-label {
@@ -939,8 +988,8 @@ body.nav-lock {
   white-space: nowrap;
 }
 
-.sort-field select {
-  min-width: 10.5rem;
+.sort-trigger {
+  min-width: 12.5rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.45rem 2rem 0.45rem 0.85rem;
@@ -951,14 +1000,54 @@ body.nav-lock {
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
-  appearance: none;
+  text-align: left;
   cursor: pointer;
 }
 
-.sort-field select:focus {
+.sort-field.is-open .sort-trigger,
+.sort-trigger:focus {
   outline: 2px solid rgba(200, 16, 46, 0.28);
   outline-offset: 2px;
   border-color: rgba(200, 16, 46, 0.45);
+}
+
+.sort-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 6;
+  min-width: 12.5rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 24, 31, 0.08);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.sort-menu button {
+  width: 100%;
+  display: block;
+  text-align: left;
+  border: 0;
+  border-radius: 9px;
+  padding: 0.5rem 0.7rem;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.sort-menu button:hover {
+  background: var(--maple-soft);
+  color: var(--maple-deep);
+}
+
+.sort-menu button.is-active {
+  background: var(--maple);
+  color: #fff;
 }
 
 .results-scroll {
@@ -1733,16 +1822,17 @@ body.nav-lock {
   .nav-links {
     display: none;
     position: absolute;
-    top: calc(100% + 0.35rem);
-    left: 1rem;
-    right: 1rem;
+    top: calc(100% + 0.4rem);
+    left: auto;
+    right: 0.65rem;
+    width: min(17.5rem, calc(100vw - 1.3rem));
     z-index: 55;
     margin: 0;
-    padding: 0.85rem;
+    padding: 0.45rem;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.2rem;
-    border-radius: 16px;
+    gap: 0.08rem;
+    border-radius: 14px;
     border: 1px solid rgba(20, 24, 31, 0.08);
     background: rgba(255, 252, 250, 0.98);
     box-shadow: var(--shadow);
@@ -1753,9 +1843,10 @@ body.nav-lock {
   }
 
   .nav-links a {
-    padding: 0.75rem 0.85rem;
-    border-radius: 10px;
+    padding: 0.48rem 0.7rem;
+    border-radius: 9px;
     color: var(--charcoal);
+    font-size: 0.86rem;
   }
 
   .nav-links a:hover {
@@ -1769,9 +1860,11 @@ body.nav-lock {
 
   .btn.nav-cta-mobile {
     display: inline-flex;
-    margin: 0.45rem 0.35rem 0.2rem;
-    width: calc(100% - 0.7rem);
+    margin: 0.28rem 0.2rem 0.1rem;
+    width: calc(100% - 0.4rem);
     justify-content: center;
+    padding: 0.48rem 0.75rem;
+    font-size: 0.84rem;
   }
 
   .site-nav-inner {
@@ -1879,6 +1972,10 @@ body.nav-lock {
   .results {
     height: auto !important;
     max-height: min(65vh, 640px);
+  }
+
+  .pagination {
+    display: none;
   }
 
   .list {
