@@ -457,8 +457,8 @@ export default function App() {
       const gap = list ? parseFloat(getComputedStyle(list).rowGap || getComputedStyle(list).gap || '14') : 14
       const row = card.getBoundingClientRect().height + gap
       if (row < 80) return
-      const rows = Math.max(2, Math.floor((scroll.clientHeight + gap) / row))
-      const nextSize = rows * 2
+      const rows = Math.max(4, Math.floor((scroll.clientHeight + gap) / row))
+      const nextSize = Math.max(8, rows * 2)
       setPageSize((current) => (current === nextSize ? current : nextSize))
     }
 

@@ -1058,14 +1058,6 @@ body.nav-lock {
   padding: 0.1rem 0.35rem 0.25rem 0.05rem;
   scroll-behavior: smooth;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-}
-
-@media (min-width: 861px) {
-  .results-scroll {
-    overflow-y: hidden;
-    scrollbar-gutter: auto;
-  }
 }
 
 .results-scroll::-webkit-scrollbar {
