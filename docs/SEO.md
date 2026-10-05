@@ -17,11 +17,20 @@ Keep this lean: the product stays an RCIP referral layer. SEO should help discov
 Property you verified: **Domain** `noccareers.ca`  
 Console: [Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Anoccareers.ca)
 
+Before submitting, confirm these return HTTP 200 (not GitHub’s HTML 404 page):
+
+- https://noccareers.ca/robots.txt
+- https://noccareers.ca/sitemap.xml
+- https://noccareers.ca/images/nocc-header.jpg
+
+If they 404, GitHub hasn’t finished publishing yet — run **Actions → Deploy Pages → Run workflow**, wait for green, then retry.
+
 1. Open **Sitemaps** → submit `https://noccareers.ca/sitemap.xml`
 2. Open **URL inspection** → enter `https://noccareers.ca/` → **Request indexing**
 3. Confirm **Settings → users and permissions** includes your GA / Absolon account
 4. Optional: link Analytics ↔ Search Console (Admin → Product links) so organic queries appear in GA
 5. In 2–14 days, check **Pages** / **Indexing** for crawl errors (SPA one-pagers often show only the homepage — expected for now)
+6. Optional OG check: [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) and LinkedIn Post Inspector with `https://noccareers.ca/`
 
 ## Analytics (already set)
 
