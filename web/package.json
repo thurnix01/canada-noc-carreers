@@ -3,13 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://noc.absolondesigns.ca",
+  "homepage": "https://noccareers.ca",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "VITE_BASE=/ npm run build && gh-pages -d dist"
+    "deploy": "VITE_BASE=/ npm run build && touch dist/.nojekyll && rm -rf dist/fonts && echo \"Build ready in dist/. Prefer: gh workflow run 'Deploy Pages'\""
   },
   "dependencies": {
     "react": "^19.2.8",

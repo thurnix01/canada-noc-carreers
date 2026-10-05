@@ -10,9 +10,11 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: weekly-jobbank-refresh
+  group: pages
   cancel-in-progress: false
 
 jobs:
@@ -47,17 +49,17 @@ jobs:
         run: npm run export:data
 
       - name: Build site
-        run: VITE_BASE=/ npm run build --prefix web
+        run: |
+          VITE_BASE=/ npm run build --prefix web
+          touch web/dist/.nojekyll
+          rm -rf web/dist/fonts
+          find web/dist -name '.DS_Store' -delete
 
-      # Deploy first so the live site updates even if the main-branch commit races.
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      # Upload first so Pages can deploy even if the main-branch commit races.
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./web/dist
-          cname: noccareers.ca
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          path: ./web/dist
 
       - name: Commit refreshed listings.json
         run: |
@@ -78,3 +80,14 @@ jobs:
             GIT_EDITOR=true git rebase --continue
           }
           git push origin HEAD:main
+
+  deploy:
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -10,6 +10,7 @@ Keep this lean: the product stays an RCIP referral layer. SEO should help discov
 - [x] `sitemap.xml` → `https://noccareers.ca/sitemap.xml`
 - [x] Title, meta description, canonical, Open Graph, Twitter cards
 - [x] Basic `WebSite` JSON-LD in `web/index.html`
+- [x] Pages deploy via GitHub Actions (`.github/workflows/deploy-pages.yml`) — legacy `gh-pages` branch builds failed once `robots.txt` / `sitemap.xml` were added
 
 ## Search Console (do once after deploy)
 

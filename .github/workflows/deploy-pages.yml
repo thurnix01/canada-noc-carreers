@@ -1,0 +1,69 @@
+# Build the Vite site and publish via GitHub Actions Pages (not legacy branch builds).
+# Legacy gh-pages Jekyll builds were failing once robots.txt/sitemap.xml were added.
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/deploy-pages.yml'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Weekly refresh workflow deploys on its own; skip the duplicate Pages run.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            web/package-lock.json
+
+      - name: Install web deps
+        run: |
+          if [ -f web/package-lock.json ]; then npm ci --prefix web; else npm install --prefix web; fi
+
+      - name: Build site
+        run: |
+          VITE_BASE=/ npm run build --prefix web
+          touch web/dist/.nojekyll
+          # Never ship local font dumps (comma-named Google zip folders break Pages pushes).
+          rm -rf web/dist/fonts
+          find web/dist -name '.DS_Store' -delete
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    if: ${{ needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

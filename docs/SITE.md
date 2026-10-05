@@ -27,11 +27,14 @@ cd web
 VITE_BASE=/REPO_NAME/ npm run build
 # or from root after setting the name:
 # VITE_BASE=/canada-noc-careers/ npm run build --prefix web
-npx gh-pages -d dist
+# Prefer Actions (Settings → Pages → Build and deployment → GitHub Actions):
+gh workflow run "Deploy Pages"
+# Legacy branch publish (can break once robots.txt/sitemap.xml are present):
+npx gh-pages -d dist --dotfiles
 ```
 
-3. In GitHub → Settings → Pages → source **gh-pages** branch.  
-4. Custom domain: keep `web/public/CNAME` as `noccareers.ca` so every `gh-pages` deploy does not wipe the domain (missing CNAME → GitHub 404 on the custom URL).
+3. In GitHub → Settings → Pages → **GitHub Actions** (not the legacy `gh-pages` branch builder).  
+4. Custom domain: keep `web/public/CNAME` as `noccareers.ca` and confirm **Settings → Pages → Custom domain** still lists `noccareers.ca`.
 
 ### Point `noccareers.ca` at GitHub Pages
 
