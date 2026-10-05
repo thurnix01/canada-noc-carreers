@@ -107,11 +107,11 @@ Do **not** ask for money in the first email.
 
 | Community | Sent | Follow-up (+7–10d) | Reply | Next step |
 |---|---|---|---|---|
-| North Okanagan–Shuswap | 18 Sep 2026 | 25–28 Sep 2026 | | Wait; don’t chase before then |
-| West Kootenay | | | | Next send |
-| North Bay | | | | |
-| Brandon | | | | |
-| Steinbach | | | | |
+| North Okanagan–Shuswap | 18 Sep 2026 | 25–28 Sep 2026 (due) | none yet | Short bump to Ward, then move on |
+| West Kootenay | ~19 Sep 2026 (contact form) | ~29 Sep–1 Oct (due) | none yet | Phone optional; don’t wait — send #3–5 |
+| North Bay | | | | **Send next** |
+| Brandon | | | | Send after North Bay |
+| Steinbach | | | | Send after Brandon |
 
 ---
 

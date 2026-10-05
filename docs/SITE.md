@@ -103,3 +103,7 @@ Before public launch, uncomment the Clarity snippet in `web/index.html` and repl
 
 Outbound links already include UTMs:
 `utm_source=rcip-aggregator&utm_medium=referral&utm_campaign=bc-pilot`
+
+## SEO / Search Console
+
+See [`docs/SEO.md`](SEO.md) for robots/sitemap/meta checklist and Search Console steps after deploy.
