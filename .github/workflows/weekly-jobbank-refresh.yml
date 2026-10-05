@@ -14,7 +14,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  # Keep separate from Deploy Pages so a long/stuck scrape cannot block SEO deploys.
+  group: weekly-jobbank-refresh
   cancel-in-progress: false
 
 jobs:
