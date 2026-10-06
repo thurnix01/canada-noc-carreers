@@ -70,9 +70,10 @@ Card badges like `~269 on Job Bank` are **snapshots**, not live totals. Export h
 
 **Automated (preferred):** GitHub Action [`.github/workflows/weekly-jobbank-refresh.yml`](../.github/workflows/weekly-jobbank-refresh.yml)
 
-- Runs every **Monday 14:00 UTC** (~07:00 Vancouver in winter)
+- Runs **every Monday at 14:00 UTC** (~07:00 Vancouver in summer / ~06:00 in winter) — workflow is **active** on `main`
 - Also **Actions → Weekly Job Bank refresh → Run workflow** for an on-demand refresh
 - Re-exports `listings.json` (incl. Job Bank hit counts), commits it, then deploys Pages
+- Do not cancel a Monday `schedule` run unless you intend to skip that week’s refresh
 
 **Manual:**
 

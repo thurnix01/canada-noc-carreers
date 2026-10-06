@@ -4,7 +4,8 @@ name: Weekly Job Bank refresh
 
 on:
   schedule:
-    # Mondays 14:00 UTC ≈ 07:00 America/Vancouver (PST) / 06:00 (PDT)
+    # Every Monday 14:00 UTC = 07:00 America/Vancouver (PDT) / 06:00 (PST).
+    # GitHub can delay schedules by a few minutes under load; workflow_dispatch still works anytime.
     - cron: '0 14 * * 1'
   workflow_dispatch:
 
