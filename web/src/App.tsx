@@ -62,6 +62,122 @@ const COMMUNITY_PHOTOS: Record<string, string> = {
 
 const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}`
 
+const NOC_EXAMPLE = {
+  code: '31301',
+  title: 'Registered nurses and registered psychiatric nurses',
+  digits: [
+    {
+      digit: '3',
+      label: 'Broad category',
+      detail:
+        'The first digit is the field of work — here, Health (0–9 cover management, business, sciences, health, education, sales, trades, manufacturing, and more).',
+    },
+    {
+      digit: '1',
+      label: 'TEER level',
+      detail:
+        'TEER means Training, Education, Experience and Responsibilities. Here the digit is 1 (TEER 1) — usually a university degree.',
+    },
+    {
+      digit: '3',
+      label: 'Major group',
+      detail: 'Digits 3–5 narrow the occupation: major group first, then sub-major / minor, then the exact unit group.',
+    },
+    {
+      digit: '0',
+      label: 'Minor group',
+      detail: 'The fourth digit places the job inside a smaller cluster within that major group.',
+    },
+    {
+      digit: '1',
+      label: 'Unit group',
+      detail:
+        'The full five digits name one official occupation. RCIP communities pick priority NOCs from this same system.',
+    },
+  ],
+} as const
+
+function NocExplainer() {
+  const [active, setActive] = useState(0)
+  const current = NOC_EXAMPLE.digits[active]
+
+  return (
+    <section className="noc-explainer" id="noc" aria-labelledby="noc-heading">
+      <div className="noc-explainer-grid">
+        <div className="noc-explainer-copy">
+          <p className="pill">Canada&apos;s job language</p>
+          <h2 id="noc-heading">What a NOC code is</h2>
+          <p>
+            A <strong>National Occupational Classification</strong> code is Canada&apos;s official five-digit label
+            for every job. Immigration pathways like RCIP use these codes to name which occupations a community
+            will prioritize — which is why searching by NOC matters here.
+          </p>
+          <p className="noc-explainer-note">
+            Managed by ESDC and Statistics Canada. Tap a digit to see how the code is built.
+          </p>
+          <div className="noc-official-links">
+            <a
+              className="btn btn-primary"
+              href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/find-national-occupation-code.html"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Find your NOC (IRCC)
+            </a>
+            <a
+              className="btn btn-outline"
+              href="https://noc.esdc.gc.ca/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Browse official NOC
+            </a>
+          </div>
+        </div>
+
+        <div className="noc-explainer-interactive">
+          <div className="noc-code-stage" aria-label="Example NOC code 31301">
+            <p className="noc-code-kicker">Example</p>
+            <div className="noc-digits" role="tablist" aria-label="NOC digit positions">
+              {NOC_EXAMPLE.digits.map((item, i) => (
+                <button
+                  key={`${item.digit}-${item.label}`}
+                  type="button"
+                  role="tab"
+                  id={`noc-digit-${i}`}
+                  aria-selected={active === i}
+                  aria-controls="noc-digit-panel"
+                  className={`noc-digit ${active === i ? 'is-active' : ''}`}
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                >
+                  <span className="noc-digit-num">{item.digit}</span>
+                  <span className="noc-digit-pos">{i + 1}</span>
+                </button>
+              ))}
+            </div>
+            <p className="noc-code-title">{NOC_EXAMPLE.title}</p>
+          </div>
+
+          <div
+            className="noc-digit-panel"
+            id="noc-digit-panel"
+            role="tabpanel"
+            aria-labelledby={`noc-digit-${active}`}
+            key={active}
+          >
+            <p className="noc-digit-panel-label">
+              Digit {active + 1} · {current.label}
+            </p>
+            <p>{current.detail}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function ResultCard({
   listing,
   index,
@@ -506,6 +622,7 @@ export default function App() {
 
   const NAV_LINKS = [
     { href: '#about', label: 'How it works' },
+    { href: '#noc', label: 'NOC codes' },
     { href: '#impact', label: 'Impact' },
     { href: '#communities', label: 'Communities' },
     { href: '#explore', label: 'Search' },
@@ -769,6 +886,8 @@ export default function App() {
           </button>
         </div>
       </section>
+
+      <NocExplainer />
 
       <section className="impact" id="impact">
         <div className="section-head">
