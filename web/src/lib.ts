@@ -105,17 +105,20 @@ export function hiringStatusLabel(status: HiringStatus, listing?: Listing): stri
   switch (status) {
     case 'hiring': {
       const n = listing?.jobbank_hits
-      return typeof n === 'number' && n > 0 ? `Hiring · ~${n} on Job Bank` : 'Hiring on Job Bank'
+      // Never say “hiring” — Job Bank hits are public posting signals only.
+      return typeof n === 'number' && n > 0
+        ? `~${n} Job Bank postings`
+        : 'Job Bank postings found'
     }
     case 'not_hiring':
-      return 'Not hiring now'
+      return 'Source: not recruiting'
     case 'eligible':
       return 'Eligible occupation'
     case 'open':
       return 'Open posting'
     default:
-      if (listing && listing.jobbank_hits === 0) return 'No Job Bank roles'
-      return 'Hiring status unknown'
+      if (listing && listing.jobbank_hits === 0) return 'No Job Bank postings'
+      return 'Designated · not a job offer'
   }
 }
 
@@ -173,7 +176,7 @@ export function jobBankCountTitle(
   const checked = listing.jobbank_checked_at || payloadCheckedAt || ''
   const asOf = formatVerifiedAt(checked)
   const base =
-    'Job Bank count from our last weekly check near this community (not a live Canada-wide total).'
+    'Public Job Bank search hits near this community from our last weekly check — not a live total, not a job offer, and not an invitation to contact the employer.'
   return asOf ? `${base} As of ${asOf}.` : base
 }
 
@@ -253,7 +256,7 @@ function nocKey(listing: Listing): string {
   return (listing.noc_code || listingNocCodes(listing)[0] || '').padStart(5, '0')
 }
 
-/** Hiring employers first, then eligible NOCs, then other employers / roles. */
+/** Employers with public Job Bank hits first, then eligible NOCs, then other employers / roles. */
 function featuredRank(listing: Listing): number {
   if (listing.type === 'employer') {
     const status = hiringStatusOf(listing)

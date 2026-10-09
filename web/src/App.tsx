@@ -31,7 +31,7 @@ const TYPE_OPTIONS: { value: '' | ListingType; label: string }[] = [
 
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'alphabetical', label: 'Alphabetically' },
-  { value: 'featured', label: 'Featured' },
+  { value: 'featured', label: 'Public postings first' },
   { value: 'newest', label: 'Newest' },
   { value: 'oldest', label: 'Oldest' },
   { value: 'noc', label: 'By NOC' },
@@ -264,12 +264,12 @@ function ResultCard({
           ) : null}
           {nocJobBankHits != null && nocJobBankHits > 0 ? (
             <span className="badge status-hiring" title={jobBankTitle}>
-              ~{nocJobBankHits} on Job Bank
+              ~{nocJobBankHits} Job Bank postings
             </span>
           ) : null}
           {nocJobBankHits === 0 ? (
             <span className="badge status-unknown" title={jobBankTitle}>
-              No Job Bank roles
+              No Job Bank postings
             </span>
           ) : null}
         </div>
@@ -867,8 +867,11 @@ export default function App() {
                 2
               </span>
               <div>
-                <strong>Open Job Bank from the card</strong>
-                <p>A designated employer is not the same as a job opening. Look for a public posting.</p>
+                <strong>Check public postings on Job Bank</strong>
+                <p>
+                  Designated means they may support an RCIP offer later — not that they are hiring you.
+                  Only apply to roles that are publicly posted.
+                </p>
               </div>
             </li>
             <li>
@@ -1071,11 +1074,12 @@ export default function App() {
                     list.
                   </li>
                   <li>
-                    <strong>Designated employer</strong> = they may support an RCIP job offer; it does not
-                    mean they are hiring you.
+                    <strong>Designated employer</strong> = listed for RCIP by the community. It is not a
+                    job offer and not an invitation to contact them.
                   </li>
                   <li>
-                    <strong>Job Bank counts</strong> are weekly snapshots, not live totals.
+                    <strong>Job Bank postings</strong> = weekly snapshot of public Job Bank search hits near
+                    that community — not “this employer is hiring you.”
                   </li>
                   <li>Click a community name on a grouped card to search that place only.</li>
                 </ul>
@@ -1139,8 +1143,8 @@ export default function App() {
               ) : null}
 
               <p className="notice">
-                Unofficial aid — not IRCC or a community office. Do not email designated employers. Apply
-                only to jobs that are publicly posted, then confirm on the source site.
+                Unofficial aid — not IRCC or a community office. Do not email or cold-contact designated
+                employers. Apply only to public postings, then confirm on the official community portal.
               </p>
             </div>
           </aside>
@@ -1255,7 +1259,8 @@ export default function App() {
               <li>The NOC is still on that community’s current priority list.</li>
               <li>The employer is designated for the role you want.</li>
               <li>
-                There is a public job posting (Job Bank, the portal, or the employer’s careers page).
+                There is a public job posting (Job Bank, the portal, or the employer’s careers page) —
+                designation alone is not enough.
               </li>
               <li>
                 You will meet IRCC’s language, education, experience, and settlement-fund rules — the
