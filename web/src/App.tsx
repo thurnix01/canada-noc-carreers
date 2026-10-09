@@ -19,6 +19,7 @@ import {
   visiblePages,
   withUtm,
   type DisplayItem,
+  type JobBankAudience,
   type SortMode,
 } from './lib'
 import './index.css'
@@ -41,6 +42,17 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
 
 const DESKTOP_PAGER_MQ = '(min-width: 861px)'
 const FALLBACK_PAGE_SIZE = 8
+const JOB_BANK_AUDIENCE_KEY = 'noccareers-jobbank-audience'
+
+function readStoredAudience(): JobBankAudience {
+  try {
+    const v = localStorage.getItem(JOB_BANK_AUDIENCE_KEY)
+    if (v === 'in_canada' || v === 'abroad') return v
+  } catch {
+    /* private mode */
+  }
+  return 'abroad'
+}
 
 /** Place photography for directory cards (portal heroes + Commons fills). */
 const COMMUNITY_PHOTOS: Record<string, string> = {
@@ -184,12 +196,14 @@ function ResultCard({
   communities,
   onSelectCommunity,
   jobbankCheckedAt,
+  jobBankAudience,
 }: {
   listing: Listing
   index: number
   communities?: Listing[]
   onSelectCommunity?: (communityId: string) => void
   jobbankCheckedAt?: string | null
+  jobBankAudience: JobBankAudience
 }) {
   const primary = withUtm(listing.source_url || listing.portal_url, listing.community_id, listing.type)
   const jobsLink = listing.jobs_url
@@ -197,8 +211,12 @@ function ResultCard({
     : ''
   const hiringStatus = hiringStatusOf(listing)
   const verified = formatVerifiedAt(listing.updated_at)
-  const jobBank = withUtm(jobBankSearchUrl(listing), listing.community_id, 'jobbank')
-  const jobBankTitle = jobBankCountTitle(listing, jobbankCheckedAt)
+  const jobBank = withUtm(
+    jobBankSearchUrl(listing, jobBankAudience),
+    listing.community_id,
+    jobBankAudience === 'abroad' ? 'jobbank-intl' : 'jobbank',
+  )
+  const jobBankTitle = jobBankCountTitle(listing, jobbankCheckedAt, jobBankAudience)
   const nocForTrek = listing.type === 'priority_noc' ? listing.noc_code : ''
   const trekRaw =
     listing.type === 'priority_noc' && listingTouchesBc(listing, communities)
@@ -317,7 +335,7 @@ function ResultCard({
           rel="noreferrer noopener"
           title={jobBankTitle}
         >
-          {jobBankButtonLabel(listing)}
+          {jobBankButtonLabel(listing, jobBankAudience)}
         </a>
         {careerTrek ? (
           <a
@@ -427,6 +445,9 @@ export default function App() {
   const [sort, setSort] = useState<SortMode>('featured')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(FALLBACK_PAGE_SIZE)
+  const [jobBankAudience, setJobBankAudience] = useState<JobBankAudience>(() =>
+    typeof window !== 'undefined' ? readStoredAudience() : 'abroad',
+  )
   const [desktopPager, setDesktopPager] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(DESKTOP_PAGER_MQ).matches,
   )
@@ -443,12 +464,20 @@ export default function App() {
 
   const shareUrl = 'https://noccareers.ca'
   const shareMessage =
-    'A free starting point for RCIP: search priority NOCs and designated employers, then continue on the official community portal.'
+    'RCIP search for candidates abroad: find priority NOCs across 14 communities, open Job Bank for employers open to international applicants, then continue on the official portal.'
   const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
     document.documentElement.style.setProperty('--topo-image', `url(${img('topo-light.jpg')})`)
   }, [])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(JOB_BANK_AUDIENCE_KEY, jobBankAudience)
+    } catch {
+      /* private mode */
+    }
+  }, [jobBankAudience])
 
   useEffect(() => {
     const onScroll = () => {
@@ -747,8 +776,9 @@ export default function App() {
                 See <span>where your work is wanted</span> — then take the official next step
               </h1>
               <p className="lede">
-                Search priority occupations and designated employers across all 14 RCIP communities. This is
-                an unofficial aid: when you find a match, continue on that community’s portal.
+                Built first for candidates abroad: find which RCIP communities list your occupation, then open
+                Job Bank filtered to employers open to international applicants — and finish on the official
+                community portal.
               </p>
               <div className="hero-actions">
                 <button type="button" className="btn btn-primary btn-lg" onClick={scrollToExplore}>
@@ -867,10 +897,10 @@ export default function App() {
                 2
               </span>
               <div>
-                <strong>Check public postings on Job Bank</strong>
+                <strong>Open Job Bank the right way</strong>
                 <p>
-                  Designated means they may support an RCIP offer later — not that they are hiring you.
-                  Only apply to roles that are publicly posted.
+                  Choose “Outside Canada” to filter Job Bank to employers open to international candidates.
+                  Designated is not a job offer — only apply to public postings.
                 </p>
               </div>
             </li>
@@ -1042,6 +1072,11 @@ export default function App() {
           <p className="pill">Search</p>
           <h2>Find your NOC or a designated employer</h2>
           <p>
+            Start with <strong>Your situation</strong> in the sidebar — Outside Canada opens Job Bank for
+            employers who consider international candidates. Then search your NOC and finish on the
+            official portal.
+          </p>
+          <p>
             Updated {new Date(data.generated_at).toLocaleString()}
             {data.jobbank_checked_at
               ? ` · Job Bank counts as of ${formatVerifiedAt(data.jobbank_checked_at)}`
@@ -1066,6 +1101,50 @@ export default function App() {
         <div className="workspace">
           <aside className="sidebar" aria-label="Refine results">
             <div className="sidebar-card" ref={sidebarCardRef}>
+              <div className="field audience-field">
+                <span className="field-label" id="audience-label">
+                  Your situation
+                </span>
+                <div className="chip-row" role="group" aria-labelledby="audience-label">
+                  <button
+                    type="button"
+                    className={`chip ${jobBankAudience === 'abroad' ? 'is-active' : ''}`}
+                    onClick={() => startTransition(() => setJobBankAudience('abroad'))}
+                  >
+                    Outside Canada
+                  </button>
+                  <button
+                    type="button"
+                    className={`chip ${jobBankAudience === 'in_canada' ? 'is-active' : ''}`}
+                    onClick={() => startTransition(() => setJobBankAudience('in_canada'))}
+                  >
+                    In Canada (work permit / PR / citizen)
+                  </button>
+                </div>
+                <p className="audience-hint">
+                  {jobBankAudience === 'abroad' ? (
+                    <>
+                      Job Bank buttons open results for employers open to{' '}
+                      <strong>international candidates</strong>. Still confirm “Who can apply?” on each
+                      posting, then follow the community RCIP portal.{' '}
+                      <a
+                        href="https://www.jobbank.gc.ca/findajob/foreign-candidates"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Job Bank guide for foreign candidates
+                      </a>
+                      .
+                    </>
+                  ) : (
+                    <>
+                      Job Bank buttons use the standard nearby search. Check your permit conditions on IRCC
+                      before changing employers. Designated ≠ a job offer.
+                    </>
+                  )}
+                </p>
+              </div>
+
               <div className="card-legend">
                 <strong>How to read a card</strong>
                 <ul>
@@ -1078,8 +1157,8 @@ export default function App() {
                     job offer and not an invitation to contact them.
                   </li>
                   <li>
-                    <strong>Job Bank postings</strong> = weekly snapshot of public Job Bank search hits near
-                    that community — not “this employer is hiring you.”
+                    <strong>Job Bank postings</strong> = weekly nearby totals on the card; the Job Bank
+                    button uses your situation filter above.
                   </li>
                   <li>Click a community name on a grouped card to search that place only.</li>
                 </ul>
@@ -1212,6 +1291,7 @@ export default function App() {
                         communities={item.communities}
                         onSelectCommunity={(id) => startTransition(() => setCommunity(id))}
                         jobbankCheckedAt={data.jobbank_checked_at}
+                        jobBankAudience={jobBankAudience}
                       />
                     ) : (
                       <ResultCard
@@ -1219,6 +1299,7 @@ export default function App() {
                         listing={item.listing}
                         index={index}
                         jobbankCheckedAt={data.jobbank_checked_at}
+                        jobBankAudience={jobBankAudience}
                       />
                     ),
                   )}

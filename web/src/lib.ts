@@ -134,8 +134,13 @@ export function formatVerifiedAt(iso: string): string {
   }).format(new Date(t))
 }
 
+export type JobBankAudience = 'abroad' | 'in_canada'
+
 /** Job Bank search filtered by community hub + NOC code or employer name. */
-export function jobBankSearchUrl(listing: Listing): string {
+export function jobBankSearchUrl(
+  listing: Listing,
+  audience: JobBankAudience = 'abroad',
+): string {
   const location =
     JOB_BANK_LOCATIONS[listing.community_id] ||
     [listing.community_name, listing.province].filter(Boolean).join(', ')
@@ -144,6 +149,8 @@ export function jobBankSearchUrl(listing: Listing): string {
   // Wider radius for sparse rural hubs so NOC searches surface real openings.
   u.searchParams.set('d', listing.type === 'priority_noc' ? '500' : '100')
   if (location) u.searchParams.set('locationstring', location)
+  // Job Bank: fjyt=1 = “Canadians and international candidates” (open to applicants abroad).
+  if (audience === 'abroad') u.searchParams.set('fjyt', '1')
 
   const noc = (listing.noc_code || '').replace(/\D/g, '')
   if (listing.type === 'priority_noc' && noc.length === 5) {
@@ -159,8 +166,20 @@ export function jobBankSearchUrl(listing: Listing): string {
   return u.toString()
 }
 
-export function jobBankButtonLabel(listing: Listing): string {
+export function jobBankButtonLabel(
+  listing: Listing,
+  audience: JobBankAudience = 'abroad',
+): string {
   const hits = listing.jobbank_hits
+  if (audience === 'abroad') {
+    if (typeof hits === 'number') {
+      return hits > 0 ? `Job Bank · intl · ~${hits}` : 'Job Bank · intl'
+    }
+    if (listing.type === 'priority_noc' && listing.noc_code) {
+      return `Job Bank · intl · ${listing.noc_code}`
+    }
+    return 'Job Bank · open to international'
+  }
   if (typeof hits === 'number') {
     return hits > 0 ? `Job Bank · ~${hits}` : 'Job Bank · 0'
   }
@@ -172,11 +191,14 @@ export function jobBankButtonLabel(listing: Listing): string {
 export function jobBankCountTitle(
   listing: Listing,
   payloadCheckedAt?: string | null,
+  audience: JobBankAudience = 'abroad',
 ): string {
   const checked = listing.jobbank_checked_at || payloadCheckedAt || ''
   const asOf = formatVerifiedAt(checked)
   const base =
-    'Public Job Bank search hits near this community from our last weekly check — not a live total, not a job offer, and not an invitation to contact the employer.'
+    audience === 'abroad'
+      ? 'Card counts are weekly nearby Job Bank totals. Your Job Bank button opens results filtered to employers open to international candidates — not a job offer, and not an invitation to contact employers.'
+      : 'Public Job Bank search hits near this community from our last weekly check — not a live total, not a job offer, and not an invitation to contact the employer.'
   return asOf ? `${base} As of ${asOf}.` : base
 }
 

@@ -886,6 +886,31 @@ body.nav-lock {
   color: #fff;
 }
 
+.audience-field {
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(26, 31, 40, 0.06);
+  margin-bottom: 0.35rem;
+}
+
+.audience-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.audience-hint strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.audience-hint a {
+  color: var(--maple-deep);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .clear-btn {
   justify-self: start;
   border: none;
