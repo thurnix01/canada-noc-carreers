@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-10T00:38:53.048Z",
-  "jobbank_checked_at": "2026-10-10T00:35:40.562Z",
+  "generated_at": "2026-10-10T01:26:18.098Z",
+  "jobbank_checked_at": "2026-10-10T01:05:34.870Z",
   "sheet_id": "1H3RDFGINQ-lBVaR_EOn1LDU4ezWf7q2bfY5XnUAFZpo",
   "counts": {
     "communities": 14,
@@ -141,9 +141,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 139,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|31301|2026",
@@ -162,9 +162,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 316,
+      "jobbank_hits": null,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|33102|2026",
@@ -183,9 +183,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|42202|2026",
@@ -204,9 +204,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|62020|2026",
@@ -225,9 +225,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2958,
-      "jobbank_hits_intl": 1687,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|62100|2026",
@@ -247,8 +247,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 252,
-      "jobbank_hits_intl": 18,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 26,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|63200|2026",
@@ -267,9 +267,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3818,
+      "jobbank_hits": 3825,
       "jobbank_hits_intl": null,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|64400|2026",
@@ -289,8 +289,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 7,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|72100|2026",
@@ -309,9 +309,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 341,
-      "jobbank_hits_intl": 42,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 28,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|72106|2026",
@@ -331,8 +331,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|72401|2026",
@@ -352,8 +352,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 456,
-      "jobbank_hits_intl": 54,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|73401|2026",
@@ -373,8 +373,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 51,
-      "jobbank_hits_intl": 12,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|75101|2026",
@@ -394,8 +394,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 598,
-      "jobbank_hits_intl": 119,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|82030|2026",
@@ -414,9 +414,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 252,
-      "jobbank_hits_intl": 70,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 32,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|84120|2026",
@@ -435,9 +435,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 169,
-      "jobbank_hits_intl": 26,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 16,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|85100|2026",
@@ -457,8 +457,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1168,
-      "jobbank_hits_intl": 105,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|92012|2026",
@@ -477,9 +477,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 124,
-      "jobbank_hits_intl": 48,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94105|2026",
@@ -498,9 +498,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 115,
-      "jobbank_hits_intl": 26,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94140|2026",
@@ -519,9 +519,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 190,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94141|2026",
@@ -540,9 +540,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 86,
-      "jobbank_hits_intl": 44,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94152|2026",
@@ -561,9 +561,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 9,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94204|2026",
@@ -582,9 +582,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 52,
-      "jobbank_hits_intl": 12,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|94213|2026",
@@ -603,9 +603,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 112,
-      "jobbank_hits_intl": 22,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|95106|2026",
@@ -624,9 +624,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 396,
-      "jobbank_hits_intl": 170,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|95109|2026",
@@ -646,8 +646,8 @@
       "updated_at": "2026-09-10T21:36:24.103Z",
       "hiring_status": "eligible",
       "jobbank_hits": 282,
-      "jobbank_hits_intl": 58,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|21300|2026",
@@ -666,9 +666,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 98,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|21310|2026",
@@ -687,9 +687,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 69,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|21321|2026",
@@ -708,9 +708,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 52,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|22221|2026",
@@ -729,9 +729,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 92,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|22300|2026",
@@ -750,9 +750,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 80,
-      "jobbank_hits_intl": 6,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|31100|2026",
@@ -772,8 +772,8 @@
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
       "jobbank_hits": 187,
-      "jobbank_hits_intl": 6,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|31101|2026",
@@ -792,9 +792,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 32,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|31102|2026",
@@ -813,9 +813,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 152,
-      "jobbank_hits_intl": 10,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 47,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|31202|2026",
@@ -834,9 +834,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 261,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|31301|2026",
@@ -855,9 +855,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 316,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|32102|2026",
@@ -876,9 +876,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 228,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|32120|2026",
@@ -898,8 +898,8 @@
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
       "jobbank_hits": 73,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|32121|2026",
@@ -918,9 +918,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 65,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|32122|2026",
@@ -939,9 +939,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 35,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|33101|2026",
@@ -960,9 +960,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 29,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|33102|2026",
@@ -981,9 +981,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|42202|2026",
@@ -1002,9 +1002,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72204|2026",
@@ -1023,9 +1023,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 41,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72310|2026",
@@ -1045,8 +1045,8 @@
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 279,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72400|2026",
@@ -1065,9 +1065,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72401|2026",
@@ -1086,9 +1086,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 456,
-      "jobbank_hits_intl": 54,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72402|2026",
@@ -1107,9 +1107,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 98,
-      "jobbank_hits_intl": 17,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|72410|2026",
@@ -1129,8 +1129,8 @@
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|75110|2026",
@@ -1150,8 +1150,8 @@
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|94141|2026",
@@ -1170,9 +1170,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:35:07.710Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 86,
-      "jobbank_hits_intl": 44,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|13100|2026",
@@ -1191,9 +1191,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 605,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|13110|2026",
@@ -1212,9 +1212,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 655,
-      "jobbank_hits_intl": 108,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|20010|2026",
@@ -1233,9 +1233,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 50,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|21390|2026",
@@ -1254,9 +1254,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|22100|2026",
@@ -1275,9 +1275,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 59,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|22232|2026",
@@ -1296,9 +1296,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 66,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|22301|2026",
@@ -1317,9 +1317,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 125,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|31301|2026",
@@ -1340,7 +1340,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|32101|2026",
@@ -1359,9 +1359,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|33102|2026",
@@ -1380,9 +1380,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|63200|2026",
@@ -1401,9 +1401,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3818,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 3825,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|65202|2026",
@@ -1422,9 +1422,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 74,
-      "jobbank_hits_intl": 37,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|72014|2026",
@@ -1443,9 +1443,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 407,
-      "jobbank_hits_intl": 88,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|72310|2026",
@@ -1464,9 +1464,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1238,
-      "jobbank_hits_intl": 279,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 205,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|72404|2026",
@@ -1485,9 +1485,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 47,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|72600|2026",
@@ -1507,8 +1507,8 @@
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
       "jobbank_hits": 26,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|73100|2026",
@@ -1527,9 +1527,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 255,
-      "jobbank_hits_intl": 65,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|75119|2026",
@@ -1548,9 +1548,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 188,
-      "jobbank_hits_intl": 66,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|84120|2026",
@@ -1569,9 +1569,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 169,
-      "jobbank_hits_intl": 26,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|92022|2026",
@@ -1590,9 +1590,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 13,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|93200|2026",
@@ -1611,9 +1611,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 12,
+      "jobbank_hits": null,
       "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|94103|2026",
@@ -1632,9 +1632,9 @@
       "notes": "Effective July 1st",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 57,
-      "jobbank_hits_intl": 22,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|94106|2026",
@@ -1653,9 +1653,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 96,
-      "jobbank_hits_intl": 11,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|94124|2026",
@@ -1675,8 +1675,8 @@
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
       "jobbank_hits": 85,
-      "jobbank_hits_intl": 23,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|94140|2026",
@@ -1695,9 +1695,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 190,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|95106|2026",
@@ -1716,9 +1716,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:05.523Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 396,
-      "jobbank_hits_intl": 170,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 19,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|12200|2026",
@@ -1737,9 +1737,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|13100|2026",
@@ -1758,9 +1758,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 605,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|14201|2026",
@@ -1779,9 +1779,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 4,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|22111|2026",
@@ -1800,9 +1800,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 7,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|33102|2026",
@@ -1821,9 +1821,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|33109|2026",
@@ -1842,9 +1842,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 78,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|42201|2026",
@@ -1863,9 +1863,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|42202|2026",
@@ -1884,9 +1884,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|44101|2026",
@@ -1905,9 +1905,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1947,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|60020|2026",
@@ -1926,9 +1926,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1280,
-      "jobbank_hits_intl": 223,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|62010|2026",
@@ -1947,9 +1947,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1102,
-      "jobbank_hits_intl": 453,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|63200|2026",
@@ -1969,8 +1969,8 @@
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|63211|2026",
@@ -1989,9 +1989,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 237,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|64314|2026",
@@ -2010,9 +2010,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 226,
-      "jobbank_hits_intl": 68,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|65310|2026",
@@ -2032,8 +2032,8 @@
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 380,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 119,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|65312|2026",
@@ -2052,9 +2052,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 151,
-      "jobbank_hits_intl": 32,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|72106|2026",
@@ -2073,9 +2073,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|72410|2026",
@@ -2094,9 +2094,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|72411|2026",
@@ -2115,9 +2115,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 389,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|73113|2026",
@@ -2137,8 +2137,8 @@
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
       "jobbank_hits": 116,
-      "jobbank_hits_intl": 48,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|73201|2026",
@@ -2157,9 +2157,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 420,
-      "jobbank_hits_intl": 82,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|74203|2026",
@@ -2178,9 +2178,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 205,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|75101|2026",
@@ -2199,9 +2199,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 598,
-      "jobbank_hits_intl": 119,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|94141|2026",
@@ -2220,9 +2220,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 86,
-      "jobbank_hits_intl": 44,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "moose-jaw|95106|2026",
@@ -2241,9 +2241,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:28:55.968Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 396,
-      "jobbank_hits_intl": 170,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|11100|2026",
@@ -2262,9 +2262,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 329,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|11102|2026",
@@ -2283,9 +2283,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 107,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|12200|2026",
@@ -2304,9 +2304,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|14400|2026",
@@ -2325,9 +2325,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 226,
-      "jobbank_hits_intl": 24,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|21232|2026",
@@ -2346,9 +2346,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 177,
-      "jobbank_hits_intl": 7,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|21300|2026",
@@ -2367,9 +2367,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 98,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|21310|2026",
@@ -2388,9 +2388,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 69,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|22220|2026",
@@ -2409,9 +2409,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 89,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|31301|2026",
@@ -2430,9 +2430,9 @@
       "notes": "Designated employers in healthcare may submit up to 5 candidates per year (others up to 3). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 316,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|32101|2026",
@@ -2452,8 +2452,8 @@
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|33100|2026",
@@ -2472,9 +2472,9 @@
       "notes": "Designated employers in healthcare may submit up to 5 candidates per year (others up to 3). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|33102|2026",
@@ -2493,9 +2493,9 @@
       "notes": "Designated employers in healthcare may submit up to 5 candidates per year (others up to 3). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|33103|2026",
@@ -2514,9 +2514,9 @@
       "notes": "Designated employers in healthcare may submit up to 5 candidates per year (others up to 3). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 198,
-      "jobbank_hits_intl": 49,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|42201|2026",
@@ -2536,8 +2536,8 @@
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|42202|2026",
@@ -2556,9 +2556,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|44101|2026",
@@ -2577,9 +2577,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1947,
+      "jobbank_hits": null,
       "jobbank_hits_intl": null,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72100|2026",
@@ -2598,9 +2598,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 341,
-      "jobbank_hits_intl": 42,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72106|2026",
@@ -2619,9 +2619,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72200|2026",
@@ -2640,9 +2640,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 268,
-      "jobbank_hits_intl": 30,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72300|2026",
@@ -2661,9 +2661,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 231,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72400|2026",
@@ -2682,9 +2682,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72404|2026",
@@ -2704,8 +2704,8 @@
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
       "jobbank_hits": 47,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|72410|2026",
@@ -2724,9 +2724,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|75110|2026",
@@ -2746,8 +2746,8 @@
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|94110|2026",
@@ -2766,9 +2766,9 @@
       "notes": "Designated employers may submit up to 3 candidates per year (healthcare up to 5). | Fast food and retail (incl. convenience / gas station) occupations are excluded from this pilot.",
       "updated_at": "2026-09-10T20:22:05.558Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 10,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|21211|2026",
@@ -2787,9 +2787,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 48,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|21220|2026",
@@ -2808,9 +2808,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 45,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|21301|2026",
@@ -2829,9 +2829,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 68,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|22212|2026",
@@ -2851,8 +2851,8 @@
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
       "jobbank_hits": 139,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|22301|2026",
@@ -2871,9 +2871,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 125,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|31120|2026",
@@ -2892,9 +2892,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 98,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|33103|2026",
@@ -2913,9 +2913,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 198,
-      "jobbank_hits_intl": 49,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|42202|2026",
@@ -2934,9 +2934,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|60020|2026",
@@ -2955,9 +2955,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1280,
-      "jobbank_hits_intl": 223,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|63200|2026",
@@ -2976,9 +2976,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3818,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|63202|2026",
@@ -2997,9 +2997,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 373,
-      "jobbank_hits_intl": 150,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72100|2026",
@@ -3019,8 +3019,8 @@
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
       "jobbank_hits": 341,
-      "jobbank_hits_intl": 42,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72310|2026",
@@ -3039,9 +3039,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1238,
-      "jobbank_hits_intl": 279,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1240,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72400|2026",
@@ -3060,9 +3060,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72402|2026",
@@ -3081,9 +3081,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 98,
-      "jobbank_hits_intl": 17,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72410|2026",
@@ -3102,9 +3102,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|72411|2026",
@@ -3124,8 +3124,8 @@
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
       "jobbank_hits": 389,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 54,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|73210|2026",
@@ -3144,9 +3144,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|75101|2026",
@@ -3165,9 +3165,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 598,
-      "jobbank_hits_intl": 119,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|92014|2026",
@@ -3186,9 +3186,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 10,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|94132|2026",
@@ -3207,9 +3207,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 44,
-      "jobbank_hits_intl": 13,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 2,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|94152|2026",
@@ -3228,9 +3228,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 9,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|94201|2026",
@@ -3250,8 +3250,8 @@
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
       "jobbank_hits": 40,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "pictou-county|94211|2026",
@@ -3270,9 +3270,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:27:04.191Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 93,
-      "jobbank_hits_intl": 31,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|11100|2026",
@@ -3291,9 +3291,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 329,
+      "jobbank_hits": null,
       "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|11102|2026",
@@ -3312,9 +3312,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 107,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|13100|2026",
@@ -3333,9 +3333,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 605,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|14200|2026",
@@ -3355,8 +3355,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 221,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|20010|2026",
@@ -3376,8 +3376,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 50,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|21321|2026",
@@ -3396,9 +3396,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 52,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|22220|2026",
@@ -3418,8 +3418,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 89,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 16,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|22301|2026",
@@ -3439,8 +3439,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 125,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|22310|2026",
@@ -3460,8 +3460,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 121,
-      "jobbank_hits_intl": 11,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 9,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|31102|2026",
@@ -3481,8 +3481,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 152,
-      "jobbank_hits_intl": 10,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 47,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|31301|2026",
@@ -3503,7 +3503,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|32101|2026",
@@ -3523,8 +3523,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|33100|2026",
@@ -3543,9 +3543,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 252,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|33102|2026",
@@ -3565,8 +3565,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|42201|2026",
@@ -3586,8 +3586,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|42202|2026",
@@ -3606,9 +3606,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|72100|2026",
@@ -3628,8 +3628,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 341,
-      "jobbank_hits_intl": 42,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 28,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|72400|2026",
@@ -3648,9 +3648,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 409,
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|72404|2026",
@@ -3670,8 +3670,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 47,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|72410|2026",
@@ -3690,9 +3690,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|73301|2026",
@@ -3712,8 +3712,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 130,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 2,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|75119|2026",
@@ -3733,8 +3733,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 188,
-      "jobbank_hits_intl": 66,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 25,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|93200|2026",
@@ -3755,7 +3755,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 12,
       "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|94107|2026",
@@ -3775,8 +3775,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 12,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 0,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sault-ste-marie|94219|2026",
@@ -3796,8 +3796,8 @@
       "updated_at": "2026-09-10T21:22:47.198Z",
       "hiring_status": "eligible",
       "jobbank_hits": 72,
-      "jobbank_hits_intl": 10,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|11202|2026",
@@ -3817,8 +3817,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 358,
-      "jobbank_hits_intl": 41,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 49,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|12201|2026",
@@ -3839,7 +3839,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 7,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|14200|2026",
@@ -3859,8 +3859,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 221,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|21120|2026",
@@ -3881,7 +3881,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 14,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|21231|2026",
@@ -3901,8 +3901,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 74,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|21300|2026",
@@ -3922,8 +3922,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 98,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 3,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|22212|2026",
@@ -3944,7 +3944,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 139,
       "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|22303|2026",
@@ -3964,8 +3964,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 141,
-      "jobbank_hits_intl": 11,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|31103|2026",
@@ -3985,8 +3985,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 62,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 19,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|31120|2026",
@@ -4006,8 +4006,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 98,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 3,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|31301|2026",
@@ -4028,7 +4028,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|33100|2026",
@@ -4047,9 +4047,9 @@
       "notes": "No recommendation limitations apply",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 252,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|33102|2026",
@@ -4069,8 +4069,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|33103|2026",
@@ -4090,8 +4090,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 198,
-      "jobbank_hits_intl": 49,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|42202|2026",
@@ -4110,9 +4110,9 @@
       "notes": "5 recommendations per calendar year – only 2 spots available",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|44101|2026",
@@ -4131,9 +4131,9 @@
       "notes": "No recommendation limitations apply",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1947,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1945,
+      "jobbank_hits_intl": 250,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|62020|2026",
@@ -4152,9 +4152,9 @@
       "notes": "will only be considered for employers with 20 or more employees, but will exclude fast food restaurants. Designated employers using this NOC code may be limited to 1 recommendation per calendar year.",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2958,
-      "jobbank_hits_intl": 1687,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2957,
+      "jobbank_hits_intl": 469,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|72106|2026",
@@ -4174,8 +4174,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 109,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|72401|2026",
@@ -4195,8 +4195,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 456,
-      "jobbank_hits_intl": 54,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 52,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|72410|2026",
@@ -4215,9 +4215,9 @@
       "notes": "Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1258,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|72411|2026",
@@ -4237,8 +4237,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 389,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 54,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|73110|2026",
@@ -4258,8 +4258,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 301,
-      "jobbank_hits_intl": 70,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 47,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|73200|2026",
@@ -4278,9 +4278,9 @@
       "notes": "Max 1 recommendation per NOC per month, max 2 recommendations per calendar year per NOC (unless noted).",
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 456,
-      "jobbank_hits_intl": 147,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 455,
+      "jobbank_hits_intl": 84,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|84120|2026",
@@ -4300,8 +4300,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 169,
-      "jobbank_hits_intl": 26,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 16,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "steinbach|94124|2026",
@@ -4321,8 +4321,8 @@
       "updated_at": "2026-09-10T19:28:00.188Z",
       "hiring_status": "eligible",
       "jobbank_hits": 85,
-      "jobbank_hits_intl": 23,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|21330|2026",
@@ -4342,8 +4342,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 3,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 0,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|22100|2026",
@@ -4363,8 +4363,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 59,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|22300|2026",
@@ -4384,8 +4384,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 80,
-      "jobbank_hits_intl": 6,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|22301|2026",
@@ -4405,8 +4405,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 125,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|22303|2026",
@@ -4426,8 +4426,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 141,
-      "jobbank_hits_intl": 11,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|22310|2026",
@@ -4447,8 +4447,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 121,
-      "jobbank_hits_intl": 11,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 9,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|31102|2026",
@@ -4468,8 +4468,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 152,
-      "jobbank_hits_intl": 10,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 47,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|31301|2026",
@@ -4490,7 +4490,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|32101|2026",
@@ -4510,8 +4510,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|32109|2026",
@@ -4531,8 +4531,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 81,
-      "jobbank_hits_intl": 7,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 3,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|33100|2026",
@@ -4551,9 +4551,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 252,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|33101|2026",
@@ -4574,7 +4574,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 29,
       "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|33102|2026",
@@ -4594,8 +4594,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|42201|2026",
@@ -4615,8 +4615,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|42202|2026",
@@ -4635,9 +4635,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|42203|2026",
@@ -4658,7 +4658,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 24,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|44101|2026",
@@ -4677,9 +4677,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1947,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1945,
+      "jobbank_hits_intl": 250,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|70010|2026",
@@ -4699,8 +4699,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 255,
-      "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 19,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|72106|2026",
@@ -4720,8 +4720,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 109,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|72400|2026",
@@ -4740,9 +4740,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 409,
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|72401|2026",
@@ -4762,8 +4762,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 456,
-      "jobbank_hits_intl": 54,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 52,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|72410|2026",
@@ -4782,9 +4782,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|72411|2026",
@@ -4804,8 +4804,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 389,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 54,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|73300|2026",
@@ -4825,8 +4825,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 2220,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "sudbury|74203|2026",
@@ -4846,8 +4846,8 @@
       "updated_at": "2026-09-10T21:21:30.305Z",
       "hiring_status": "eligible",
       "jobbank_hits": 205,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|11202|2026",
@@ -4867,8 +4867,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 358,
-      "jobbank_hits_intl": 41,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 49,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|13102|2026",
@@ -4888,8 +4888,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 45,
-      "jobbank_hits_intl": 5,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|13110|2026",
@@ -4909,8 +4909,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 655,
-      "jobbank_hits_intl": 108,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 62,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|14100|2026",
@@ -4930,8 +4930,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 154,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 3,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|14400|2026",
@@ -4951,8 +4951,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 226,
-      "jobbank_hits_intl": 24,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|31301|2026",
@@ -4973,7 +4973,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|32101|2026",
@@ -4993,8 +4993,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|33100|2026",
@@ -5013,9 +5013,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 252,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|33102|2026",
@@ -5035,8 +5035,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|33103|2026",
@@ -5056,8 +5056,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 198,
-      "jobbank_hits_intl": 49,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|42201|2026",
@@ -5077,8 +5077,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|42202|2026",
@@ -5097,9 +5097,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|44101|2026",
@@ -5118,9 +5118,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1947,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1945,
+      "jobbank_hits_intl": 250,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|62029|2026",
@@ -5140,8 +5140,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 83,
-      "jobbank_hits_intl": 39,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 19,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|63200|2026",
@@ -5160,9 +5160,9 @@
       "notes": "Limit of 1 per employer (dine-in / full-service restaurants and hotels only for sector 6 sales & service)",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3818,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 3825,
+      "jobbank_hits_intl": 610,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|63202|2026",
@@ -5182,8 +5182,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 373,
-      "jobbank_hits_intl": 150,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 33,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|64100|2026",
@@ -5202,9 +5202,9 @@
       "notes": "Limit of 1 for employers with 1-50 full-time employees, limit of 2 for employers with 51-100 full-time employees. Maximum number of recommendations will be 24 Maximum number of recommendations will be 24 which was met in June 2026. No further applications will be accepted.",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1597,
-      "jobbank_hits_intl": 86,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1602,
+      "jobbank_hits_intl": 27,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|64314|2026",
@@ -5223,9 +5223,9 @@
       "notes": "Limit of 2 per hotel",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 226,
-      "jobbank_hits_intl": 68,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 228,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|64410|2026",
@@ -5245,8 +5245,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 212,
-      "jobbank_hits_intl": 10,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|72400|2026",
@@ -5265,9 +5265,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 409,
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|72410|2026",
@@ -5286,9 +5286,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1258,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|73201|2026",
@@ -5308,8 +5308,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 420,
-      "jobbank_hits_intl": 82,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 33,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|73300|2026",
@@ -5328,9 +5328,9 @@
       "notes": "Short Haul Local Drivers Only – The last 6 months of electronic logbooks as required under CVOR.",
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2220,
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|75110|2026",
@@ -5350,8 +5350,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1236,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "thunder-bay|94120|2026",
@@ -5371,8 +5371,8 @@
       "updated_at": "2026-09-10T21:06:53.998Z",
       "hiring_status": "eligible",
       "jobbank_hits": 36,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|11102|2026",
@@ -5392,8 +5392,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 107,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|12200|2026",
@@ -5412,9 +5412,9 @@
       "notes": "A degree or diploma in accounting or bookkeeping is required to apply for this NOC | RCIP priority occupation | Also on FCIP list",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 456,
+      "jobbank_hits_intl": 73,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|13110|2026",
@@ -5434,8 +5434,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 655,
-      "jobbank_hits_intl": 108,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 62,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|21330|2026",
@@ -5455,8 +5455,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 3,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 0,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|22101|2026",
@@ -5476,8 +5476,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 11,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 0,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|31301|2026",
@@ -5498,7 +5498,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|32101|2026",
@@ -5518,8 +5518,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|32104|2026",
@@ -5539,8 +5539,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 76,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|33101|2026",
@@ -5561,7 +5561,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 29,
       "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|33102|2026",
@@ -5581,8 +5581,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|41221|2026",
@@ -5601,9 +5601,9 @@
       "notes": "Marked * on source list | FCIP priority occupation",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 45,
-      "jobbank_hits_intl": 6,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 44,
+      "jobbank_hits_intl": 2,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|42201|2026",
@@ -5623,8 +5623,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|42202|2026",
@@ -5643,9 +5643,9 @@
       "notes": "RCIP priority occupation | Also on FCIP list",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|44101|2026",
@@ -5665,8 +5665,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": null,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 250,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|64400|2026",
@@ -5687,7 +5687,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 7,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72100|2026",
@@ -5707,8 +5707,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 341,
-      "jobbank_hits_intl": 42,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 28,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72106|2026",
@@ -5728,8 +5728,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 739,
-      "jobbank_hits_intl": 115,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 109,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72200|2026",
@@ -5749,8 +5749,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 268,
-      "jobbank_hits_intl": 30,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 26,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72400|2026",
@@ -5769,9 +5769,9 @@
       "notes": "RCIP priority occupation | Also on FCIP list",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 409,
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72401|2026",
@@ -5791,8 +5791,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 456,
-      "jobbank_hits_intl": 54,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 52,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|72410|2026",
@@ -5811,9 +5811,9 @@
       "notes": "RCIP priority occupation | Also on FCIP list",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1258,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|73300|2026",
@@ -5832,9 +5832,9 @@
       "notes": "RCIP priority occupation | Also on FCIP list",
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2220,
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|73400|2026",
@@ -5854,8 +5854,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 238,
-      "jobbank_hits_intl": 29,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 19,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|74200|2026",
@@ -5876,7 +5876,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 1,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|74203|2026",
@@ -5896,8 +5896,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 205,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|75110|2026",
@@ -5917,8 +5917,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1236,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|84100|2026",
@@ -5939,7 +5939,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 6,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|84120|2026",
@@ -5959,8 +5959,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 169,
-      "jobbank_hits_intl": 26,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 16,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|85103|2026",
@@ -5980,8 +5980,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 274,
-      "jobbank_hits_intl": 28,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "timmins|95103|2026",
@@ -6001,8 +6001,8 @@
       "updated_at": "2026-09-10T19:46:29.156Z",
       "hiring_status": "eligible",
       "jobbank_hits": 69,
-      "jobbank_hits_intl": 20,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 1,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|11100|2026",
@@ -6023,7 +6023,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 329,
       "jobbank_hits_intl": 16,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|12200|2026",
@@ -6042,9 +6042,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 456,
+      "jobbank_hits_intl": 73,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|13110|2026",
@@ -6064,8 +6064,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 655,
-      "jobbank_hits_intl": 108,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 62,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|31301|2026",
@@ -6086,7 +6086,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 316,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|32101|2026",
@@ -6106,8 +6106,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 243,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|33102|2026",
@@ -6127,8 +6127,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|42201|2026",
@@ -6148,8 +6148,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|42202|2026",
@@ -6168,9 +6168,9 @@
       "notes": "There is no employer cap for this occupation",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|44101|2026",
@@ -6189,9 +6189,9 @@
       "notes": "Eligible Job Titles : Home Support Worker Note : private households are not eligible to be designated employers.",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 1028,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1945,
+      "jobbank_hits_intl": 250,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|60020|2026",
@@ -6210,9 +6210,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1280,
-      "jobbank_hits_intl": 223,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 228,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|60030|2026",
@@ -6231,9 +6231,9 @@
       "notes": "IRCC has put a 5% cap on this NOC.",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2809,
-      "jobbank_hits_intl": 973,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2810,
+      "jobbank_hits_intl": 617,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|62200|2026",
@@ -6252,9 +6252,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 237,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1152,
+      "jobbank_hits_intl": 141,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|63100|2026",
@@ -6274,8 +6274,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 79,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 7,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|63200|2026",
@@ -6294,9 +6294,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 3818,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 3825,
+      "jobbank_hits_intl": 610,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|63202|2026",
@@ -6316,8 +6316,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 373,
-      "jobbank_hits_intl": 150,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 33,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|64314|2026",
@@ -6336,9 +6336,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 226,
-      "jobbank_hits_intl": 68,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 228,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|65200|2026",
@@ -6358,8 +6358,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 363,
-      "jobbank_hits_intl": 63,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 14,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|72400|2026",
@@ -6378,9 +6378,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 408,
-      "jobbank_hits_intl": 40,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 409,
+      "jobbank_hits_intl": 22,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|72410|2026",
@@ -6399,9 +6399,9 @@
       "notes": "",
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|73112|2026",
@@ -6421,8 +6421,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 354,
-      "jobbank_hits_intl": 105,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 79,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|73300|2026",
@@ -6442,8 +6442,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 2220,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|75101|2026",
@@ -6463,8 +6463,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 598,
-      "jobbank_hits_intl": 119,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|75110|2026",
@@ -6484,8 +6484,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1236,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|94140|2026",
@@ -6505,8 +6505,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 190,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 7,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "west-kootenay|95109|2026",
@@ -6526,8 +6526,8 @@
       "updated_at": "2026-09-10T18:58:08.315Z",
       "hiring_status": "eligible",
       "jobbank_hits": 282,
-      "jobbank_hits_intl": 58,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 13,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|12200|2026",
@@ -6546,9 +6546,9 @@
       "notes": "",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 456,
+      "jobbank_hits_intl": 73,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|13100|2026",
@@ -6567,9 +6567,9 @@
       "notes": "A degree or diploma in business or public administration is required.",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 605,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 604,
+      "jobbank_hits_intl": 100,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|13111|2026",
@@ -6589,8 +6589,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 105,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|14200|2026",
@@ -6610,8 +6610,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 221,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|21321|2026",
@@ -6631,8 +6631,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 52,
-      "jobbank_hits_intl": 1,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|32124|2026",
@@ -6652,8 +6652,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 55,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 2,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|33100|2026",
@@ -6672,9 +6672,9 @@
       "notes": "",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 254,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 252,
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|33101|2026",
@@ -6695,7 +6695,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 29,
       "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|33102|2026",
@@ -6715,8 +6715,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 507,
-      "jobbank_hits_intl": 126,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 44,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|42201|2026",
@@ -6736,8 +6736,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|42202|2026",
@@ -6756,9 +6756,9 @@
       "notes": "ECEA applications will be considered as secondary NOC.",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|60030|2026",
@@ -6777,9 +6777,9 @@
       "notes": "– 1 per employer per year – Only 15 recommendations for 2026 – 9 recommendations remaining out of 15 – as of August 7, 2026 | Employer cap: 1 per year",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2809,
-      "jobbank_hits_intl": 973,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 617,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|62010|2026",
@@ -6799,8 +6799,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1102,
-      "jobbank_hits_intl": 453,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 181,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|62021|2026",
@@ -6819,9 +6819,9 @@
       "notes": "– 10 recommendations for 2026 – No recommendations used for this NOC – as of August 7, 2026",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 171,
-      "jobbank_hits_intl": 39,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 170,
+      "jobbank_hits_intl": 12,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|63100|2026",
@@ -6841,8 +6841,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 79,
-      "jobbank_hits_intl": 8,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 7,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|63202|2026",
@@ -6862,8 +6862,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 373,
-      "jobbank_hits_intl": 150,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 33,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|65310|2026",
@@ -6882,9 +6882,9 @@
       "notes": "",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1186,
-      "jobbank_hits_intl": 380,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1184,
+      "jobbank_hits_intl": 119,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|72310|2026",
@@ -6903,9 +6903,9 @@
       "notes": "",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1238,
-      "jobbank_hits_intl": 279,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1240,
+      "jobbank_hits_intl": 205,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|72402|2026",
@@ -6925,8 +6925,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 98,
-      "jobbank_hits_intl": 17,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|72410|2026",
@@ -6945,9 +6945,9 @@
       "notes": "",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1257,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1258,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|73300|2026",
@@ -6967,8 +6967,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 2220,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|75110|2026",
@@ -6987,9 +6987,9 @@
       "notes": "– 2 per employer per year – Only 15 recommendations for 2026 – 14 out of 15 recommendations available – as of August 7, 2026. | Employer cap: 2 per year",
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 518,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1236,
+      "jobbank_hits_intl": 178,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|90010|2026",
@@ -7010,7 +7010,7 @@
       "hiring_status": "eligible",
       "jobbank_hits": 69,
       "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|94140|2026",
@@ -7030,8 +7030,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 190,
-      "jobbank_hits_intl": 74,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 7,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-okanagan-shuswap|94212|2026",
@@ -7051,8 +7051,8 @@
       "updated_at": "2026-09-10T19:26:54.074Z",
       "hiring_status": "eligible",
       "jobbank_hits": 51,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|12200|2026",
@@ -7071,9 +7071,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 457,
-      "jobbank_hits_intl": 102,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 456,
+      "jobbank_hits_intl": 73,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|13100|2026",
@@ -7092,9 +7092,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 605,
-      "jobbank_hits_intl": 85,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 604,
+      "jobbank_hits_intl": 100,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|13110|2026",
@@ -7114,8 +7114,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 655,
-      "jobbank_hits_intl": 108,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 62,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|14100|2026",
@@ -7135,8 +7135,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 154,
-      "jobbank_hits_intl": 9,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 3,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|14401|2026",
@@ -7155,9 +7155,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 244,
-      "jobbank_hits_intl": 15,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 245,
+      "jobbank_hits_intl": 2,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|21222|2026",
@@ -7177,8 +7177,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 562,
-      "jobbank_hits_intl": 5,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 10,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|22220|2026",
@@ -7198,8 +7198,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 89,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 16,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|33103|2026",
@@ -7219,8 +7219,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 198,
-      "jobbank_hits_intl": 49,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|33109|2026",
@@ -7240,8 +7240,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 78,
-      "jobbank_hits_intl": 14,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 5,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|42201|2026",
@@ -7261,8 +7261,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 323,
-      "jobbank_hits_intl": 21,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 8,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|42202|2026",
@@ -7281,9 +7281,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 570,
-      "jobbank_hits_intl": 135,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 569,
+      "jobbank_hits_intl": 75,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|60020|2026",
@@ -7302,9 +7302,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1280,
-      "jobbank_hits_intl": 223,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1282,
+      "jobbank_hits_intl": 228,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|60030|2026",
@@ -7323,9 +7323,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2809,
-      "jobbank_hits_intl": 973,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2810,
+      "jobbank_hits_intl": 617,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|60031|2026",
@@ -7345,8 +7345,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 303,
-      "jobbank_hits_intl": 41,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 48,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|62010|2026",
@@ -7366,8 +7366,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 1102,
-      "jobbank_hits_intl": 453,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 181,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|62020|2026",
@@ -7386,9 +7386,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 2958,
-      "jobbank_hits_intl": 1687,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": 469,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|63200|2026",
@@ -7407,9 +7407,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 1636,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 3825,
+      "jobbank_hits_intl": 610,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|64314|2026",
@@ -7428,9 +7428,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 226,
-      "jobbank_hits_intl": 68,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 228,
+      "jobbank_hits_intl": 18,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|65100|2026",
@@ -7450,8 +7450,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 808,
-      "jobbank_hits_intl": 169,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 68,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|65310|2026",
@@ -7470,9 +7470,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": 1186,
-      "jobbank_hits_intl": 380,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1184,
+      "jobbank_hits_intl": 119,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|72404|2026",
@@ -7492,8 +7492,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 47,
-      "jobbank_hits_intl": 4,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 6,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|72410|2026",
@@ -7512,9 +7512,9 @@
       "notes": "",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 243,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 1258,
+      "jobbank_hits_intl": 187,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|72600|2026",
@@ -7534,8 +7534,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 26,
-      "jobbank_hits_intl": 3,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 4,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|73201|2026",
@@ -7555,8 +7555,8 @@
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
       "jobbank_hits": 420,
-      "jobbank_hits_intl": 82,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": 33,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "peace-liard|73300|2026",
@@ -7575,9 +7575,9 @@
       "notes": "Local driving / region restriction per source list if applicable",
       "updated_at": "2026-09-09T23:22:00Z",
       "hiring_status": "eligible",
-      "jobbank_hits": null,
-      "jobbank_hits_intl": 434,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": 2220,
+      "jobbank_hits_intl": 492,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "altona-rhineland|access-credit-union-ltd-altona",
@@ -8090,9 +8090,9 @@
       "notes": "The Brandon Clinic is seeking to hire: Family physicians ( 31102 - General practitioners and family physicians ) Medical specialist ( 31100 - Specialists in clinical and laboratory medicine ) including: Neurologist Rheumatologist Endocrinologist Medical Dermatologist (non-cosmetic) Allergist and/or",
       "updated_at": "2026-09-10T21:35:14.651Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|brandon-computers-itadvisors",
@@ -8168,9 +8168,9 @@
       "notes": "The City of Brandon has been designated as an employer under the Rural Community Immigration Pilot (RCIP) to support the recruitment of specialized and hard‑to‑fill positions that cannot be readily filled through the local labour market. It is important to note that RCIP is not a general hiring path",
       "updated_at": "2026-09-10T21:35:14.651Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 7,
+      "jobbank_hits": null,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|cutting-edge-construction-ltd",
@@ -8682,10 +8682,10 @@
       "jobs_url": "https://economicdevelopmentbrandon.com/rcip/rcip",
       "notes": "The Wellness Clinic is hiring Family Physicians (NOC 31102, Minimum CLB 6)! Priority will be given to applicants who are already in Canada and available to start immediately. If you have relevant experience and meet the eligibility criteria for the RCIP, please submit your interest using the followi",
       "updated_at": "2026-09-10T21:35:14.651Z",
-      "hiring_status": "hiring",
-      "jobbank_hits": 22,
-      "jobbank_hits_intl": 2,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "hiring_status": "unknown",
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|walsh-construction",
@@ -8723,9 +8723,9 @@
       "notes": "Western Medical Clinic is seeking to hire Family Physicians ( 31102 - General practitioners and family physicians ) on a fee-for-service basis, who are trained in Canada, the United Kingdom, Ireland, USA or Australia. At Western Medical Clinic, you will find more than just a place to practise medici",
       "updated_at": "2026-09-10T21:35:14.651Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "brandon|westman-communications-group",
@@ -8972,9 +8972,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:10.923Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|lamb-farms",
@@ -9031,9 +9031,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:10.923Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|olymel",
@@ -9109,9 +9109,9 @@
       "notes": "",
       "updated_at": "2026-09-10T21:30:10.923Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 1,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|structural-precast",
@@ -9131,8 +9131,8 @@
       "updated_at": "2026-09-10T21:30:10.923Z",
       "hiring_status": "unknown",
       "jobbank_hits": 10,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|tim-hortons",
@@ -9150,10 +9150,10 @@
       "jobs_url": "https://www.claresholm.ca/business/labour-resources/rural-community-immigration-pilot",
       "notes": "",
       "updated_at": "2026-09-10T21:30:10.923Z",
-      "hiring_status": "hiring",
-      "jobbank_hits": 920,
-      "jobbank_hits_intl": 595,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "hiring_status": "unknown",
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "claresholm|tom-harris-cellular",
@@ -12288,9 +12288,9 @@
       "notes": "Source status: Hiring",
       "updated_at": "2026-09-10T20:22:10.166Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|boart-longyear",
@@ -12879,9 +12879,9 @@
       "notes": "Source status: Hiring",
       "updated_at": "2026-09-10T20:22:10.166Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|dawson-dental",
@@ -13223,9 +13223,9 @@
       "notes": "Source status: Hiring",
       "updated_at": "2026-09-10T20:22:10.166Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|ehren-homes-construction",
@@ -14650,9 +14650,9 @@
       "notes": "Source status: Hiring",
       "updated_at": "2026-09-10T20:22:10.166Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 0,
+      "jobbank_hits": null,
       "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|north-bay-guardian-pharmacy",
@@ -15089,9 +15089,9 @@
       "notes": "Source status: Hiring",
       "updated_at": "2026-09-10T20:22:10.166Z",
       "hiring_status": "unknown",
-      "jobbank_hits": 1,
-      "jobbank_hits_intl": 0,
-      "jobbank_checked_at": "2026-10-10T00:35:40.562Z"
+      "jobbank_hits": null,
+      "jobbank_hits_intl": null,
+      "jobbank_checked_at": "2026-10-10T01:05:34.870Z"
     },
     {
       "id": "north-bay|paramed-home-health-care",
