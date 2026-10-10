@@ -180,8 +180,9 @@ export function jobBankSearchUrl(
   // Wider radius for sparse rural hubs so NOC searches surface real openings.
   u.searchParams.set('d', listing.type === 'priority_noc' ? '500' : '100')
   if (location) u.searchParams.set('locationstring', location)
-  // Job Bank: fjyt=1 = “Canadians and international candidates” (open to applicants abroad).
-  if (audience === 'abroad') u.searchParams.set('fjyt', '1')
+  // Job Bank: fglo=1 = Intended applicants → “Canadians and international candidates”.
+  // (fjyt=1 is Youth — do not use it for the abroad path.)
+  if (audience === 'abroad') u.searchParams.set('fglo', '1')
 
   const noc = (listing.noc_code || '').replace(/\D/g, '')
   if (listing.type === 'priority_noc' && noc.length === 5) {
@@ -228,7 +229,7 @@ export function jobBankCountTitle(
   const asOf = formatVerifiedAt(checked)
   const base =
     audience === 'abroad'
-      ? 'Card counts are nearby Job Bank totals for employers open to international candidates (fjyt filter) from our last Mon/Wed/Fri check — not a job offer, and not an invitation to contact employers.'
+      ? 'Card counts are nearby Job Bank totals for Intended applicants → Canadians and international candidates (fglo) from our last Mon/Wed/Fri check — not a job offer, and not an invitation to contact employers.'
       : 'Public Job Bank search hits near this community from our last Mon/Wed/Fri check — not a live total, not a job offer, and not an invitation to contact the employer.'
   return asOf ? `${base} As of ${asOf}.` : base
 }

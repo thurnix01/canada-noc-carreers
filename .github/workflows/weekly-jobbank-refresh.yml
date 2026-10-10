@@ -1,4 +1,4 @@
-# Refresh Job Bank posting counts (incl. international / fjyt=1), then redeploy GitHub Pages.
+# Refresh Job Bank posting counts (incl. international / fglo=1), then redeploy GitHub Pages.
 # Counts are snapshots near each community hub — not live Canada-wide totals.
 name: Weekly Job Bank refresh
 

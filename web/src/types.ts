@@ -33,7 +33,7 @@ export type Listing = {
   /** Job Bank postings near the community hub (all intended applicants). */
   jobbank_hits?: number | null
   /**
-   * Job Bank postings open to international candidates (fjyt=1) near the hub.
+   * Job Bank postings open to international candidates (fglo=1) near the hub.
    * Used for Outside Canada buttons, badges, and employer filtering.
    */
   jobbank_hits_intl?: number | null

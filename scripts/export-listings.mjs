@@ -188,7 +188,8 @@ function sleep(ms) {
 
 /**
  * Count Job Bank postings for an employer or NOC near a community hub.
- * When internationalOnly, uses fjyt=1 (open to international candidates).
+ * When internationalOnly, uses fglo=1 (Intended applicants → international candidates).
+ * Note: fjyt=1 is Youth — not the international filter.
  */
 async function fetchJobBankHits({
   employerName,
@@ -207,7 +208,7 @@ async function fetchJobBankHits({
   if (location) u.searchParams.set('locationstring', location);
   if (nocCode) u.searchParams.set('fn21', String(nocCode).replace(/\D/g, ''));
   else if (employerName) u.searchParams.set('empl', employerName);
-  if (internationalOnly) u.searchParams.set('fjyt', '1');
+  if (internationalOnly) u.searchParams.set('fglo', '1');
 
   const res = await fetch(u, {
     headers: {

@@ -69,7 +69,7 @@ npm run deploy   # from root (exports + builds + gh-pages)
 Card badges are **snapshots**, not live totals. Export hits Job Bank with the same hub + radius filters as the outbound link, and stores:
 
 - `jobbank_hits` — all intended applicants  
-- `jobbank_hits_intl` — open to international candidates (`fjyt=1`)
+- `jobbank_hits_intl` — Intended applicants → Canadians and international candidates (`fglo=1`; not Youth/`fjyt`)
 
 Outside Canada uses intl counts; designated employers with **intl = 0** are hidden from search (still shown for In Canada).
 
