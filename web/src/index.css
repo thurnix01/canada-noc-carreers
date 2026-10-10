@@ -1764,6 +1764,90 @@ body.nav-lock {
   }
 }
 
+.pathway-stage {
+  padding: 1.15rem 1.15rem 1.05rem;
+  border-radius: 18px;
+  background: linear-gradient(165deg, #1a1f28 0%, #2a1016 100%);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.pathway-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.pathway-option {
+  appearance: none;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 14px;
+  padding: 0.85rem 0.8rem 0.9rem;
+  display: grid;
+  gap: 0.3rem;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.pathway-option:hover,
+.pathway-option:focus-visible {
+  transform: translateY(-2px);
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.pathway-option.is-active {
+  background: var(--maple);
+  border-color: transparent;
+  box-shadow: 0 12px 28px rgba(200, 16, 46, 0.45);
+  transform: translateY(-3px);
+}
+
+.pathway-option-kicker {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pathway-option.is-active .pathway-option-kicker {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.pathway-option-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.pathway-panel .pathway-steps {
+  margin: 0.75rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.pathway-panel .pathway-steps li + li {
+  margin-top: 0.35rem;
+}
+
+.section-head a {
+  color: var(--maple-deep);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .impact {
   margin: 0.5rem 0 3.5rem;
 }
@@ -2098,6 +2182,10 @@ body.nav-lock {
 
   .noc-digit {
     min-height: 4.4rem;
+  }
+
+  .pathway-options {
+    grid-template-columns: 1fr;
   }
 
   .impact-grid {

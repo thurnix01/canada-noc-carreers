@@ -190,6 +190,119 @@ function NocExplainer() {
   )
 }
 
+const AUDIENCE_PATHS = [
+  {
+    id: 'abroad' as const,
+    short: 'Outside Canada',
+    title: 'Candidates abroad',
+    kicker: 'Primary path',
+    steps: [
+      'Find your NOC on a community priority list',
+      'Open Job Bank for employers open to international candidates',
+      'Confirm “Who can apply?” on each posting',
+      'Finish on that community’s RCIP portal toward PR',
+    ],
+    detail:
+      'Most Job Bank ads will ignore you if the employer is not open to international candidates. We set your Job Bank buttons to that filter so you spend time where replies are possible — then you still verify on the official portal.',
+  },
+  {
+    id: 'in_canada' as const,
+    short: 'In Canada',
+    title: 'Already authorized to work',
+    kicker: 'Work permit · PR · citizen',
+    steps: [
+      'Search priority NOCs and designated employers',
+      'Open standard nearby Job Bank results',
+      'Check your permit conditions on IRCC before changing jobs',
+      'Only apply to public postings — designation is not a job offer',
+    ],
+    detail:
+      'If you already hold a Canadian work permit, PR, or citizenship, use the standard Job Bank search. Watch employer-specific permit limits. We never treat a designated employer as an invitation to cold-contact them.',
+  },
+] as const
+
+function AudiencePathway({
+  audience,
+  onAudienceChange,
+  onSearch,
+}: {
+  audience: JobBankAudience
+  onAudienceChange: (next: JobBankAudience) => void
+  onSearch: () => void
+}) {
+  const current = AUDIENCE_PATHS.find((p) => p.id === audience) ?? AUDIENCE_PATHS[0]
+
+  return (
+    <section className="noc-explainer audience-pathway" id="pathway" aria-labelledby="pathway-heading">
+      <div className="noc-explainer-grid">
+        <div className="noc-explainer-copy">
+          <p className="pill">Who Job Bank will consider</p>
+          <h2 id="pathway-heading">Your situation shapes the search</h2>
+          <p>
+            Built first for people <strong>outside Canada</strong> who need a real job path into RCIP and
+            permanent residence. Choose your situation — it changes every Job Bank button on this site.
+          </p>
+          <p className="noc-explainer-note">
+            We use Job Bank&apos;s own “open to international candidates” signal. We do not give visa advice.
+          </p>
+          <div className="noc-official-links">
+            <button type="button" className="btn btn-primary" onClick={onSearch}>
+              Search with this path
+            </button>
+            <a
+              className="btn btn-outline"
+              href="https://www.jobbank.gc.ca/findajob/foreign-candidates"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Job Bank foreign candidates
+            </a>
+          </div>
+        </div>
+
+        <div className="noc-explainer-interactive">
+          <div className="pathway-stage" role="tablist" aria-label="Your situation">
+            <p className="noc-code-kicker">Choose one</p>
+            <div className="pathway-options">
+              {AUDIENCE_PATHS.map((path) => (
+                <button
+                  key={path.id}
+                  type="button"
+                  role="tab"
+                  id={`pathway-tab-${path.id}`}
+                  aria-selected={audience === path.id}
+                  aria-controls="pathway-panel"
+                  className={`pathway-option ${audience === path.id ? 'is-active' : ''}`}
+                  onClick={() => onAudienceChange(path.id)}
+                >
+                  <span className="pathway-option-kicker">{path.kicker}</span>
+                  <span className="pathway-option-title">{path.short}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="noc-digit-panel pathway-panel"
+            id="pathway-panel"
+            role="tabpanel"
+            aria-labelledby={`pathway-tab-${current.id}`}
+            key={current.id}
+          >
+            <p className="noc-digit-panel-label">{current.title}</p>
+            <p>{current.detail}</p>
+            <ol className="pathway-steps">
+              {current.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function ResultCard({
   listing,
   index,
@@ -652,6 +765,7 @@ export default function App() {
   const NAV_LINKS = [
     { href: '#about', label: 'How it works' },
     { href: '#noc', label: 'NOC codes' },
+    { href: '#pathway', label: 'Your situation' },
     { href: '#impact', label: 'Impact' },
     { href: '#communities', label: 'Communities' },
     { href: '#explore', label: 'Search' },
@@ -922,6 +1036,12 @@ export default function App() {
 
       <NocExplainer />
 
+      <AudiencePathway
+        audience={jobBankAudience}
+        onAudienceChange={(next) => startTransition(() => setJobBankAudience(next))}
+        onSearch={scrollToExplore}
+      />
+
       <section className="impact" id="impact">
         <div className="section-head">
           <p className="pill">Why this pathway exists</p>
@@ -1072,9 +1192,8 @@ export default function App() {
           <p className="pill">Search</p>
           <h2>Find your NOC or a designated employer</h2>
           <p>
-            Start with <strong>Your situation</strong> in the sidebar — Outside Canada opens Job Bank for
-            employers who consider international candidates. Then search your NOC and finish on the
-            official portal.
+            Set <a href="#pathway">Your situation</a> first (default: Outside Canada). That controls every
+            Job Bank button — then search your NOC and finish on the official portal.
           </p>
           <p>
             Updated {new Date(data.generated_at).toLocaleString()}
@@ -1118,30 +1237,14 @@ export default function App() {
                     className={`chip ${jobBankAudience === 'in_canada' ? 'is-active' : ''}`}
                     onClick={() => startTransition(() => setJobBankAudience('in_canada'))}
                   >
-                    In Canada (work permit / PR / citizen)
+                    In Canada
                   </button>
                 </div>
                 <p className="audience-hint">
-                  {jobBankAudience === 'abroad' ? (
-                    <>
-                      Job Bank buttons open results for employers open to{' '}
-                      <strong>international candidates</strong>. Still confirm “Who can apply?” on each
-                      posting, then follow the community RCIP portal.{' '}
-                      <a
-                        href="https://www.jobbank.gc.ca/findajob/foreign-candidates"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        Job Bank guide for foreign candidates
-                      </a>
-                      .
-                    </>
-                  ) : (
-                    <>
-                      Job Bank buttons use the standard nearby search. Check your permit conditions on IRCC
-                      before changing employers. Designated ≠ a job offer.
-                    </>
-                  )}
+                  {jobBankAudience === 'abroad'
+                    ? 'Job Bank buttons filter to employers open to international candidates.'
+                    : 'Job Bank buttons use the standard nearby search.'}{' '}
+                  <a href="#pathway">Full pathway</a>
                 </p>
               </div>
 
