@@ -81,13 +81,41 @@ export function listingNocCodes(listing: Listing): string[] {
   return fromNotes
 }
 
-export function hiringStatusOf(listing: Listing): HiringStatus {
+export type JobBankAudience = 'abroad' | 'in_canada'
+
+/** Job Bank hit count for the active audience (intl when Outside Canada). */
+export function jobBankHitsForAudience(
+  listing: Listing,
+  audience: JobBankAudience = 'abroad',
+): number | null | undefined {
+  if (audience === 'abroad') {
+    if (listing.jobbank_hits_intl !== undefined) return listing.jobbank_hits_intl
+    // Until the next Job Bank refresh populates intl counts, fall back to all-hits.
+    return listing.jobbank_hits
+  }
+  return listing.jobbank_hits
+}
+
+/**
+ * Designated employers with a confirmed 0 international Job Bank openings.
+ * Hidden from results when Outside Canada is selected (still shown for In Canada).
+ */
+export function hideEmployerForAbroadAudience(listing: Listing): boolean {
+  if (listing.type !== 'employer') return false
+  return typeof listing.jobbank_hits_intl === 'number' && listing.jobbank_hits_intl === 0
+}
+
+export function hiringStatusOf(
+  listing: Listing,
+  audience: JobBankAudience = 'abroad',
+): HiringStatus {
   if (listing.type === 'priority_noc') return 'eligible'
   if (listing.type === 'job') return 'open'
   if (listing.hiring_status === 'hiring') {
-    // Never show Hiring unless Job Bank verification found postings.
-    if (typeof listing.jobbank_hits === 'number') {
-      return listing.jobbank_hits > 0 ? 'hiring' : 'unknown'
+    // Never show Hiring unless Job Bank verification found postings for this audience.
+    const hits = jobBankHitsForAudience(listing, audience)
+    if (typeof hits === 'number') {
+      return hits > 0 ? 'hiring' : 'unknown'
     }
     return 'unknown'
   }
@@ -101,14 +129,17 @@ export function hiringStatusOf(listing: Listing): HiringStatus {
   return 'unknown'
 }
 
-export function hiringStatusLabel(status: HiringStatus, listing?: Listing): string {
+export function hiringStatusLabel(
+  status: HiringStatus,
+  listing?: Listing,
+  audience: JobBankAudience = 'abroad',
+): string {
   switch (status) {
     case 'hiring': {
-      const n = listing?.jobbank_hits
+      const n = listing ? jobBankHitsForAudience(listing, audience) : undefined
       // Never say “hiring” — Job Bank hits are public posting signals only.
-      return typeof n === 'number' && n > 0
-        ? `~${n} Job Bank postings`
-        : 'Job Bank postings found'
+      if (typeof n === 'number' && n > 0) return `~${n} Job Bank postings`
+      return 'Job Bank postings found'
     }
     case 'not_hiring':
       return 'Source: not recruiting'
@@ -117,7 +148,9 @@ export function hiringStatusLabel(status: HiringStatus, listing?: Listing): stri
     case 'open':
       return 'Open posting'
     default:
-      if (listing && listing.jobbank_hits === 0) return 'No Job Bank postings'
+      if (listing && jobBankHitsForAudience(listing, audience) === 0) {
+        return audience === 'abroad' ? 'No international Job Bank postings' : 'No Job Bank postings'
+      }
       return 'Designated · not a job offer'
   }
 }
@@ -133,8 +166,6 @@ export function formatVerifiedAt(iso: string): string {
     timeZone: 'America/Vancouver',
   }).format(new Date(t))
 }
-
-export type JobBankAudience = 'abroad' | 'in_canada'
 
 /** Job Bank search filtered by community hub + NOC code or employer name. */
 export function jobBankSearchUrl(
@@ -170,7 +201,7 @@ export function jobBankButtonLabel(
   listing: Listing,
   audience: JobBankAudience = 'abroad',
 ): string {
-  const hits = listing.jobbank_hits
+  const hits = jobBankHitsForAudience(listing, audience)
   if (audience === 'abroad') {
     if (typeof hits === 'number') {
       return hits > 0 ? `Job Bank · intl · ~${hits}` : 'Job Bank · intl'
@@ -197,8 +228,8 @@ export function jobBankCountTitle(
   const asOf = formatVerifiedAt(checked)
   const base =
     audience === 'abroad'
-      ? 'Card counts are weekly nearby Job Bank totals. Your Job Bank button opens results filtered to employers open to international candidates — not a job offer, and not an invitation to contact employers.'
-      : 'Public Job Bank search hits near this community from our last weekly check — not a live total, not a job offer, and not an invitation to contact the employer.'
+      ? 'Card counts are nearby Job Bank totals for employers open to international candidates (fjyt filter) from our last Mon/Wed/Fri check — not a job offer, and not an invitation to contact employers.'
+      : 'Public Job Bank search hits near this community from our last Mon/Wed/Fri check — not a live total, not a job offer, and not an invitation to contact the employer.'
   return asOf ? `${base} As of ${asOf}.` : base
 }
 

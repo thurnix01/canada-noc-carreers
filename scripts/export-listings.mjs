@@ -186,8 +186,19 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-/** Count Job Bank postings for an employer or NOC near a community hub. */
-async function fetchJobBankHits({ employerName, nocCode, communityId, province, communityName, radiusKm = 100 }) {
+/**
+ * Count Job Bank postings for an employer or NOC near a community hub.
+ * When internationalOnly, uses fjyt=1 (open to international candidates).
+ */
+async function fetchJobBankHits({
+  employerName,
+  nocCode,
+  communityId,
+  province,
+  communityName,
+  radiusKm = 100,
+  internationalOnly = false,
+}) {
   const location =
     JOB_BANK_LOCATIONS[communityId] || [communityName, province].filter(Boolean).join(', ');
   const u = new URL('https://www.jobbank.gc.ca/jobsearch/jobsearch');
@@ -196,6 +207,7 @@ async function fetchJobBankHits({ employerName, nocCode, communityId, province, 
   if (location) u.searchParams.set('locationstring', location);
   if (nocCode) u.searchParams.set('fn21', String(nocCode).replace(/\D/g, ''));
   else if (employerName) u.searchParams.set('empl', employerName);
+  if (internationalOnly) u.searchParams.set('fjyt', '1');
 
   const res = await fetch(u, {
     headers: {
@@ -233,18 +245,21 @@ async function verifyHiringAgainstJobBank(listings) {
   }
 
   if (String(process.env.SKIP_JOBBANK || '').match(/^(1|true|yes)$/i)) {
-    console.log('SKIP_JOBBANK set — copying prior jobbank_hits from listings.json when available');
+    console.log('SKIP_JOBBANK set — copying prior jobbank hits from listings.json when available');
     for (const listing of listings) {
       const prev = prevById.get(listing.id);
       if (!prev) continue;
       if ('jobbank_hits' in prev) listing.jobbank_hits = prev.jobbank_hits;
+      if ('jobbank_hits_intl' in prev) listing.jobbank_hits_intl = prev.jobbank_hits_intl;
       if (prev.jobbank_checked_at) listing.jobbank_checked_at = prev.jobbank_checked_at;
-      if (
-        listing.type === 'employer' &&
-        listing.hiring_status === 'hiring' &&
-        typeof prev.jobbank_hits === 'number'
-      ) {
-        listing.hiring_status = prev.jobbank_hits > 0 ? 'hiring' : 'unknown';
+      if (listing.type === 'employer' && listing.hiring_status === 'hiring') {
+        const intl = prev.jobbank_hits_intl;
+        const all = prev.jobbank_hits;
+        if (typeof intl === 'number') {
+          listing.hiring_status = intl > 0 ? 'hiring' : 'unknown';
+        } else if (typeof all === 'number') {
+          listing.hiring_status = all > 0 ? 'hiring' : 'unknown';
+        }
       }
     }
     return prevCheckedAt;
@@ -252,26 +267,31 @@ async function verifyHiringAgainstJobBank(listings) {
 
   const checkedAt = new Date().toISOString();
   const candidates = listings.filter((l) => l.type === 'employer' && l.hiring_status === 'hiring');
-  console.log(`Verifying Job Bank hits for ${candidates.length} portal-hiring employers…`);
+  console.log(`Verifying Job Bank hits for ${candidates.length} portal-hiring employers (all + intl)…`);
   let kept = 0;
   let demoted = 0;
   let failed = 0;
 
   for (const listing of candidates) {
+    const base = {
+      employerName: listing.employer_name || listing.title,
+      communityId: listing.community_id,
+      province: listing.province,
+      communityName: listing.community_name,
+      radiusKm: 100,
+    };
     try {
-      const hits = await fetchJobBankHits({
-        employerName: listing.employer_name || listing.title,
-        communityId: listing.community_id,
-        province: listing.province,
-        communityName: listing.community_name,
-        radiusKm: 100,
-      });
+      const hits = await fetchJobBankHits(base);
+      await sleep(350);
+      const hitsIntl = await fetchJobBankHits({ ...base, internationalOnly: true });
       listing.jobbank_hits = hits;
+      listing.jobbank_hits_intl = hitsIntl;
       listing.jobbank_checked_at = checkedAt;
-      if (hits == null) {
+      // Abroad-first: “hiring” only when Job Bank shows international-open postings.
+      if (hitsIntl == null && hits == null) {
         listing.hiring_status = 'unknown';
         failed += 1;
-      } else if (hits > 0) {
+      } else if (typeof hitsIntl === 'number' && hitsIntl > 0) {
         listing.hiring_status = 'hiring';
         kept += 1;
       } else {
@@ -279,10 +299,11 @@ async function verifyHiringAgainstJobBank(listings) {
         demoted += 1;
       }
       console.log(
-        `  ${listing.employer_name}: ${hits == null ? 'parse-fail' : hits + ' hits'} → ${listing.hiring_status}`,
+        `  ${listing.employer_name}: all=${hits ?? 'fail'} intl=${hitsIntl ?? 'fail'} → ${listing.hiring_status}`,
       );
     } catch (err) {
       listing.jobbank_hits = null;
+      listing.jobbank_hits_intl = null;
       listing.jobbank_checked_at = checkedAt;
       listing.hiring_status = 'unknown';
       failed += 1;
@@ -291,16 +312,16 @@ async function verifyHiringAgainstJobBank(listings) {
     await sleep(350);
   }
 
-  console.log(`Job Bank verify: kept ${kept} hiring, demoted ${demoted}, failed ${failed}`);
+  console.log(`Job Bank verify: kept ${kept} hiring (intl>0), demoted ${demoted}, failed ${failed}`);
 
   const nocs = listings.filter((l) => l.type === 'priority_noc' && l.noc_code);
-  console.log(`Verifying Job Bank hits for ${nocs.length} eligible NOCs (parallel)…`);
+  console.log(`Verifying Job Bank hits for ${nocs.length} eligible NOCs (all + intl, parallel)…`);
   const cache = new Map();
   let nocOk = 0;
   let nocFail = 0;
 
-  async function hitsForNoc(listing) {
-    const key = `${listing.noc_code}|${listing.community_id}`;
+  async function hitsForNoc(listing, internationalOnly) {
+    const key = `${listing.noc_code}|${listing.community_id}|${internationalOnly ? 'intl' : 'all'}`;
     if (cache.has(key)) return cache.get(key);
     const hits = await fetchJobBankHits({
       nocCode: listing.noc_code,
@@ -308,20 +329,24 @@ async function verifyHiringAgainstJobBank(listings) {
       province: listing.province,
       communityName: listing.community_name,
       radiusKm: 500,
+      internationalOnly,
     });
     cache.set(key, hits);
     return hits;
   }
 
-  await mapPool(nocs, 8, async (listing) => {
+  await mapPool(nocs, 6, async (listing) => {
     try {
-      const hits = await hitsForNoc(listing);
+      const hits = await hitsForNoc(listing, false);
+      const hitsIntl = await hitsForNoc(listing, true);
       listing.jobbank_hits = hits;
+      listing.jobbank_hits_intl = hitsIntl;
       listing.jobbank_checked_at = checkedAt;
-      if (hits == null) nocFail += 1;
+      if (hits == null && hitsIntl == null) nocFail += 1;
       else nocOk += 1;
     } catch (err) {
       listing.jobbank_hits = null;
+      listing.jobbank_hits_intl = null;
       listing.jobbank_checked_at = checkedAt;
       nocFail += 1;
       console.warn(`  NOC ${listing.noc_code} (${listing.community_id}): ${err.message}`);

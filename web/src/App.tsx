@@ -5,10 +5,12 @@ import {
   careerTrekTitle,
   careerTrekUrl,
   formatVerifiedAt,
+  hideEmployerForAbroadAudience,
   hiringStatusLabel,
   hiringStatusOf,
   jobBankButtonLabel,
   jobBankCountTitle,
+  jobBankHitsForAudience,
   jobBankSearchUrl,
   listingNocCodes,
   listingTouchesBc,
@@ -322,7 +324,7 @@ function ResultCard({
   const jobsLink = listing.jobs_url
     ? withUtm(listing.jobs_url, listing.community_id, 'find-job')
     : ''
-  const hiringStatus = hiringStatusOf(listing)
+  const hiringStatus = hiringStatusOf(listing, jobBankAudience)
   const verified = formatVerifiedAt(listing.updated_at)
   const jobBank = withUtm(
     jobBankSearchUrl(listing, jobBankAudience),
@@ -339,10 +341,9 @@ function ResultCard({
     ? withUtm(trekRaw, listing.community_id || 'bc', 'career-trek')
     : ''
   const showHiringBadge = listing.type === 'employer' || listing.type === 'job'
+  const audienceHits = jobBankHitsForAudience(listing, jobBankAudience)
   const nocJobBankHits =
-    listing.type === 'priority_noc' && typeof listing.jobbank_hits === 'number'
-      ? listing.jobbank_hits
-      : null
+    listing.type === 'priority_noc' && typeof audienceHits === 'number' ? audienceHits : null
   const grouped = Boolean(communities && communities.length > 1)
   const place = grouped
     ? `${communities!.length} RCIP communities`
@@ -390,17 +391,19 @@ function ResultCard({
           ) : null}
           {showHiringBadge ? (
             <span className={`badge status-${hiringStatus}`} title={jobBankTitle}>
-              {hiringStatusLabel(hiringStatus, listing)}
+              {hiringStatusLabel(hiringStatus, listing, jobBankAudience)}
             </span>
           ) : null}
           {nocJobBankHits != null && nocJobBankHits > 0 ? (
             <span className="badge status-hiring" title={jobBankTitle}>
-              ~{nocJobBankHits} Job Bank postings
+              ~{nocJobBankHits} Job Bank{jobBankAudience === 'abroad' ? ' · intl' : ''} postings
             </span>
           ) : null}
           {nocJobBankHits === 0 ? (
             <span className="badge status-unknown" title={jobBankTitle}>
-              No Job Bank postings
+              {jobBankAudience === 'abroad'
+                ? 'No international Job Bank postings'
+                : 'No Job Bank postings'}
             </span>
           ) : null}
         </div>
@@ -659,10 +662,12 @@ export default function App() {
     const rows = data.listings.filter((item) => {
       if (community && item.community_id !== community) return false
       if (type && item.type !== type) return false
+      // Outside Canada: drop designated employers with confirmed 0 international openings.
+      if (jobBankAudience === 'abroad' && hideEmployerForAbroadAudience(item)) return false
       return matchesQuery(item, deferredQuery)
     })
     return sortListings(rows, sort)
-  }, [data, community, type, deferredQuery, sort])
+  }, [data, community, type, deferredQuery, sort, jobBankAudience])
 
   const displayItems = useMemo(
     () => toDisplayItems(filtered, !community),
@@ -685,7 +690,7 @@ export default function App() {
 
   useEffect(() => {
     setPage(1)
-  }, [deferredQuery, community, type, sort])
+  }, [deferredQuery, community, type, sort, jobBankAudience])
 
   useEffect(() => {
     setPage((current) => Math.min(current, pageCount))

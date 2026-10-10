@@ -30,9 +30,14 @@ export type Listing = {
   /** ISO timestamp when this row was last confirmed against the official source. */
   updated_at: string
   hiring_status: HiringStatus
-  /** Job Bank postings found for this employer near the community hub (when checked). */
+  /** Job Bank postings near the community hub (all intended applicants). */
   jobbank_hits?: number | null
-  /** ISO timestamp when jobbank_hits was last fetched for this row. */
+  /**
+   * Job Bank postings open to international candidates (fjyt=1) near the hub.
+   * Used for Outside Canada buttons, badges, and employer filtering.
+   */
+  jobbank_hits_intl?: number | null
+  /** ISO timestamp when Job Bank counts were last fetched for this row. */
   jobbank_checked_at?: string
 }
 

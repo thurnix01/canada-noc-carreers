@@ -64,16 +64,21 @@ npm run export:data
 npm run deploy   # from root (exports + builds + gh-pages)
 ```
 
-### Job Bank counts (weekly)
+### Job Bank counts (Mon / Wed / Fri)
 
-Card badges like `~269 on Job Bank` are **snapshots**, not live totals. Export hits Job Bank with the same filters as the outbound link (community hub + radius), so they can differ from a Canada-wide / “various locations” search on Job Bank.
+Card badges are **snapshots**, not live totals. Export hits Job Bank with the same hub + radius filters as the outbound link, and stores:
+
+- `jobbank_hits` — all intended applicants  
+- `jobbank_hits_intl` — open to international candidates (`fjyt=1`)
+
+Outside Canada uses intl counts; designated employers with **intl = 0** are hidden from search (still shown for In Canada).
 
 **Automated (preferred):** GitHub Action [`.github/workflows/weekly-jobbank-refresh.yml`](../.github/workflows/weekly-jobbank-refresh.yml)
 
-- Runs **every Monday at 14:00 UTC** (~07:00 Vancouver in summer / ~06:00 in winter) — workflow is **active** on `main`
+- Runs **Mon / Wed / Fri at 14:00 UTC** (~07:00 Vancouver in summer / ~06:00 in winter)
 - Also **Actions → Weekly Job Bank refresh → Run workflow** for an on-demand refresh
 - Re-exports `listings.json` (incl. Job Bank hit counts), commits it, then deploys Pages
-- Do not cancel a Monday `schedule` run unless you intend to skip that week’s refresh
+- Do not cancel a scheduled run unless you intend to skip that refresh
 
 **Manual:**
 
