@@ -92,11 +92,17 @@ export function parsePriorityNocs(html, nowIso = new Date().toISOString()) {
       stripTags(c[1]),
     );
     if (cells.length < 2) continue;
-    const noc = cells.find((c) => /^\d{5}$/.test(c)) || cells[0].match(/\d{5}/)?.[0];
+    const nocIdx = cells.findIndex((c) => /^\d{5}$/.test(c));
+    const noc = nocIdx >= 0 ? cells[nocIdx] : cells[0].match(/\d{5}/)?.[0];
     if (!noc || seen.has(noc)) continue;
-    const titleIdx = cells.findIndex((c) => c !== noc && c.length > 2 && !/view wages|\$/i.test(c));
-    const title = titleIdx >= 0 ? cells[titleIdx] : cells[1];
-    if (!title || /occupation code|occupation name/i.test(title)) continue;
+    // Table is usually: rank ("11.") | NOC | occupation name — never use the rank as title.
+    const isRank = (c) => /^\d+\.?$/.test(c);
+    const isNoise = (c) =>
+      !c || c === noc || isRank(c) || /view wages|\$|occupation code|occupation name/i.test(c);
+    const afterNoc = nocIdx >= 0 ? cells.slice(nocIdx + 1) : cells;
+    const title =
+      afterNoc.find((c) => !isNoise(c)) || cells.find((c) => !isNoise(c) && c.length > 3);
+    if (!title) continue;
     seen.add(noc);
 
     out.push({

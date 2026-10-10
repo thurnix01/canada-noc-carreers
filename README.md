@@ -2,6 +2,7 @@
 
 Unofficial search site for Rural Community Immigration Pilot **priority NOCs** and **designated employers**. Drives traffic to official community portals.
 
+**Live:** [https://noccareers.ca](https://noccareers.ca)  
 **Stack:** n8n → Google Sheets → `listings.json` → React (Vite) on GitHub Pages
 
 ## Live data (your Sheet)
