@@ -1036,12 +1036,6 @@ export default function App() {
 
       <NocExplainer />
 
-      <AudiencePathway
-        audience={jobBankAudience}
-        onAudienceChange={(next) => startTransition(() => setJobBankAudience(next))}
-        onSearch={scrollToExplore}
-      />
-
       <section className="impact" id="impact">
         <div className="section-head">
           <p className="pill">Why this pathway exists</p>
@@ -1186,6 +1180,12 @@ export default function App() {
           })}
         </div>
       </section>
+
+      <AudiencePathway
+        audience={jobBankAudience}
+        onAudienceChange={(next) => startTransition(() => setJobBankAudience(next))}
+        onSearch={scrollToExplore}
+      />
 
       <section className="explore" id="explore" ref={exploreRef}>
         <div className="section-head explore-head">
