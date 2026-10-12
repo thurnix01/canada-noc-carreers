@@ -257,7 +257,8 @@ function AudiencePathway({
           </p>
           <p className="noc-explainer-note">
             Abroad uses Job Bank&apos;s Intended applicants → Canadians and international candidates filter.
-            In Canada uses the standard nearby search. We do not give visa advice.
+            In Canada uses the standard nearby search. We do not recruit, hire, place candidates, or give
+            visa advice.
           </p>
           <div className="noc-official-links">
             <button type="button" className="btn btn-primary" onClick={onSearch}>
@@ -592,7 +593,7 @@ export default function App() {
 
   const shareUrl = 'https://noccareers.ca'
   const shareMessage =
-    'RCIP search for candidates abroad and already in Canada: find priority NOCs across 14 communities, open Job Bank the right way for your situation, then continue on the official portal.'
+    'NOC Careers is an unofficial RCIP search tool — not a recruiter. Find priority NOCs across 14 communities, open Job Bank for your situation, then continue on the official portal.'
   const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
@@ -788,7 +789,6 @@ export default function App() {
     { href: '#communities', label: 'Communities' },
     { href: '#impact', label: 'Impact' },
     { href: '#share', label: 'Share' },
-    { href: '#contact', label: 'Contact' },
   ] as const
 
   const SHARE_TARGETS = [
@@ -844,7 +844,7 @@ export default function App() {
       <div className="topbar">
         <div className="shell topbar-inner">
           <span>Rural Community Immigration Pilot · Canada</span>
-          <span>Search the lists. Confirm on the official portal.</span>
+          <span>A search tool — not a recruiter. We do not hire or place candidates.</span>
         </div>
       </div>
 
@@ -909,7 +909,8 @@ export default function App() {
               <p className="lede">
                 For candidates <strong>abroad</strong> and <strong>already in Canada</strong>: find which RCIP
                 communities list your occupation, open Job Bank the right way for your situation, and finish
-                on the official community portal.
+                on the official community portal. This site is a <strong>search tool</strong> — we do not
+                recruit, hire, or place anyone in a job.
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href="#pathway">
@@ -1147,8 +1148,9 @@ export default function App() {
               ) : null}
 
               <p className="notice">
-                Unofficial aid — not IRCC or a community office. Do not email or cold-contact designated
-                employers. Apply only to public postings, then confirm on the official community portal.
+                Unofficial search tool — not a recruiter, not IRCC, not a community office. We do not hire
+                or help you get a job. Do not email this site or cold-contact designated employers. Apply
+                only to public postings, then confirm on the official community portal.
               </p>
             </div>
           </aside>
@@ -1283,7 +1285,10 @@ export default function App() {
               </span>
               <div>
                 <strong>Finish on the community portal</strong>
-                <p>We never take applications or give immigration advice.</p>
+                <p>
+                  We never take applications, CVs, or recruitment requests — and we do not give immigration
+                  advice.
+                </p>
               </div>
             </li>
           </ul>
@@ -1315,7 +1320,8 @@ export default function App() {
           <h2>Four checks — abroad or in Canada</h2>
           <p>
             A list is a map, not a permission slip. Whether you searched from abroad or already in Canada,
-            aim with these checks — then follow that community’s process.
+            aim with these checks — then follow that community’s process. We cannot review CVs or arrange
+            jobs for you.
           </p>
           <div className="info-box">
             <strong>Before you apply</strong>
@@ -1502,8 +1508,6 @@ export default function App() {
         </p>
         <p className="impact-cite">
           <a href="#share">Pass this on</a>
-          {' · '}
-          <a href="#contact">Contact</a>
         </p>
       </section>
 
@@ -1514,7 +1518,8 @@ export default function App() {
           <h2 id="share-heading">Help someone else find their community</h2>
           <p>
             Settlement workers, classmates, and family often need the same starting point. Send the
-            link — they should still verify on the official portal.
+            link — they should still verify on the official portal. Please do not email us your CV; we
+            cannot place candidates or answer recruitment requests.
           </p>
 
           <div className="share-panel">
@@ -1576,47 +1581,6 @@ export default function App() {
       </section>
 
 
-      <section className="contact" id="contact">
-        <div className="contact-copy">
-          <p className="pill">Contact</p>
-          <h2>Corrections, walkthroughs, and partnerships</h2>
-          <p>
-            We maintain this unofficial search for candidates abroad, people already in Canada, community
-            offices, and settlement staff. We do not give immigration advice or process applications.
-          </p>
-          <a className="contact-email" href="mailto:info@noccareers.ca">
-            info@noccareers.ca
-          </a>
-          <ul className="contact-points">
-            <li>Tell us if a NOC or employer list looks out of date</li>
-            <li>Book a 15-minute walkthrough for settlement or EDO staff</li>
-            <li>Ask about listing this as a referral aid for your community</li>
-          </ul>
-        </div>
-        <div className="contact-card">
-          <h3>NOC Careers</h3>
-          <p>Unofficial RCIP search — lists in, official portals out.</p>
-          <dl>
-            <div>
-              <dt>Email</dt>
-              <dd>
-                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Web</dt>
-              <dd>
-                <a href="https://noccareers.ca">noccareers.ca</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Response</dt>
-              <dd>We aim to reply within 2 business days</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
       <footer className="footer">
         <div className="footer-brand">
           <div className="logo footer-logo">
@@ -1629,7 +1593,8 @@ export default function App() {
             />
           </div>
           <p>
-            Unofficial RCIP search for priority NOCs and designated employers.
+            Unofficial RCIP search tool for priority NOCs and designated employers. Not a recruiter —
+            we do not hire, place candidates, or offer recruitment advice.
           </p>
         </div>
         <div>
@@ -1642,16 +1607,14 @@ export default function App() {
           <a href="#communities">Communities</a>
           <a href="#impact">Impact</a>
           <a href="#share">Share</a>
-          <a href="#contact">Contact</a>
         </div>
         <div>
-          <h3>Contact</h3>
-          <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
-          <a href="https://noccareers.ca">noccareers.ca</a>
+          <h3>Please note</h3>
           <p>
-            Not affiliated with IRCC or WorkBC. Always confirm on the community RCIP website before you
-            apply.
+            Do not send CVs or job requests here. Use Job Bank and the official community RCIP portal.
+            Not affiliated with IRCC or WorkBC.
           </p>
+          <a href="https://noccareers.ca">noccareers.ca</a>
         </div>
       </footer>
       </div>
