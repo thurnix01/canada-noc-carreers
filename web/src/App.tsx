@@ -1507,11 +1507,6 @@ export default function App() {
           </a>{' '}
           and your community portal.
         </p>
-        <p className="impact-cite">
-          <a href="#share">Pass this on</a>
-          {' · '}
-          <a href="#contact">Contact</a>
-        </p>
       </section>
 
 
