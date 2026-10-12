@@ -789,6 +789,7 @@ export default function App() {
     { href: '#communities', label: 'Communities' },
     { href: '#impact', label: 'Impact' },
     { href: '#share', label: 'Share' },
+    { href: '#contact', label: 'Contact' },
   ] as const
 
   const SHARE_TARGETS = [
@@ -1508,6 +1509,8 @@ export default function App() {
         </p>
         <p className="impact-cite">
           <a href="#share">Pass this on</a>
+          {' · '}
+          <a href="#contact">Contact</a>
         </p>
       </section>
 
@@ -1580,6 +1583,42 @@ export default function App() {
         </div>
       </section>
 
+      <section className="contact" id="contact">
+        <div className="contact-copy">
+          <p className="pill">Contact</p>
+          <h2>Reach the site maintainer</h2>
+          <p>
+            For corrections or community-office questions about this unofficial tool. We do not recruit,
+            hire, place candidates, or review CVs — please use Job Bank and the official community portal
+            for job applications.
+          </p>
+          <a className="contact-email" href="mailto:info@noccareers.ca">
+            info@noccareers.ca
+          </a>
+        </div>
+        <div className="contact-card">
+          <h3>NOC Careers</h3>
+          <p>Unofficial RCIP search tool — lists in, official portals out.</p>
+          <dl>
+            <div>
+              <dt>Email</dt>
+              <dd>
+                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Web</dt>
+              <dd>
+                <a href="https://noccareers.ca">noccareers.ca</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Not for</dt>
+              <dd>Job applications, CVs, or recruitment requests</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
 
       <footer className="footer">
         <div className="footer-brand">
@@ -1607,14 +1646,15 @@ export default function App() {
           <a href="#communities">Communities</a>
           <a href="#impact">Impact</a>
           <a href="#share">Share</a>
+          <a href="#contact">Contact</a>
         </div>
         <div>
-          <h3>Please note</h3>
-          <p>
-            Do not send CVs or job requests here. Use Job Bank and the official community RCIP portal.
-            Not affiliated with IRCC or WorkBC.
-          </p>
+          <h3>Contact</h3>
+          <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
           <a href="https://noccareers.ca">noccareers.ca</a>
+          <p>
+            Not for CVs or job requests. Not affiliated with IRCC or WorkBC.
+          </p>
         </div>
       </footer>
       </div>
