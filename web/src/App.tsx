@@ -147,6 +147,10 @@ function NocExplainer() {
               Browse official NOC
             </a>
           </div>
+          <p className="noc-explainer-note">
+            When you know your code, <a href="#communities">choose a community</a> or{' '}
+            <a href="#explore">search listings</a>.
+          </p>
         </div>
 
         <div className="noc-explainer-interactive">
@@ -197,7 +201,7 @@ const AUDIENCE_PATHS = [
     id: 'abroad' as const,
     short: 'Outside Canada',
     title: 'Candidates abroad',
-    kicker: 'Primary path',
+    kicker: 'Abroad',
     steps: [
       'Find your NOC on a community priority list',
       'Open Job Bank for employers open to international candidates',
@@ -205,12 +209,12 @@ const AUDIENCE_PATHS = [
       'Finish on that community’s RCIP portal toward PR',
     ],
     detail:
-      'Most Job Bank ads will ignore you if the employer is not open to international candidates. We set your Job Bank buttons to that filter so you spend time where replies are possible — then you still verify on the official portal.',
+      'Most Job Bank ads will ignore you if the employer is not open to international candidates. We set your Job Bank buttons to that Intended applicants filter so you spend time where replies are possible — then you still verify on the official portal.',
   },
   {
     id: 'in_canada' as const,
     short: 'In Canada',
-    title: 'Already authorized to work',
+    title: 'Already in Canada',
     kicker: 'Work permit · PR · citizen',
     steps: [
       'Search priority NOCs and designated employers',
@@ -233,31 +237,39 @@ function AudiencePathway({
   onSearch: () => void
 }) {
   const current = AUDIENCE_PATHS.find((p) => p.id === audience) ?? AUDIENCE_PATHS[0]
+  const secondaryHref =
+    audience === 'abroad'
+      ? 'https://www.jobbank.gc.ca/findajob/foreign-candidates'
+      : 'https://www.jobbank.gc.ca/home'
+  const secondaryLabel =
+    audience === 'abroad' ? 'Job Bank foreign candidates' : 'Job Bank Canada'
 
   return (
     <section className="noc-explainer audience-pathway" id="pathway" aria-labelledby="pathway-heading">
       <div className="noc-explainer-grid">
         <div className="noc-explainer-copy">
-          <p className="pill">Who Job Bank will consider</p>
+          <p className="pill">Start here</p>
           <h2 id="pathway-heading">Your situation shapes the search</h2>
           <p>
-            Built first for people <strong>outside Canada</strong> who need a real job path into RCIP and
-            permanent residence. Choose your situation — it changes every Job Bank button on this site.
+            Whether you are <strong>abroad</strong> or <strong>already in Canada</strong>, choose one path —
+            it changes every Job Bank button on this site, then guides you through NOCs, communities, and
+            search below.
           </p>
           <p className="noc-explainer-note">
-            We use Job Bank&apos;s own “open to international candidates” signal. We do not give visa advice.
+            Abroad uses Job Bank&apos;s Intended applicants → Canadians and international candidates filter.
+            In Canada uses the standard nearby search. We do not give visa advice.
           </p>
           <div className="noc-official-links">
             <button type="button" className="btn btn-primary" onClick={onSearch}>
-              Search with this path
+              Continue to search
             </button>
             <a
               className="btn btn-outline"
-              href="https://www.jobbank.gc.ca/findajob/foreign-candidates"
+              href={secondaryHref}
               target="_blank"
               rel="noreferrer noopener"
             >
-              Job Bank foreign candidates
+              {secondaryLabel}
             </a>
           </div>
         </div>
@@ -580,7 +592,7 @@ export default function App() {
 
   const shareUrl = 'https://noccareers.ca'
   const shareMessage =
-    'RCIP search for candidates abroad: find priority NOCs across 14 communities, open Job Bank for employers open to international applicants, then continue on the official portal.'
+    'RCIP search for candidates abroad and already in Canada: find priority NOCs across 14 communities, open Job Bank the right way for your situation, then continue on the official portal.'
   const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
@@ -768,9 +780,9 @@ export default function App() {
   }
 
   const NAV_LINKS = [
+    { href: '#pathway', label: 'Your situation' },
     { href: '#about', label: 'How it works' },
     { href: '#noc', label: 'NOC codes' },
-    { href: '#pathway', label: 'Your situation' },
     { href: '#impact', label: 'Impact' },
     { href: '#communities', label: 'Communities' },
     { href: '#explore', label: 'Search' },
@@ -895,17 +907,17 @@ export default function App() {
                 See <span>where your work is wanted</span> — then take the official next step
               </h1>
               <p className="lede">
-                Built first for candidates abroad: find which RCIP communities list your occupation, then open
-                Job Bank filtered to employers open to international applicants — and finish on the official
-                community portal.
+                For candidates <strong>abroad</strong> and <strong>already in Canada</strong>: find which RCIP
+                communities list your occupation, open Job Bank the right way for your situation, and finish
+                on the official community portal.
               </p>
               <div className="hero-actions">
-                <button type="button" className="btn btn-primary btn-lg" onClick={scrollToExplore}>
+                <a className="btn btn-primary btn-lg" href="#pathway">
+                  Set your situation
+                </a>
+                <button type="button" className="btn btn-outline btn-lg" onClick={scrollToExplore}>
                   Search listings
                 </button>
-                <a className="btn btn-outline btn-lg" href="#about">
-                  How it works
-                </a>
               </div>
             </div>
 
@@ -988,6 +1000,12 @@ export default function App() {
       </div>
 
       <div className="shell shell-main">
+      <AudiencePathway
+        audience={jobBankAudience}
+        onAudienceChange={(next) => startTransition(() => setJobBankAudience(next))}
+        onSearch={scrollToExplore}
+      />
+
       <section className="split about" id="about">
         <div className="collage" aria-hidden="true">
           <img src={img('warehouse.jpg')} alt="" className="collage-main" />
@@ -998,8 +1016,9 @@ export default function App() {
           <p className="pill">How it works</p>
           <h2>Three steps. Then the official portal.</h2>
           <p>
-            RCIP lists live on 14 community sites, not one federal page. Use this search to compare them
-            quickly — then verify and apply only where the community tells you to.
+            After you set <a href="#pathway">Your situation</a>, use this path whether you are abroad or
+            already in Canada. RCIP lists live on 14 community sites — compare them here, then verify where
+            the community tells you to.
           </p>
           <ul className="feature-list">
             <li>
@@ -1016,9 +1035,9 @@ export default function App() {
                 2
               </span>
               <div>
-                <strong>Open Job Bank the right way</strong>
+                <strong>Open Job Bank for your situation</strong>
                 <p>
-                  Choose “Outside Canada” to filter Job Bank to employers open to international candidates.
+                  Abroad: employers open to international candidates. In Canada: standard nearby results.
                   Designated is not a job offer — only apply to public postings.
                 </p>
               </div>
@@ -1033,9 +1052,9 @@ export default function App() {
               </div>
             </li>
           </ul>
-          <button type="button" className="btn btn-primary" onClick={scrollToExplore}>
-            Search listings
-          </button>
+          <a className="btn btn-primary" href="#noc">
+            Next: what a NOC code is
+          </a>
         </div>
       </section>
 
@@ -1043,11 +1062,12 @@ export default function App() {
 
       <section className="impact" id="impact">
         <div className="section-head">
-          <p className="pill">Why this pathway exists</p>
+          <p className="pill">Why communities recruit</p>
           <h2>Rural communities are already recommending people with real job offers</h2>
           <p>
             These figures come from public community and press reports about RCIP — not IRCC national
-            totals, and not results from this website.
+            totals, and not results from this website. They matter for candidates abroad and for workers
+            already in Canada seeking a rural PR path.
           </p>
         </div>
 
@@ -1108,15 +1128,20 @@ export default function App() {
           </a>{' '}
           and your community portal.
         </p>
+        <p className="impact-cite">
+          <a href="#communities">Continue → choose a community</a>
+          {' · '}
+          <a href="#explore">or search all listings</a>
+        </p>
       </section>
 
       <section className="communities" id="communities">
         <div className="section-head">
-          <p className="pill">14 communities</p>
+          <p className="pill">Then pick a place</p>
           <h2>Choose a region, or search them all</h2>
           <p>
-            Cards with counts are searchable here. Cards marked “Portal only” still send you to the
-            official site until that list is in the explorer.
+            Narrow to one RCIP community or keep all 14. Cards with counts are searchable below; “Portal
+            only” still sends you to the official site.
           </p>
         </div>
         <div className="community-cards">
@@ -1186,19 +1211,14 @@ export default function App() {
         </div>
       </section>
 
-      <AudiencePathway
-        audience={jobBankAudience}
-        onAudienceChange={(next) => startTransition(() => setJobBankAudience(next))}
-        onSearch={scrollToExplore}
-      />
-
       <section className="explore" id="explore" ref={exploreRef}>
         <div className="section-head explore-head">
           <p className="pill">Search</p>
           <h2>Find your NOC or a designated employer</h2>
           <p>
-            Set <a href="#pathway">Your situation</a> first (default: Outside Canada). That controls every
-            Job Bank button — then search your NOC and finish on the official portal.
+            Your <a href="#pathway">situation</a> controls every Job Bank button — abroad filters to
+            international candidates; in Canada uses the standard nearby search. Then finish on the
+            official portal.
           </p>
           <p>
             Updated {new Date(data.generated_at).toLocaleString()}
@@ -1247,8 +1267,8 @@ export default function App() {
                 </div>
                 <p className="audience-hint">
                   {jobBankAudience === 'abroad'
-                    ? 'Job Bank buttons filter to employers open to international candidates.'
-                    : 'Job Bank buttons use the standard nearby search.'}{' '}
+                    ? 'Abroad: Job Bank buttons use Intended applicants → international candidates.'
+                    : 'In Canada: Job Bank buttons use the standard nearby search.'}{' '}
                   <a href="#pathway">Full pathway</a>
                 </p>
               </div>
@@ -1437,10 +1457,11 @@ export default function App() {
           </div>
         </div>
         <div className="support-copy">
-          <p className="pill">After you find a match</p>
-          <h2>Four checks before you apply</h2>
+          <p className="pill">Before you apply</p>
+          <h2>Four checks — abroad or in Canada</h2>
           <p>
-            A list is a map, not a permission slip. Use it to aim — then follow that community’s process.
+            A list is a map, not a permission slip. Whether you searched from abroad or already in Canada,
+            aim with these checks — then follow that community’s process.
           </p>
           <div className="info-box">
             <strong>Before you apply</strong>
@@ -1551,8 +1572,8 @@ export default function App() {
           <p className="pill">Contact</p>
           <h2>Corrections, walkthroughs, and partnerships</h2>
           <p>
-            We maintain this unofficial search for candidates, community offices, and settlement staff. We
-            do not give immigration advice or process applications.
+            We maintain this unofficial search for candidates abroad, people already in Canada, community
+            offices, and settlement staff. We do not give immigration advice or process applications.
           </p>
           <a className="contact-email" href="mailto:info@noccareers.ca">
             info@noccareers.ca
