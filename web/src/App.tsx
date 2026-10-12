@@ -781,12 +781,12 @@ export default function App() {
 
   const NAV_LINKS = [
     { href: '#pathway', label: 'Your situation' },
+    { href: '#explore', label: 'Search' },
     { href: '#about', label: 'How it works' },
     { href: '#noc', label: 'NOC codes' },
-    { href: '#impact', label: 'Impact' },
-    { href: '#communities', label: 'Communities' },
-    { href: '#explore', label: 'Search' },
     { href: '#next-steps', label: 'Next steps' },
+    { href: '#communities', label: 'Communities' },
+    { href: '#impact', label: 'Impact' },
     { href: '#share', label: 'Share' },
     { href: '#contact', label: 'Contact' },
   ] as const
@@ -913,11 +913,11 @@ export default function App() {
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href="#pathway">
-                  Set your situation
+                  Start your search
                 </a>
-                <button type="button" className="btn btn-outline btn-lg" onClick={scrollToExplore}>
-                  Search listings
-                </button>
+                <a className="btn btn-outline btn-lg" href="#about">
+                  How it works
+                </a>
               </div>
             </div>
 
@@ -949,53 +949,6 @@ export default function App() {
             </div>
           </section>
 
-          <form
-            className="search-dock"
-            onSubmit={(e) => {
-              e.preventDefault()
-              scrollToExplore()
-            }}
-          >
-            <label className="dock-field">
-              <span>Search</span>
-              <input
-                type="search"
-                placeholder="NOC, title, or employer"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </label>
-            <label className="dock-field">
-              <span>Community</span>
-              <select
-                value={community}
-                onChange={(e) => startTransition(() => setCommunity(e.target.value))}
-              >
-                <option value="">All communities</option>
-                {data.communities.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}, {c.province}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="dock-field">
-              <span>Listing type</span>
-              <select
-                value={type}
-                onChange={(e) => startTransition(() => setType(e.target.value as '' | ListingType))}
-              >
-                {TYPE_OPTIONS.map((opt) => (
-                  <option key={opt.label} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button type="submit" className="btn btn-primary btn-lg dock-submit">
-              Search listings
-            </button>
-          </form>
         </div>
       </div>
 
@@ -1006,219 +959,63 @@ export default function App() {
         onSearch={scrollToExplore}
       />
 
-      <section className="split about" id="about">
-        <div className="collage" aria-hidden="true">
-          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
-          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
-          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
-        </div>
-        <div className="split-copy">
-          <p className="pill">How it works</p>
-          <h2>Three steps. Then the official portal.</h2>
-          <p>
-            After you set <a href="#pathway">Your situation</a>, use this path whether you are abroad or
-            already in Canada. RCIP lists live on 14 community sites — compare them here, then verify where
-            the community tells you to.
-          </p>
-          <ul className="feature-list">
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                1
-              </span>
-              <div>
-                <strong>Search your NOC or job title</strong>
-                <p>See which communities currently list that occupation.</p>
-              </div>
-            </li>
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                2
-              </span>
-              <div>
-                <strong>Open Job Bank for your situation</strong>
-                <p>
-                  Abroad: employers open to international candidates. In Canada: standard nearby results.
-                  Designated is not a job offer — only apply to public postings.
-                </p>
-              </div>
-            </li>
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                3
-              </span>
-              <div>
-                <strong>Finish on the community portal</strong>
-                <p>We never take applications or give immigration advice.</p>
-              </div>
-            </li>
-          </ul>
-          <a className="btn btn-primary" href="#noc">
-            Next: what a NOC code is
-          </a>
-        </div>
-      </section>
 
-      <NocExplainer />
-
-      <section className="impact" id="impact">
-        <div className="section-head">
-          <p className="pill">Why communities recruit</p>
-          <h2>Rural communities are already recommending people with real job offers</h2>
-          <p>
-            These figures come from public community and press reports about RCIP — not IRCC national
-            totals, and not results from this website. They matter for candidates abroad and for workers
-            already in Canada seeking a rural PR path.
-          </p>
-        </div>
-
-        <div className="impact-grid">
-          <article className="impact-stat">
-            <strong>14</strong>
-            <span>RCIP communities across Canada recommending workers for permanent residence</span>
-          </article>
-          <article className="impact-stat">
-            <strong>1,000+</strong>
-            <span>
-              Community recommendations reported in 2025 from Sudbury (517), Thunder Bay (475), and
-              North Bay (190) alone
-            </span>
-          </article>
-          <article className="impact-stat">
-            <strong>~800</strong>
-            <span>
-              Permanent residency grants reported in the first two months of 2026 as demand stayed high
-            </span>
-          </article>
-          <article className="impact-stat">
-            <strong>{data.counts.total.toLocaleString()}</strong>
-            <span>
-              Live listings on this site right now — {data.counts.priority_nocs.toLocaleString()}{' '}
-              priority NOCs and {data.counts.employers.toLocaleString()} designated employers
-            </span>
-          </article>
-        </div>
-
-        <div className="impact-panels">
-          <div className="impact-panel">
-            <h3>What the pilot is for</h3>
-            <ul>
-              <li>
-                Fill hard-to-staff work — health, trades, early childhood, hospitality — with people who
-                already have a job offer.
-              </li>
-              <li>
-                Keep each year’s recommendations focused on priority occupations, with caps so one NOC
-                does not use the whole allotment.
-              </li>
-              <li>
-                Often retain people already living and working in the region as temporary residents.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p className="impact-cite">
-          Sources: community RCIP updates and press coverage of 2025–2026 pilot activity (e.g. CIC News
-          year-in-review; Canadian Press reporting). Always confirm current rules on{' '}
-          <a
-            href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
-            target="_blank"
-            rel="noreferrer noopener"
+      <form
+        className="search-dock"
+        onSubmit={(e) => {
+          e.preventDefault()
+          scrollToExplore()
+        }}
+      >
+        <label className="dock-field">
+          <span>Search</span>
+          <input
+            type="search"
+            placeholder="NOC, title, or employer"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </label>
+        <label className="dock-field">
+          <span>Community</span>
+          <select
+            value={community}
+            onChange={(e) => startTransition(() => setCommunity(e.target.value))}
           >
-            Canada.ca
-          </a>{' '}
-          and your community portal.
-        </p>
-        <p className="impact-cite">
-          <a href="#communities">Continue → choose a community</a>
-          {' · '}
-          <a href="#explore">or search all listings</a>
-        </p>
-      </section>
-
-      <section className="communities" id="communities">
-        <div className="section-head">
-          <p className="pill">Then pick a place</p>
-          <h2>Choose a region, or search them all</h2>
-          <p>
-            Narrow to one RCIP community or keep all 14. Cards with counts are searchable below; “Portal
-            only” still sends you to the official site.
-          </p>
-        </div>
-        <div className="community-cards">
-          <button
-            type="button"
-            className={`community-card community-card-all ${community === '' ? 'is-active' : ''}`}
-            onClick={() => {
-              startTransition(() => setCommunity(''))
-              scrollToExplore()
-            }}
+            <option value="">All communities</option>
+            {data.communities.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}, {c.province}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="dock-field">
+          <span>Listing type</span>
+          <select
+            value={type}
+            onChange={(e) => startTransition(() => setType(e.target.value as '' | ListingType))}
           >
-            <div className="community-card-media">
-              <img src={img('friends-flags.jpg')} alt="" />
-            </div>
-            <div>
-              <strong>All communities</strong>
-              <span>
-                {data.counts.communities} regions · {data.counts.total} listings
-              </span>
-            </div>
-          </button>
-          {communityStats.map((c) => {
-            const photo = COMMUNITY_PHOTOS[c.id] || 'friends-flags.jpg'
-            const portal = c.portal_url ? withUtm(c.portal_url, c.id, 'directory-card') : ''
-            return (
-              <div
-                key={c.id}
-                className={`community-card ${community === c.id ? 'is-active' : ''} ${c.directoryOnly ? 'is-directory' : ''}`}
-              >
-                <button
-                  type="button"
-                  className="community-card-main"
-                  onClick={() => {
-                    startTransition(() => setCommunity(community === c.id ? '' : c.id))
-                    scrollToExplore()
-                  }}
-                >
-                  <div className="community-card-media">
-                    <img src={img(photo)} alt="" />
-                  </div>
-                  <div>
-                    <strong>
-                      {c.name}
-                      <em>{c.province}</em>
-                    </strong>
-                    <span>
-                      {c.directoryOnly
-                        ? 'Portal only — open the official site'
-                        : `${c.nocs} NOCs · ${c.employers} employers`}
-                    </span>
-                  </div>
-                </button>
-                {portal ? (
-                  <a
-                    className="community-portal-link"
-                    href={portal}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Official portal
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                ) : null}
-              </div>
-            )
-          })}
-        </div>
-      </section>
+            {TYPE_OPTIONS.map((opt) => (
+              <option key={opt.label} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button type="submit" className="btn btn-primary btn-lg dock-submit">
+          Search listings
+        </button>
+      </form>
 
       <section className="explore" id="explore" ref={exploreRef}>
         <div className="section-head explore-head">
           <p className="pill">Search</p>
           <h2>Find your NOC or a designated employer</h2>
           <p>
-            Your <a href="#pathway">situation</a> controls every Job Bank button — abroad filters to
-            international candidates; in Canada uses the standard nearby search. Then finish on the
-            official portal.
+            With <a href="#pathway">Your situation</a> set, search priority NOCs and designated
+            employers. Abroad Job Bank buttons use international candidates; in Canada uses the
+            standard nearby search — then finish on the official portal.
           </p>
           <p>
             Updated {new Date(data.generated_at).toLocaleString()}
@@ -1443,6 +1240,63 @@ export default function App() {
         </div>
       </section>
 
+
+      <section className="split about" id="about">
+        <div className="collage" aria-hidden="true">
+          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
+          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
+          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
+        </div>
+        <div className="split-copy">
+          <p className="pill">How it works</p>
+          <h2>Three steps. Then the official portal.</h2>
+          <p>
+            After you set <a href="#pathway">Your situation</a>, use this path whether you are abroad or
+            already in Canada. RCIP lists live on 14 community sites — compare them here, then verify where
+            the community tells you to.
+          </p>
+          <ul className="feature-list">
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                1
+              </span>
+              <div>
+                <strong>Search your NOC or job title</strong>
+                <p>See which communities currently list that occupation.</p>
+              </div>
+            </li>
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                2
+              </span>
+              <div>
+                <strong>Open Job Bank for your situation</strong>
+                <p>
+                  Abroad: employers open to international candidates. In Canada: standard nearby results.
+                  Designated is not a job offer — only apply to public postings.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                3
+              </span>
+              <div>
+                <strong>Finish on the community portal</strong>
+                <p>We never take applications or give immigration advice.</p>
+              </div>
+            </li>
+          </ul>
+          <a className="btn btn-primary" href="#next-steps">
+            Next: four checks before you apply
+          </a>
+        </div>
+      </section>
+
+
+      <NocExplainer />
+
+
       <section className="support" id="next-steps">
         <div className="support-media">
           <img
@@ -1499,6 +1353,160 @@ export default function App() {
           </div>
         </div>
       </section>
+
+
+      <section className="communities" id="communities">
+        <div className="section-head">
+          <p className="pill">Narrow the map</p>
+          <h2>Choose a region, or search them all</h2>
+          <p>
+            Prefer one RCIP community? Pick it here to refine the search above. “Portal only” still
+            sends you to the official site.
+          </p>
+        </div>
+        <div className="community-cards">
+          <button
+            type="button"
+            className={`community-card community-card-all ${community === '' ? 'is-active' : ''}`}
+            onClick={() => {
+              startTransition(() => setCommunity(''))
+              scrollToExplore()
+            }}
+          >
+            <div className="community-card-media">
+              <img src={img('friends-flags.jpg')} alt="" />
+            </div>
+            <div>
+              <strong>All communities</strong>
+              <span>
+                {data.counts.communities} regions · {data.counts.total} listings
+              </span>
+            </div>
+          </button>
+          {communityStats.map((c) => {
+            const photo = COMMUNITY_PHOTOS[c.id] || 'friends-flags.jpg'
+            const portal = c.portal_url ? withUtm(c.portal_url, c.id, 'directory-card') : ''
+            return (
+              <div
+                key={c.id}
+                className={`community-card ${community === c.id ? 'is-active' : ''} ${c.directoryOnly ? 'is-directory' : ''}`}
+              >
+                <button
+                  type="button"
+                  className="community-card-main"
+                  onClick={() => {
+                    startTransition(() => setCommunity(community === c.id ? '' : c.id))
+                    scrollToExplore()
+                  }}
+                >
+                  <div className="community-card-media">
+                    <img src={img(photo)} alt="" />
+                  </div>
+                  <div>
+                    <strong>
+                      {c.name}
+                      <em>{c.province}</em>
+                    </strong>
+                    <span>
+                      {c.directoryOnly
+                        ? 'Portal only — open the official site'
+                        : `${c.nocs} NOCs · ${c.employers} employers`}
+                    </span>
+                  </div>
+                </button>
+                {portal ? (
+                  <a
+                    className="community-portal-link"
+                    href={portal}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Official portal
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : null}
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+
+      <section className="impact" id="impact">
+        <div className="section-head">
+          <p className="pill">Why communities recruit</p>
+          <h2>Rural communities are already recommending people with real job offers</h2>
+          <p>
+            These figures come from public community and press reports about RCIP — not IRCC national
+            totals, and not results from this website. They matter for candidates abroad and for workers
+            already in Canada seeking a rural PR path.
+          </p>
+        </div>
+
+        <div className="impact-grid">
+          <article className="impact-stat">
+            <strong>14</strong>
+            <span>RCIP communities across Canada recommending workers for permanent residence</span>
+          </article>
+          <article className="impact-stat">
+            <strong>1,000+</strong>
+            <span>
+              Community recommendations reported in 2025 from Sudbury (517), Thunder Bay (475), and
+              North Bay (190) alone
+            </span>
+          </article>
+          <article className="impact-stat">
+            <strong>~800</strong>
+            <span>
+              Permanent residency grants reported in the first two months of 2026 as demand stayed high
+            </span>
+          </article>
+          <article className="impact-stat">
+            <strong>{data.counts.total.toLocaleString()}</strong>
+            <span>
+              Live listings on this site right now — {data.counts.priority_nocs.toLocaleString()}{' '}
+              priority NOCs and {data.counts.employers.toLocaleString()} designated employers
+            </span>
+          </article>
+        </div>
+
+        <div className="impact-panels">
+          <div className="impact-panel">
+            <h3>What the pilot is for</h3>
+            <ul>
+              <li>
+                Fill hard-to-staff work — health, trades, early childhood, hospitality — with people who
+                already have a job offer.
+              </li>
+              <li>
+                Keep each year’s recommendations focused on priority occupations, with caps so one NOC
+                does not use the whole allotment.
+              </li>
+              <li>
+                Often retain people already living and working in the region as temporary residents.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p className="impact-cite">
+          Sources: community RCIP updates and press coverage of 2025–2026 pilot activity (e.g. CIC News
+          year-in-review; Canadian Press reporting). Always confirm current rules on{' '}
+          <a
+            href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Canada.ca
+          </a>{' '}
+          and your community portal.
+        </p>
+        <p className="impact-cite">
+          <a href="#share">Pass this on</a>
+          {' · '}
+          <a href="#contact">Contact</a>
+        </p>
+      </section>
+
 
       <section className="cta-banner" id="share" aria-labelledby="share-heading">
         <div className="cta-copy">
@@ -1567,6 +1575,7 @@ export default function App() {
         </div>
       </section>
 
+
       <section className="contact" id="contact">
         <div className="contact-copy">
           <p className="pill">Contact</p>
@@ -1625,11 +1634,13 @@ export default function App() {
         </div>
         <div>
           <h3>Explore</h3>
-          <a href="#about">How it works</a>
-          <a href="#impact">Impact</a>
-          <a href="#communities">Communities</a>
+          <a href="#pathway">Your situation</a>
           <a href="#explore">Search</a>
+          <a href="#about">How it works</a>
+          <a href="#noc">NOC codes</a>
           <a href="#next-steps">Next steps</a>
+          <a href="#communities">Communities</a>
+          <a href="#impact">Impact</a>
           <a href="#share">Share</a>
           <a href="#contact">Contact</a>
         </div>

@@ -447,7 +447,8 @@ body.nav-lock {
   grid-template-columns: 1.4fr 1fr 1fr auto;
   gap: 0.85rem;
   align-items: end;
-  margin: 0 0 -2.6rem;
+  /* Sits under Your situation, above the full search results */
+  margin: 0.35rem 0 1.75rem;
   padding: 1.2rem;
   border: 0;
   border-radius: 18px;
