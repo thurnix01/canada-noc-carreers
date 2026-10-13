@@ -908,10 +908,8 @@ export default function App() {
                 See <span>where your work is wanted</span> — then take the official next step
               </h1>
               <p className="lede">
-                For candidates <strong>abroad</strong> and <strong>already in Canada</strong>: find which RCIP
-                communities list your occupation, open Job Bank the right way for your situation, and finish
-                on the official community portal. This site is a <strong>search tool</strong> — we do not
-                recruit, hire, or place anyone in a job.
+                Find which RCIP communities list your occupation — whether you are <strong>abroad</strong> or{' '}
+                <strong>already in Canada</strong> — then open Job Bank and finish on the official portal.
               </p>
               <div className="hero-actions">
                 <a className="btn btn-primary btn-lg" href="#pathway">
@@ -921,6 +919,9 @@ export default function App() {
                   How it works
                 </a>
               </div>
+              <p className="hero-disclaimer">
+                A search tool only — we do not recruit, hire, or place anyone in a job.
+              </p>
             </div>
 
             <div className="hero-media">
