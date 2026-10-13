@@ -783,10 +783,10 @@ export default function App() {
   const NAV_LINKS = [
     { href: '#pathway', label: 'Your situation' },
     { href: '#explore', label: 'Search' },
+    { href: '#communities', label: 'Communities' },
     { href: '#about', label: 'How it works' },
     { href: '#noc', label: 'NOC codes' },
     { href: '#next-steps', label: 'Next steps' },
-    { href: '#communities', label: 'Communities' },
     { href: '#impact', label: 'Impact' },
     { href: '#share', label: 'Share' },
     { href: '#contact', label: 'Contact' },
@@ -1247,130 +1247,13 @@ export default function App() {
       </section>
 
 
-      <section className="split about" id="about">
-        <div className="collage" aria-hidden="true">
-          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
-          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
-          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
-        </div>
-        <div className="split-copy">
-          <p className="pill">How it works</p>
-          <h2>Three steps. Then the official portal.</h2>
-          <p>
-            After you set <a href="#pathway">Your situation</a>, use this path whether you are abroad or
-            already in Canada. RCIP lists live on 14 community sites — compare them here, then verify where
-            the community tells you to.
-          </p>
-          <ul className="feature-list">
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                1
-              </span>
-              <div>
-                <strong>Search your NOC or job title</strong>
-                <p>See which communities currently list that occupation.</p>
-              </div>
-            </li>
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                2
-              </span>
-              <div>
-                <strong>Open Job Bank for your situation</strong>
-                <p>
-                  Abroad: employers open to international candidates. In Canada: standard nearby results.
-                  Designated is not a job offer — only apply to public postings.
-                </p>
-              </div>
-            </li>
-            <li>
-              <span className="feat-icon" aria-hidden="true">
-                3
-              </span>
-              <div>
-                <strong>Finish on the community portal</strong>
-                <p>
-                  We never take applications, CVs, or recruitment requests — and we do not give immigration
-                  advice.
-                </p>
-              </div>
-            </li>
-          </ul>
-          <a className="btn btn-primary" href="#next-steps">
-            Next: four checks before you apply
-          </a>
-        </div>
-      </section>
-
-
-      <NocExplainer />
-
-
-      <section className="support" id="next-steps">
-        <div className="support-media">
-          <img
-            src={img('citizens.jpg')}
-            alt="Community members wearing civic pins together"
-            width={900}
-            height={400}
-          />
-          <div className="stat-float">
-            <strong>{data.counts.communities}</strong>
-            <span>RCIP communities on this site</span>
-          </div>
-        </div>
-        <div className="support-copy">
-          <p className="pill">Before you apply</p>
-          <h2>Four checks — abroad or in Canada</h2>
-          <p>
-            A list is a map, not a permission slip. Whether you searched from abroad or already in Canada,
-            aim with these checks — then follow that community’s process. We cannot review CVs or arrange
-            jobs for you.
-          </p>
-          <div className="info-box">
-            <strong>Before you apply</strong>
-            <ul>
-              <li>The NOC is still on that community’s current priority list.</li>
-              <li>The employer is designated for the role you want.</li>
-              <li>
-                There is a public job posting (Job Bank, the portal, or the employer’s careers page) —
-                designation alone is not enough.
-              </li>
-              <li>
-                You will meet IRCC’s language, education, experience, and settlement-fund rules — the
-                community cannot skip those.
-              </li>
-            </ul>
-          </div>
-          <div className="useful-links">
-            <strong>Official starting points</strong>
-            <a
-              href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              IRCC — Rural Community Immigration Pilot
-            </a>
-            <a
-              href="https://www.jobbank.gc.ca/home"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Job Bank Canada
-            </a>
-            <a href="#communities">Community portals on this site</a>
-            <a href="#share">If this saved you time, send it to someone still opening 14 tabs.</a>
-          </div>
-        </div>
-      </section>
-
 
       <section className="communities" id="communities">
         <div className="section-head">
           <p className="pill">Narrow the map</p>
           <h2>Choose a region, or search them all</h2>
           <p>
-            Prefer one RCIP community? Pick it here to refine the search above. “Portal only” still
+            Prefer one RCIP community? Pick a card to refine the search above. “Portal only” still
             sends you to the official site.
           </p>
         </div>
@@ -1439,7 +1322,133 @@ export default function App() {
             )
           })}
         </div>
+        <p className="communities-footnote">
+          <a href="#explore">Updates the search above</a> — pick a card to filter listings, then scroll back
+          up to review results.
+        </p>
       </section>
+
+
+
+      <section className="split about" id="about">
+        <div className="collage" aria-hidden="true">
+          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
+          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
+          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
+        </div>
+        <div className="split-copy">
+          <p className="pill">How it works</p>
+          <h2>Three steps. Then the official portal.</h2>
+          <p>
+            After you set <a href="#pathway">Your situation</a>, use this path whether you are abroad or
+            already in Canada. RCIP lists live on 14 community sites — compare them here, then verify where
+            the community tells you to.
+          </p>
+          <ul className="feature-list">
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                1
+              </span>
+              <div>
+                <strong>Search your NOC or job title</strong>
+                <p>See which communities currently list that occupation.</p>
+              </div>
+            </li>
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                2
+              </span>
+              <div>
+                <strong>Open Job Bank for your situation</strong>
+                <p>
+                  Abroad: employers open to international candidates. In Canada: standard nearby results.
+                  Designated is not a job offer — only apply to public postings.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="feat-icon" aria-hidden="true">
+                3
+              </span>
+              <div>
+                <strong>Finish on the community portal</strong>
+                <p>
+                  We never take applications, CVs, or recruitment requests — and we do not give immigration
+                  advice.
+                </p>
+              </div>
+            </li>
+          </ul>
+          <a className="btn btn-primary" href="#next-steps">
+            Next: four checks before you apply
+          </a>
+        </div>
+      </section>
+
+
+
+<NocExplainer />
+
+
+
+      <section className="support" id="next-steps">
+        <div className="support-media">
+          <img
+            src={img('citizens.jpg')}
+            alt="Community members wearing civic pins together"
+            width={900}
+            height={400}
+          />
+          <div className="stat-float">
+            <strong>{data.counts.communities}</strong>
+            <span>RCIP communities on this site</span>
+          </div>
+        </div>
+        <div className="support-copy">
+          <p className="pill">Before you apply</p>
+          <h2>Four checks — abroad or in Canada</h2>
+          <p>
+            A list is a map, not a permission slip. Whether you searched from abroad or already in Canada,
+            aim with these checks — then follow that community’s process. We cannot review CVs or arrange
+            jobs for you.
+          </p>
+          <div className="info-box">
+            <strong>Before you apply</strong>
+            <ul>
+              <li>The NOC is still on that community’s current priority list.</li>
+              <li>The employer is designated for the role you want.</li>
+              <li>
+                There is a public job posting (Job Bank, the portal, or the employer’s careers page) —
+                designation alone is not enough.
+              </li>
+              <li>
+                You will meet IRCC’s language, education, experience, and settlement-fund rules — the
+                community cannot skip those.
+              </li>
+            </ul>
+          </div>
+          <div className="useful-links">
+            <strong>Official starting points</strong>
+            <a
+              href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/rural-franco-pilots/rural-immigration.html"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              IRCC — Rural Community Immigration Pilot
+            </a>
+            <a
+              href="https://www.jobbank.gc.ca/home"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Job Bank Canada
+            </a>
+            <a href="#communities">Community portals on this site</a>
+            <a href="#share">If this saved you time, send it to someone still opening 14 tabs.</a>
+          </div>
+        </div>
+      </section>
+
 
 
       <section className="impact" id="impact">
@@ -1511,6 +1520,7 @@ export default function App() {
           and your community portal.
         </p>
       </section>
+
 
 
       <section className="cta-banner" id="share" aria-labelledby="share-heading">
@@ -1638,10 +1648,10 @@ export default function App() {
           <h3>Explore</h3>
           <a href="#pathway">Your situation</a>
           <a href="#explore">Search</a>
+          <a href="#communities">Communities</a>
           <a href="#about">How it works</a>
           <a href="#noc">NOC codes</a>
           <a href="#next-steps">Next steps</a>
-          <a href="#communities">Communities</a>
           <a href="#impact">Impact</a>
           <a href="#share">Share</a>
           <a href="#contact">Contact</a>

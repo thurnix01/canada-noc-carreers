@@ -659,6 +659,20 @@ body.nav-lock {
   gap: 0.9rem;
 }
 
+.communities-footnote {
+  margin: 0.9rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.communities-footnote a {
+  color: var(--maple-deep);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .community-card {
   display: grid;
   gap: 0.4rem;
