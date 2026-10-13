@@ -47,11 +47,15 @@
 
     <meta name="theme-color" content="#c8102e" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- LCP: preload the hero WebP the first viewport uses -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/images/hero-flag-1200.webp"
+      imagesrcset="/images/hero-flag-800.webp 800w, /images/hero-flag-1200.webp 1200w, /images/hero-flag.webp 1600w"
+      imagesizes="(max-width: 860px) 92vw, 520px"
+      fetchpriority="high"
     />
 
     <script type="application/ld+json">
@@ -71,35 +75,45 @@
         }
       }
     </script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JYJKRLTFBS"></script>
-    <script>
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-      gtag('config', 'G-JYJKRLTFBS')
-    </script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-      (function (c, l, a, r, i, t, y) {
-        c[a] =
-          c[a] ||
-          function () {
-            ;(c[a].q = c[a].q || []).push(arguments)
-          }
-        t = l.createElement(r)
-        t.async = 1
-        t.src = 'https://www.clarity.ms/tag/' + i
-        y = l.getElementsByTagName(r)[0]
-        y.parentNode.insertBefore(t, y)
-      })(window, document, 'clarity', 'script', 'yg7sd6qv8d')
-    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Analytics after first paint so they compete less with LCP -->
+    <script>
+      window.addEventListener('load', function () {
+        var boot = function () {
+          var g = document.createElement('script')
+          g.async = true
+          g.src = 'https://www.googletagmanager.com/gtag/js?id=G-JYJKRLTFBS'
+          document.head.appendChild(g)
+          window.dataLayer = window.dataLayer || []
+          function gtag() {
+            dataLayer.push(arguments)
+          }
+          window.gtag = gtag
+          gtag('js', new Date())
+          gtag('config', 'G-JYJKRLTFBS')
+
+          ;(function (c, l, a, r, i, t, y) {
+            c[a] =
+              c[a] ||
+              function () {
+                ;(c[a].q = c[a].q || []).push(arguments)
+              }
+            t = l.createElement(r)
+            t.async = 1
+            t.src = 'https://www.clarity.ms/tag/' + i
+            y = l.getElementsByTagName(r)[0]
+            y.parentNode.insertBefore(t, y)
+          })(window, document, 'clarity', 'script', 'yg7sd6qv8d')
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(boot, { timeout: 2500 })
+        } else {
+          setTimeout(boot, 1)
+        }
+      })
+    </script>
   </body>
 </html>

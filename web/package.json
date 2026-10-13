@@ -12,6 +12,8 @@
     "deploy": "VITE_BASE=/ npm run build && touch dist/.nojekyll && rm -rf dist/fonts && echo \"Build ready in dist/. Prefer: gh workflow run 'Deploy Pages'\""
   },
   "dependencies": {
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/sora": "^5.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

@@ -597,7 +597,12 @@ export default function App() {
   const shareText = `${shareMessage} ${shareUrl}`
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--topo-image', `url(${img('topo-light.jpg')})`)
+    const topo =
+      typeof document !== 'undefined' &&
+      document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0
+        ? 'topo-light.webp'
+        : 'topo-light.jpg'
+    document.documentElement.style.setProperty('--topo-image', `url(${img(topo)})`)
   }, [])
 
   useEffect(() => {
@@ -926,12 +931,21 @@ export default function App() {
 
             <div className="hero-media">
               <div className="hero-frame">
-                <img
-                  src={img('hero-flag.jpg')}
-                  alt="Person smiling while holding a Canadian flag outdoors"
-                  width={900}
-                  height={400}
-                />
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet={`${img('hero-flag-800.webp')} 800w, ${img('hero-flag-1200.webp')} 1200w, ${img('hero-flag.webp')} 1600w`}
+                    sizes="(max-width: 860px) 92vw, 520px"
+                  />
+                  <img
+                    src={img('hero-flag-1200.jpg')}
+                    alt="Person smiling while holding a Canadian flag outdoors"
+                    width={1200}
+                    height={800}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div className="trust-chip">
                 <span className="trust-stars" aria-hidden="true">
@@ -1267,7 +1281,7 @@ export default function App() {
             }}
           >
             <div className="community-card-media">
-              <img src={img('friends-flags.jpg')} alt="" />
+              <img src={img('friends-flags.jpg')} alt="" loading="lazy" decoding="async" />
             </div>
             <div>
               <strong>All communities</strong>
@@ -1293,7 +1307,7 @@ export default function App() {
                   }}
                 >
                   <div className="community-card-media">
-                    <img src={img(photo)} alt="" />
+                    <img src={img(photo)} alt="" loading="lazy" decoding="async" />
                   </div>
                   <div>
                     <strong>
@@ -1332,9 +1346,9 @@ export default function App() {
 
       <section className="split about" id="about">
         <div className="collage" aria-hidden="true">
-          <img src={img('warehouse.jpg')} alt="" className="collage-main" />
-          <img src={img('healthcare.jpg')} alt="" className="collage-top" />
-          <img src={img('farmers.jpg')} alt="" className="collage-bot" />
+          <img src={img('warehouse.jpg')} alt="" className="collage-main" loading="lazy" decoding="async" />
+          <img src={img('healthcare.jpg')} alt="" className="collage-top" loading="lazy" decoding="async" />
+          <img src={img('farmers.jpg')} alt="" className="collage-bot" loading="lazy" decoding="async" />
         </div>
         <div className="split-copy">
           <p className="pill">How it works</p>

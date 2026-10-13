@@ -365,6 +365,10 @@ body.nav-lock {
   transform: translateZ(0);
 }
 
+.hero-frame picture {
+  display: block;
+}
+
 .hero-frame img {
   width: 100%;
   aspect-ratio: 900 / 400;
