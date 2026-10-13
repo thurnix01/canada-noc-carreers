@@ -1067,10 +1067,12 @@ export default function App() {
                 </div>
                 <p className="audience-hint">
                   {jobBankAudience === 'abroad'
-                    ? 'Abroad: Job Bank buttons use Intended applicants → international candidates.'
-                    : 'In Canada: Job Bank buttons use the standard nearby search.'}{' '}
-                  <a href="#pathway">Full pathway</a>
+                    ? 'Job Bank buttons use international candidates.'
+                    : 'Job Bank buttons use the standard nearby search.'}
                 </p>
+                <a className="audience-also" href="#pathway">
+                  Also set above
+                </a>
               </div>
 
               <div className="card-legend">

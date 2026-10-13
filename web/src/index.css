@@ -922,6 +922,16 @@ body.nav-lock {
   text-underline-offset: 0.12em;
 }
 
+.audience-also {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--maple-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .clear-btn {
   justify-self: start;
   border: none;
