@@ -363,16 +363,21 @@ body.nav-lock {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   transform: translateZ(0);
+  /* Keep the original wide crop — do not inherit the photo’s taller 3:2 ratio */
+  aspect-ratio: 900 / 400;
 }
 
 .hero-frame picture {
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-frame img {
   width: 100%;
-  aspect-ratio: 900 / 400;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .trust-chip,
@@ -2240,8 +2245,9 @@ body.nav-lock {
     width: min(100%, 380px);
   }
 
-  .hero-frame img {
-    aspect-ratio: 16 / 12;
+  .hero-frame {
+    /* Match original wide hero height on mobile (not the taller photo ratio) */
+    aspect-ratio: 900 / 400;
   }
 
   .trust-chip {

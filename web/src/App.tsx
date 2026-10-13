@@ -940,8 +940,8 @@ export default function App() {
                   <img
                     src={img('hero-flag-1200.jpg')}
                     alt="Person smiling while holding a Canadian flag outdoors"
-                    width={1200}
-                    height={800}
+                    width={900}
+                    height={400}
                     fetchPriority="high"
                     decoding="async"
                   />
