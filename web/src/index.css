@@ -2246,8 +2246,7 @@ body.nav-lock {
   }
 
   .hero-frame {
-    /* Match original wide hero height on mobile (not the taller photo ratio) */
-    aspect-ratio: 900 / 400;
+    aspect-ratio: 1 / 1;
   }
 
   .trust-chip {
