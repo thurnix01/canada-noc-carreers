@@ -363,8 +363,7 @@ body.nav-lock {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   transform: translateZ(0);
-  /* Keep the original wide crop — do not inherit the photo’s taller 3:2 ratio */
-  aspect-ratio: 900 / 400;
+  aspect-ratio: 900 / 1200;
 }
 
 .hero-frame picture {
