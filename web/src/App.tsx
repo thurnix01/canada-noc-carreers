@@ -1537,14 +1537,13 @@ export default function App() {
 
 
 
-      <section className="cta-banner" id="share" aria-labelledby="share-heading">
+      <section className="cta-banner cta-banner-compact" id="share" aria-labelledby="share-heading">
         <div className="cta-copy">
           <p className="cta-kicker">Pass it on</p>
           <h2 id="share-heading">Help someone else find their community</h2>
           <p>
-            Settlement workers, classmates, and family often need the same starting point. Send the
-            link — they should still verify on the official portal. Please do not email us your CV; we
-            cannot place candidates or answer recruitment requests.
+            Send the link to settlement workers, classmates, or family — they should still verify on the
+            official portal. Not for CVs or job requests.
           </p>
 
           <div className="share-panel">
@@ -1601,39 +1600,26 @@ export default function App() {
           </div>
         </div>
         <div className="cta-photo-wrap">
-          <img src={img('retail.jpg')} alt="" className="cta-photo" />
+          <img src={img('retail.jpg')} alt="" className="cta-photo" loading="lazy" decoding="async" />
         </div>
       </section>
 
-      <section className="contact" id="contact">
+      <section className="contact contact-compact" id="contact">
         <div className="contact-copy">
           <p className="pill">Contact</p>
           <h2>Reach the site maintainer</h2>
           <p>
-            For corrections or community-office questions about this unofficial tool. We do not recruit,
-            hire, place candidates, or review CVs — please use Job Bank and the official community portal
-            for job applications.
+            For corrections or community-office questions about this unofficial tool. Use Job Bank and
+            the official community portal for applications.
           </p>
           <a className="contact-email" href="mailto:info@noccareers.ca">
             info@noccareers.ca
           </a>
         </div>
         <div className="contact-card">
-          <h3>NOC Careers</h3>
-          <p>Unofficial RCIP search tool — lists in, official portals out.</p>
+          <h3>Please note</h3>
+          <p>Unofficial RCIP search — lists in, official portals out.</p>
           <dl>
-            <div>
-              <dt>Email</dt>
-              <dd>
-                <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Web</dt>
-              <dd>
-                <a href="https://noccareers.ca">noccareers.ca</a>
-              </dd>
-            </div>
             <div>
               <dt>Not for</dt>
               <dd>Job applications, CVs, or recruitment requests</dd>
@@ -1642,7 +1628,7 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="footer">
+      <footer className="footer footer-compact">
         <div className="footer-brand">
           <div className="logo footer-logo">
             <img
@@ -1654,29 +1640,22 @@ export default function App() {
             />
           </div>
           <p>
-            Unofficial RCIP search tool for priority NOCs and designated employers. Not a recruiter —
-            we do not hire, place candidates, or offer recruitment advice.
+            Unofficial RCIP search tool. Not a recruiter. Not affiliated with IRCC or WorkBC.
           </p>
         </div>
-        <div>
+        <div className="footer-explore">
           <h3>Explore</h3>
-          <a href="#pathway">Your situation</a>
-          <a href="#explore">Search</a>
-          <a href="#communities">Communities</a>
-          <a href="#about">How it works</a>
-          <a href="#noc">NOC codes</a>
-          <a href="#next-steps">Next steps</a>
-          <a href="#impact">Impact</a>
-          <a href="#share">Share</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div>
-          <h3>Contact</h3>
-          <a href="mailto:info@noccareers.ca">info@noccareers.ca</a>
-          <a href="https://noccareers.ca">noccareers.ca</a>
-          <p>
-            Not for CVs or job requests. Not affiliated with IRCC or WorkBC.
-          </p>
+          <div className="footer-explore-links">
+            <a href="#pathway">Your situation</a>
+            <a href="#explore">Search</a>
+            <a href="#communities">Communities</a>
+            <a href="#about">How it works</a>
+            <a href="#noc">NOC codes</a>
+            <a href="#next-steps">Next steps</a>
+            <a href="#impact">Impact</a>
+            <a href="#share">Share</a>
+            <a href="#contact">Contact</a>
+          </div>
         </div>
       </footer>
       </div>
